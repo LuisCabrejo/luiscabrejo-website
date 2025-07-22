@@ -1,5 +1,4 @@
-'use client';
-
+import Link from 'next/link';
 import React from 'react';
 import { ChevronDown, Play, Users, Globe, Zap, ArrowRight, Star, Check } from 'lucide-react';
 
@@ -14,10 +13,9 @@ export default function HomePage() {
               Luis Cabrejo
             </div>
             <div className="hidden md:flex space-x-8 text-sm">
-              <a href="#historia" className="hover:text-blue-400 transition-colors">Mi Historia</a>
-              <a href="#ecosistema" className="hover:text-blue-400 transition-colors">Ecosistema</a>
-              <a href="#herramientas" className="hover:text-blue-400 transition-colors">Herramientas</a>
-              <a href="#vision" className="hover:text-blue-400 transition-colors">Visión 4M</a>
+              <Link href="/historia" className="hover:text-blue-400 transition-colors">Mi Historia</Link>
+              <Link href="/ecosistema" className="hover:text-blue-400 transition-colors">Ecosistema</Link>
+              <Link href="/vision" className="hover:text-blue-400 transition-colors">Visión 4M</Link>
             </div>
             <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full hover:shadow-lg transition-all">
               Conectar
@@ -53,12 +51,12 @@ export default function HomePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 group">
+              <Link href="/historia" className="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 group">
                 Ver Mi Historia <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="border border-white/30 px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all flex items-center gap-2">
+              </Link>
+              <Link href="/ecosistema" className="border border-white/30 px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all flex items-center gap-2">
                 <Play className="w-5 h-5" /> Conoce el Ecosistema
-              </button>
+              </Link>
             </div>
 
             <div className="flex items-center gap-8 pt-4">
@@ -83,12 +81,12 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-600/50 to-purple-600/50"></div>
                 <Play className="w-16 h-16 text-white relative z-10 cursor-pointer hover:scale-110 transition-transform" />
                 <div className="absolute bottom-4 left-4 text-sm bg-black/50 px-3 py-1 rounded-full">
-                  &quot;De la quiebra a 4 millones&quot; - 3:42
+                  "De la quiebra a 4 millones" - 3:42
                 </div>
               </div>
               <div className="text-center">
                 <p className="text-gray-300 mb-4">
-                  &quot;Si vestía mal, tenía problemas dentales y vivía en estrato cero... pero aún así las personas me seguían, imagina lo que podemos lograr ahora con herramientas de clase mundial.&quot;
+                  "Si vestía mal, tenía problemas dentales y vivía en estrato cero... pero aún así las personas me seguían, imagina lo que podemos lograr ahora con herramientas de clase mundial."
                 </p>
                 <div className="flex justify-center">
                   <div className="flex -space-x-2">
@@ -125,7 +123,7 @@ export default function HomePage() {
                   <div className="text-sm text-gray-400">Directora Médica, Ecopetrol</div>
                 </div>
               </div>
-              <p className="text-gray-300">&quot;Las herramientas digitales de Luis han revolucionado cómo veo los negocios. Es el único que combina tecnología real con resultados comprobados.&quot;</p>
+              <p className="text-gray-300">"Las herramientas digitales de Luis han revolucionado cómo veo los negocios. Es el único que combina tecnología real con resultados comprobados."</p>
             </div>
 
             <div className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
@@ -136,7 +134,7 @@ export default function HomePage() {
                   <div className="text-sm text-gray-400">VP Tecnología, Banco de Bogotá</div>
                 </div>
               </div>
-              <p className="text-gray-300">&quot;Lo que más me impresiona es su enfoque empresarial. Nada de jerga tradicional, solo estrategia y tecnología de vanguardia.&quot;</p>
+              <p className="text-gray-300">"Lo que más me impresiona es su enfoque empresarial. Nada de jerga tradicional, solo estrategia y tecnología de vanguardia."</p>
             </div>
 
             <div className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
@@ -147,7 +145,7 @@ export default function HomePage() {
                   <div className="text-sm text-gray-400">Líder Comunitaria, 15K seguidores</div>
                 </div>
               </div>
-              <p className="text-gray-300">&quot;Por fin alguien que entiende que queremos construir algo serio, no esquemas. Su plataforma es el futuro de los negocios colaborativos.&quot;</p>
+              <p className="text-gray-300">"Por fin alguien que entiende que queremos construir algo serio, no esquemas. Su plataforma es el futuro de los negocios colaborativos."</p>
             </div>
           </div>
 
@@ -162,12 +160,12 @@ export default function HomePage() {
       </section>
 
       {/* The Ecosystem Section */}
-      <section id="ecosistema" className="py-20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6">El Ecosistema Digital que Cambia Todo</h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              No es solo un &quot;negocio&quot; - es una arquitectura completa de herramientas, formación y comunidad que permite crear activos empresariales reales en América.
+              No es solo un "negocio" - es una arquitectura completa de herramientas, formación y comunidad que permite crear activos empresariales reales en América.
             </p>
           </div>
 
@@ -236,9 +234,9 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <button className="w-full mt-6 bg-gradient-to-r from-blue-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg transition-all">
+                <Link href="/ecosistema" className="block w-full mt-6 bg-gradient-to-r from-blue-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg transition-all text-center">
                   Acceder al Portal
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -246,7 +244,7 @@ export default function HomePage() {
       </section>
 
       {/* Vision 4M Section */}
-      <section id="vision" className="py-20 bg-gradient-to-r from-blue-900/20 to-purple-900/20">
+      <section className="py-20 bg-gradient-to-r from-blue-900/20 to-purple-900/20">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div className="mb-16">
             <h2 className="text-5xl font-bold mb-6">La Visión: 4 Millones de Vidas Transformadas</h2>
@@ -280,14 +278,14 @@ export default function HomePage() {
             <h3 className="text-2xl font-bold mb-6">¿Te Unes a Esta Visión?</h3>
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               Si eres un profesional que entiende que el futuro son los ecosistemas colaborativos,
-              si buscas construir algo más grande que un &quot;trabajo&quot;, si quieres ser parte de la transformación
+              si buscas construir algo más grande que un "trabajo", si quieres ser parte de la transformación
               económica más importante de América Latina...
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-4 rounded-full font-semibold hover:shadow-xl transition-all">
+              <Link href="/ecosistema" className="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-4 rounded-full font-semibold hover:shadow-xl transition-all">
                 Conoce la Oportunidad
-              </button>
+              </Link>
               <button className="border border-white/30 px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all">
                 Agenda una Conversación
               </button>
