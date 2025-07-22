@@ -86,7 +86,7 @@ export default function HomePage() {
               </div>
               <div className="text-center">
                 <p className="text-gray-300 mb-4">
-                  "Si vestía mal, tenía problemas dentales y vivía en estrato cero... pero aún así las personas me seguían, imagina lo que podemos lograr ahora con herramientas de clase mundial."
+                  {`Si vestía mal, tenía problemas dentales y vivía en estrato cero... pero aún así las personas me seguían, imagina lo que podemos lograr ahora con herramientas de clase mundial.`}
                 </p>
                 <div className="flex justify-center">
                   <div className="flex -space-x-2">
