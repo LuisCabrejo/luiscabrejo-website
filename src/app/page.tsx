@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import { ChevronDown, Play, Users, Globe, Zap, ArrowRight, Star, Check, Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import ContactModal from '@/components/ContactModal';
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
@@ -25,7 +27,10 @@ export default function HomePage() {
             </div>
 
             {/* Desktop Conectar Button */}
-            <button className="hidden md:block bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full hover:shadow-lg transition-all">
+            <button
+              onClick={() => setContactModalOpen(true)}
+              className="hidden md:block bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full hover:shadow-lg transition-all"
+            >
               Conectar
             </button>
 
@@ -65,7 +70,13 @@ export default function HomePage() {
                 Visión 4M
               </Link>
               {/* Mobile Conectar Button - FIXED */}
-              <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 rounded-full hover:shadow-lg transition-all font-medium mt-4">
+              <button
+                onClick={() => {
+                  setContactModalOpen(true);
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 rounded-full hover:shadow-lg transition-all font-medium mt-4"
+              >
                 Conectar
               </button>
             </div>
@@ -283,7 +294,10 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <button className="w-full mt-6 bg-gradient-to-r from-blue-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg transition-all text-sm sm:text-base">
+                <button
+                  onClick={() => setContactModalOpen(true)}
+                  className="w-full mt-6 bg-gradient-to-r from-blue-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg transition-all text-sm sm:text-base"
+                >
                   Acceder al Portal
                 </button>
               </div>
@@ -332,12 +346,18 @@ export default function HomePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all">
-                Conoce la Oportunidad
-              </button>
-              <button className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all">
-                Agenda una Conversación
-              </button>
+                <button
+                  onClick={() => setContactModalOpen(true)}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all"
+                >
+                  Conoce la Oportunidad
+                </button>
+                <button
+                  onClick={() => setContactModalOpen(true)}
+                  className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all"
+                >
+                  Agenda una Conversación
+                </button>
             </div>
           </div>
         </div>
@@ -390,6 +410,13 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        formType="conectar"
+      />
     </div>
   );
 }
