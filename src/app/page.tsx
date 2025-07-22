@@ -1,344 +1,442 @@
-import Link from 'next/link';
 import React from 'react';
-import { ChevronDown, Play, Users, Globe, Zap, ArrowRight, Star, Check } from 'lucide-react';
+import { ArrowLeft, Monitor, Smartphone, Users, BarChart3, Zap, Globe, Code, Brain, PlayCircle, ExternalLink, Check, ArrowRight, Star } from 'lucide-react';
+import Link from 'next/link';
 
-export default function HomePage() {
+export default function EcosistemaPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-black/20 backdrop-blur-md z-50 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex justify-between items-center">
-            <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Luis Cabrejo
-            </div>
+            </Link>
             <div className="hidden md:flex space-x-8 text-sm">
               <Link href="/historia" className="hover:text-blue-400 transition-colors">Mi Historia</Link>
-              <Link href="/ecosistema" className="hover:text-blue-400 transition-colors">Ecosistema</Link>
+              <Link href="/ecosistema" className="text-blue-400">Ecosistema</Link>
               <Link href="/vision" className="hover:text-blue-400 transition-colors">Visión 4M</Link>
             </div>
-            <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full hover:shadow-lg transition-all">
+            <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-2 rounded-full hover:shadow-lg transition-all text-sm sm:text-base">
               Conectar
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        </div>
+      {/* Hero */}
+      <section className="pt-24 sm:pt-32 pb-16 sm:pb-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <Link href="/" className="inline-flex items-center text-gray-400 hover:text-white mb-6 sm:mb-8 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Volver al inicio
+          </Link>
 
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
-          <div className="space-y-8">
-            <div className="inline-block bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full px-4 py-2 text-sm border border-blue-500/30">
-              ✨ Arquitecto de Ecosistemas Digitales
-            </div>
-
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              Construyendo
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent block">
-                Activos Empresariales
-              </span>
-              en América
+          <div className="text-center mb-12 sm:mb-16">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-6">
+              El
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"> Ecosistema </span>
+              que Cambia Todo
             </h1>
-
-            <p className="text-xl text-gray-300 leading-relaxed">
-              En 11 años transformé mi vida de la quiebra total a construir un activo empresarial que genera ingresos en todo el continente. Ahora ayudo a profesionales ambiciosos a crear sus propios ecosistemas digitales de negocio.
+            <p className="text-lg sm:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+              No es solo un "negocio" - es una arquitectura completa de herramientas digitales, formación empresarial y comunidad que permite crear activos empresariales reales sin la fricción tradicional.
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/historia" className="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 group">
-                Ver Mi Historia <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link href="/ecosistema" className="border border-white/30 px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all flex items-center gap-2">
-                <Play className="w-5 h-5" /> Conoce el Ecosistema
-              </Link>
-            </div>
-
-            <div className="flex items-center gap-8 pt-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-400">11</div>
-                <div className="text-sm text-gray-400">Años Diamante</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-400">16</div>
-                <div className="text-sm text-gray-400">Países Activos</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-400">4M</div>
-                <div className="text-sm text-gray-400">Meta de Impacto</div>
-              </div>
-            </div>
           </div>
 
-          <div className="relative">
-            <div className="relative bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl p-8 backdrop-blur-sm border border-white/10">
-              <div className="aspect-video bg-gray-800 rounded-2xl mb-6 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/50 to-purple-600/50"></div>
-                <Play className="w-16 h-16 text-white relative z-10 cursor-pointer hover:scale-110 transition-transform" />
-                <div className="absolute bottom-4 left-4 text-sm bg-black/50 px-3 py-1 rounded-full">
-                  "De la quiebra a 4 millones" - 3:42
-                </div>
-              </div>
-              <div className="text-center">
-                <p className="text-gray-300 mb-4">
-                  {`Si vestía mal, tenía problemas dentales y vivía en estrato cero... pero aún así las personas me seguían, imagina lo que podemos lograr ahora con herramientas de clase mundial.`}
-                </p>
-                <div className="flex justify-center">
-                  <div className="flex -space-x-2">
-                    {[1,2,3,4,5].map((i) => (
-                      <div key={i} className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full border-2 border-gray-800"></div>
-                    ))}
-                  </div>
-                  <span className="ml-3 text-sm text-gray-400">+2,847 personas transformadas</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ChevronDown className="w-6 h-6 text-gray-400" />
-        </div>
-      </section>
-
-      {/* Social Proof Section */}
-      <section className="py-20 bg-black/50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Reconocido por Líderes de la Industria</h2>
-            <p className="text-gray-400">Profesionales de alto nivel que han validado el ecosistema</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full mr-4"></div>
-                <div>
-                  <div className="font-semibold">Dr. Patricia González</div>
-                  <div className="text-sm text-gray-400">Directora Médica, Ecopetrol</div>
-                </div>
-              </div>
-              <p className="text-gray-300">"Las herramientas digitales de Luis han revolucionado cómo veo los negocios. Es el único que combina tecnología real con resultados comprobados."</p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
+            <div className="bg-blue-900/20 rounded-2xl p-4 sm:p-6 border border-blue-500/30 text-center">
+              <Code className="w-10 sm:w-12 h-10 sm:h-12 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">Tecnología Avanzada</h3>
+              <p className="text-sm sm:text-base text-gray-300">Next.js, IA, automatización. Herramientas que compiten con grandes corporaciones.</p>
             </div>
 
-            <div className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-full mr-4"></div>
-                <div>
-                  <div className="font-semibold">Ing. Carlos Mendoza</div>
-                  <div className="text-sm text-gray-400">VP Tecnología, Banco de Bogotá</div>
-                </div>
-              </div>
-              <p className="text-gray-300">"Lo que más me impresiona es su enfoque empresarial. Nada de jerga tradicional, solo estrategia y tecnología de vanguardia."</p>
+            <div className="bg-purple-900/20 rounded-2xl p-4 sm:p-6 border border-purple-500/30 text-center">
+              <Users className="w-10 sm:w-12 h-10 sm:h-12 text-purple-400 mx-auto mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">Comunidad Continental</h3>
+              <p className="text-sm sm:text-base text-gray-300">16 países, mentores regionales, eventos semanales. Conexiones que importan.</p>
             </div>
 
-            <div className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mr-4"></div>
-                <div>
-                  <div className="font-semibold">Pastora María Elena</div>
-                  <div className="text-sm text-gray-400">Líder Comunitaria, 15K seguidores</div>
-                </div>
-              </div>
-              <p className="text-gray-300">"Por fin alguien que entiende que queremos construir algo serio, no esquemas. Su plataforma es el futuro de los negocios colaborativos."</p>
+            <div className="bg-green-900/20 rounded-2xl p-4 sm:p-6 border border-green-500/30 text-center">
+              <BarChart3 className="w-10 sm:w-12 h-10 sm:h-12 text-green-400 mx-auto mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">Resultados Comprobados</h3>
+              <p className="text-sm sm:text-base text-gray-300">11 años como Diamante, +2,847 personas impactadas, familia empresarial.</p>
             </div>
-          </div>
-
-          {/* Company Logos */}
-          <div className="flex justify-center items-center space-x-12 opacity-60">
-            <div className="text-2xl font-bold text-gray-500">ECOPETROL</div>
-            <div className="text-2xl font-bold text-gray-500">BANCOLOMBIA</div>
-            <div className="text-2xl font-bold text-gray-500">GANO EXCEL</div>
-            <div className="text-2xl font-bold text-gray-500">VERCEL</div>
           </div>
         </div>
       </section>
 
-      {/* The Ecosystem Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">El Ecosistema Digital que Cambia Todo</h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              No es solo un "negocio" - es una arquitectura completa de herramientas, formación y comunidad que permite crear activos empresariales reales en América.
-            </p>
-          </div>
+      {/* Portal Central - IMPROVED MOBILE */}
+      <section className="py-16 sm:py-20 bg-black/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <div className="order-2 lg:order-1">
+              <div className="inline-block bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full px-3 sm:px-4 py-2 text-sm border border-blue-500/30 mb-6">
+                🏗️ Centro de Comando Empresarial
+              </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
-            <div className="space-y-8">
-              <div className="flex items-start space-x-4">
-                <div className="bg-blue-500 p-3 rounded-full">
-                  <Zap className="w-6 h-6" />
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  portal.4millones.com
+                </span>
+              </h2>
+
+              <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed">
+                Tu hub personal para construir activos empresariales. Dashboard personalizado, herramientas de marketing, academia digital y red de mentores - todo en una plataforma integrada.
+              </p>
+
+              <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                <div className="flex items-center gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-green-400 flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-gray-300">Dashboard personal con métricas en tiempo real</span>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">Herramientas Tecnológicas Propias</h3>
-                  <p className="text-gray-400">Desarrolladas con Next.js, IA y automatización. No dependes de materiales corporativos genéricos.</p>
+                <div className="flex items-center gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-green-400 flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-gray-300">Herramientas de marketing automatizadas</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-green-400 flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-gray-300">Academia con certificaciones empresariales</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-green-400 flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-gray-300">Red de mentores en 16 países</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-green-400 flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-gray-300">Soporte IA 24/7 personalizado</span>
                 </div>
               </div>
 
-              <div className="flex items-start space-x-4">
-                <div className="bg-purple-500 p-3 rounded-full">
-                  <Users className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">Academia de Formación Empresarial</h3>
-                  <p className="text-gray-400">Desde fundamentos hasta arquitectura avanzada de ecosistemas. Certificaciones reconocidas.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="bg-green-500 p-3 rounded-full">
-                  <Globe className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">Red Continental de Socios</h3>
-                  <p className="text-gray-400">16 países, mentores regionales, eventos virtuales semanales. Conexiones que importan.</p>
-                </div>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 group justify-center">
+                  Acceder al Portal <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all flex items-center gap-2 justify-center">
+                  <PlayCircle className="w-4 h-4" /> Ver Demo
+                </button>
               </div>
             </div>
 
-            <div className="relative">
-              <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-8 border border-gray-700">
-                <div className="text-center mb-6">
-                  <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                    portal.4millones.com
+            <div className="relative order-1 lg:order-2">
+              <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-gray-700 relative">
+                {/* Mockup del Portal - RESPONSIVE */}
+                <div className="bg-gray-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-gray-600">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-2 sm:w-3 h-2 sm:h-3 bg-red-500 rounded-full"></div>
+                    <div className="w-2 sm:w-3 h-2 sm:h-3 bg-yellow-500 rounded-full"></div>
+                    <div className="w-2 sm:w-3 h-2 sm:h-3 bg-green-500 rounded-full"></div>
+                    <div className="ml-2 sm:ml-4 text-xs text-gray-400">portal.4millones.com</div>
                   </div>
-                  <p className="text-gray-400 mt-2">Tu centro de comando empresarial</p>
+
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg p-3 sm:p-4 border border-blue-500/30">
+                      <div className="text-xs sm:text-sm font-semibold text-blue-300 mb-2">Dashboard Personal</div>
+                      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                        <div className="bg-gray-800 rounded p-2 text-center">
+                          <div className="text-sm sm:text-lg font-bold text-green-400">847</div>
+                          <div className="text-xs text-gray-400">Contactos</div>
+                        </div>
+                        <div className="bg-gray-800 rounded p-2 text-center">
+                          <div className="text-sm sm:text-lg font-bold text-blue-400">23</div>
+                          <div className="text-xs text-gray-400">Activos</div>
+                        </div>
+                        <div className="bg-gray-800 rounded p-2 text-center">
+                          <div className="text-sm sm:text-lg font-bold text-purple-400">16</div>
+                          <div className="text-xs text-gray-400">Países</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="bg-gray-800 rounded-lg p-2 sm:p-3 flex justify-between items-center">
+                        <span className="text-xs sm:text-sm text-gray-300">Catálogo Personalizado</span>
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                      </div>
+                      <div className="bg-gray-800 rounded-lg p-2 sm:p-3 flex justify-between items-center">
+                        <span className="text-xs sm:text-sm text-gray-300">Presentación Empresarial</span>
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                      </div>
+                      <div className="bg-gray-800 rounded-lg p-2 sm:p-3 flex justify-between items-center">
+                        <span className="text-xs sm:text-sm text-gray-300">Academia Digital</span>
+                        <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                      </div>
+                      <div className="bg-gray-800 rounded-lg p-2 sm:p-3 flex justify-between items-center">
+                        <span className="text-xs sm:text-sm text-gray-300">Red de Mentores</span>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Dashboard Personal</span>
-                    <Check className="w-4 h-4 text-green-400" />
-                  </div>
-                  <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Herramientas de Marketing</span>
-                    <Check className="w-4 h-4 text-green-400" />
-                  </div>
-                  <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Academia Digital</span>
-                    <Check className="w-4 h-4 text-green-400" />
-                  </div>
-                  <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Red de Mentores</span>
-                    <Check className="w-4 h-4 text-green-400" />
-                  </div>
-                  <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Soporte IA 24/7</span>
-                    <Check className="w-4 h-4 text-green-400" />
-                  </div>
+                {/* Floating elements - RESPONSIVE */}
+                <div className="absolute -top-2 sm:-top-4 -right-2 sm:-right-4 bg-gradient-to-r from-green-400 to-blue-500 rounded-full p-2 sm:p-3">
+                  <Zap className="w-4 sm:w-6 h-4 sm:h-6 text-white" />
                 </div>
-
-                <Link href="/ecosistema" className="block w-full mt-6 bg-gradient-to-r from-blue-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg transition-all text-center">
-                  Acceder al Portal
-                </Link>
+                <div className="absolute -bottom-2 sm:-bottom-4 -left-2 sm:-left-4 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full p-2 sm:p-3">
+                  <Brain className="w-4 sm:w-6 h-4 sm:h-6 text-white" />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Vision 4M Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-900/20 to-purple-900/20">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="mb-16">
-            <h2 className="text-5xl font-bold mb-6">La Visión: 4 Millones de Vidas Transformadas</h2>
-            <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              No es solo un número. Es padres de familia recuperando su tiempo, profesionales construyendo legados,
-              y una generación completa reescribiendo las reglas del bienestar económico en América Latina.
+      {/* Herramientas del Ecosistema - IMPROVED MOBILE */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Herramientas Integradas del Ecosistema</h2>
+            <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
+              Cada herramienta trabaja en conjunto para facilitar tu crecimiento empresarial
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-black/30 rounded-2xl p-8 border border-white/10">
-              <div className="text-4xl font-bold text-blue-400 mb-4">2025-2027</div>
-              <h3 className="text-xl font-semibold mb-4">Fundación</h3>
-              <p className="text-gray-400">100,000 profesionales usando las herramientas. Expansión a los 16 países. Primeros casos de éxito documentados.</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
 
-            <div className="bg-black/30 rounded-2xl p-8 border border-white/10">
-              <div className="text-4xl font-bold text-purple-400 mb-4">2027-2029</div>
-              <h3 className="text-xl font-semibold mb-4">Escalamiento</h3>
-              <p className="text-gray-400">1,000,000 de usuarios activos. Inteligencia artificial avanzada. Red de mentores en cada ciudad principal.</p>
-            </div>
-
-            <div className="bg-black/30 rounded-2xl p-8 border border-white/10">
-              <div className="text-4xl font-bold text-green-400 mb-4">2029-2032</div>
-              <h3 className="text-xl font-semibold mb-4">Impacto Masivo</h3>
-              <p className="text-gray-400">4,000,000 de beneficiarios. Gano Excel #1 mundial. Un nuevo modelo de bienestar económico en América.</p>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-black/50 to-gray-900/50 rounded-3xl p-12 border border-white/10">
-            <h3 className="text-2xl font-bold mb-6">¿Te Unes a Esta Visión?</h3>
-            <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              Si eres un profesional que entiende que el futuro son los ecosistemas colaborativos,
-              si buscas construir algo más grande que un "trabajo", si quieres ser parte de la transformación
-              económica más importante de América Latina...
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/ecosistema" className="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-4 rounded-full font-semibold hover:shadow-xl transition-all">
-                Conoce la Oportunidad
-              </Link>
-              <button className="border border-white/30 px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all">
-                Agenda una Conversación
+            {/* Catálogo Personalizado */}
+            <div className="bg-gradient-to-br from-blue-900/30 to-blue-800/30 rounded-2xl p-6 sm:p-8 border border-blue-500/30 hover:border-blue-400/50 transition-all group">
+              <div className="bg-blue-500 p-2 sm:p-3 rounded-full w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                <Monitor className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4">catalogo.4millones.com</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">Sistema de catálogos personalizados y escalables. Cada miembro tiene su propia tienda digital optimizada.</p>
+              <div className="space-y-2 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-blue-400" />
+                  <span>Personalización automática</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-blue-400" />
+                  <span>Escalabilidad continental</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-blue-400" />
+                  <span>Analytics integrados</span>
+                </div>
+              </div>
+              <button className="w-full bg-blue-500/20 border border-blue-500/50 px-4 py-3 rounded-full font-semibold hover:bg-blue-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+                Ver Demo <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
               </button>
             </div>
+
+            {/* Presentación Empresarial */}
+            <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/30 rounded-2xl p-6 sm:p-8 border border-purple-500/30 hover:border-purple-400/50 transition-all group">
+              <div className="bg-purple-500 p-2 sm:p-3 rounded-full w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                <PlayCircle className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4">oportunidad.4millones.com</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">Presentación profesional del modelo empresarial. Sin jerga MLM tradicional, enfoque corporativo.</p>
+              <div className="space-y-2 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-purple-400" />
+                  <span>Lenguaje empresarial profesional</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-purple-400" />
+                  <span>Casos de éxito documentados</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-purple-400" />
+                  <span>Calculadoras de potencial</span>
+                </div>
+              </div>
+              <button className="w-full bg-purple-500/20 border border-purple-500/50 px-4 py-3 rounded-full font-semibold hover:bg-purple-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+                Ver Presentación <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
+              </button>
+            </div>
+
+            {/* E-commerce */}
+            <div className="bg-gradient-to-br from-green-900/30 to-green-800/30 rounded-2xl p-6 sm:p-8 border border-green-500/30 hover:border-green-400/50 transition-all group">
+              <div className="bg-green-500 p-2 sm:p-3 rounded-full w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                <Smartphone className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4">ganocafe.online</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">E-commerce funcional con Google Ads activo. Tu tienda personal optimizada para conversión.</p>
+              <div className="space-y-2 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-green-400" />
+                  <span>Google Ads integrado</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-green-400" />
+                  <span>Optimización de conversión</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-green-400" />
+                  <span>Pagos internacionales</span>
+                </div>
+              </div>
+              <button className="w-full bg-green-500/20 border border-green-500/50 px-4 py-3 rounded-full font-semibold hover:bg-green-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+                Visitar Tienda <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
+              </button>
+            </div>
+
+            {/* Academia Digital */}
+            <div className="bg-gradient-to-br from-orange-900/30 to-orange-800/30 rounded-2xl p-6 sm:p-8 border border-orange-500/30 hover:border-orange-400/50 transition-all group">
+              <div className="bg-orange-500 p-2 sm:p-3 rounded-full w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                <Brain className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4">Academia Digital</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">Formación empresarial desde fundamentos hasta arquitectura avanzada de ecosistemas.</p>
+              <div className="space-y-2 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-orange-400" />
+                  <span>Certificaciones reconocidas</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-orange-400" />
+                  <span>Masterclasses con Luis</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-orange-400" />
+                  <span>Biblioteca de casos de éxito</span>
+                </div>
+              </div>
+              <button className="w-full bg-orange-500/20 border border-orange-500/50 px-4 py-3 rounded-full font-semibold hover:bg-orange-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+                Acceder Academia <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
+              </button>
+            </div>
+
+            {/* Red de Mentores */}
+            <div className="bg-gradient-to-br from-pink-900/30 to-pink-800/30 rounded-2xl p-6 sm:p-8 border border-pink-500/30 hover:border-pink-400/50 transition-all group">
+              <div className="bg-pink-500 p-2 sm:p-3 rounded-full w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                <Users className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4">Red de Mentores</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">Mentores regionales en 16 países. Conexiones reales que aceleran tu crecimiento.</p>
+              <div className="space-y-2 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-pink-400" />
+                  <span>Mentores en cada país</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-pink-400" />
+                  <span>Eventos virtuales semanales</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-pink-400" />
+                  <span>Grupos de mentoría</span>
+                </div>
+              </div>
+              <button className="w-full bg-pink-500/20 border border-pink-500/50 px-4 py-3 rounded-full font-semibold hover:bg-pink-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+                Conocer Red <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
+              </button>
+            </div>
+
+            {/* IA & Automatización */}
+            <div className="bg-gradient-to-br from-indigo-900/30 to-indigo-800/30 rounded-2xl p-6 sm:p-8 border border-indigo-500/30 hover:border-indigo-400/50 transition-all group">
+              <div className="bg-indigo-500 p-2 sm:p-3 rounded-full w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                <Zap className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4">IA & Automatización</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">Inteligencia artificial integrada para optimización automática y soporte 24/7.</p>
+              <div className="space-y-2 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-indigo-400" />
+                  <span>Soporte IA 24/7</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-indigo-400" />
+                  <span>Optimización automática</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
+                  <Check className="w-3 sm:w-4 h-3 sm:h-4 text-indigo-400" />
+                  <span>Recomendaciones personalizadas</span>
+                </div>
+              </div>
+              <button className="w-full bg-indigo-500/20 border border-indigo-500/50 px-4 py-3 rounded-full font-semibold hover:bg-indigo-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+                Ver IA en Acción <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
+              </button>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                Luis Cabrejo
-              </div>
-              <p className="text-gray-400 text-sm">
-                Arquitecto de Ecosistemas Digitales. Transformando vidas desde 2013.
-              </p>
+      {/* Tech Stack - IMPROVED MOBILE */}
+      <section className="py-16 sm:py-20 bg-black/30">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Tecnología de Vanguardia</h2>
+            <p className="text-lg sm:text-xl text-gray-400">
+              El mismo stack que usan las empresas más innovadoras del mundo
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            <div className="bg-gray-800/50 rounded-2xl p-4 sm:p-6 text-center border border-gray-700 hover:border-blue-500/50 transition-all">
+              <div className="text-3xl sm:text-4xl mb-4">⚡</div>
+              <h3 className="font-semibold mb-2 text-sm sm:text-base">Next.js 14</h3>
+              <p className="text-xs sm:text-sm text-gray-400">Framework React de última generación para máximo rendimiento</p>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-4">Ecosistema</h4>
-              <div className="space-y-2 text-sm text-gray-400">
-                <div>portal.4millones.com</div>
-                <div>catalogo.4millones.com</div>
-                <div>oportunidad.4millones.com</div>
-                <div>ganocafe.online</div>
-              </div>
+            <div className="bg-gray-800/50 rounded-2xl p-4 sm:p-6 text-center border border-gray-700 hover:border-purple-500/50 transition-all">
+              <div className="text-3xl sm:text-4xl mb-4">🚀</div>
+              <h3 className="font-semibold mb-2 text-sm sm:text-base">Vercel</h3>
+              <p className="text-xs sm:text-sm text-gray-400">Despliegue global instantáneo y optimización automática</p>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-4">Conecta</h4>
-              <div className="space-y-2 text-sm text-gray-400">
-                <div>LinkedIn</div>
-                <div>Instagram</div>
-                <div>Newsletter</div>
-                <div>Discord</div>
-              </div>
+            <div className="bg-gray-800/50 rounded-2xl p-4 sm:p-6 text-center border border-gray-700 hover:border-green-500/50 transition-all">
+              <div className="text-3xl sm:text-4xl mb-4">🧠</div>
+              <h3 className="font-semibold mb-2 text-sm sm:text-base">IA Integrada</h3>
+              <p className="text-xs sm:text-sm text-gray-400">Inteligencia artificial para personalización y soporte</p>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-4">Países Activos</h4>
-              <div className="text-xs text-gray-400 leading-relaxed">
-                México, Guatemala, El Salvador, Costa Rica, Honduras, Panamá, Colombia,
-                Venezuela, Brasil, Ecuador, Perú, Bolivia, Chile, Argentina, Uruguay, Estados Unidos
+            <div className="bg-gray-800/50 rounded-2xl p-4 sm:p-6 text-center border border-gray-700 hover:border-orange-500/50 transition-all">
+              <div className="text-3xl sm:text-4xl mb-4">🔧</div>
+              <h3 className="font-semibold mb-2 text-sm sm:text-base">Automatización</h3>
+              <p className="text-xs sm:text-sm text-gray-400">Procesos automatizados que escalan sin fricción</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - IMPROVED MOBILE */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <div className="bg-gradient-to-r from-black/50 to-gray-900/50 rounded-2xl sm:rounded-3xl p-8 sm:p-12 border border-white/10">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6">¿Listo Para Acceder al Ecosistema?</h2>
+            <p className="text-sm sm:text-base text-gray-300 mb-8 max-w-2xl mx-auto">
+              Si eres un profesional que entiende que el futuro son los ecosistemas digitales,
+              que buscas herramientas de clase mundial para construir tu activo empresarial...
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 justify-center">
+                Acceder al Portal <ArrowRight className="w-4 h-4" />
+              </button>
+              <Link href="/vision" className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all">
+                Ver la Visión 4 Millones
+              </Link>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-gray-400">
+              <div className="flex items-center gap-2">
+                <Globe className="w-3 sm:w-4 h-3 sm:h-4" />
+                <span>16 Países Activos</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Star className="w-3 sm:w-4 h-3 sm:h-4" />
+                <span>+2,847 Usuarios</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Zap className="w-3 sm:w-4 h-3 sm:h-4" />
+                <span>24/7 Soporte IA</span>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2025 Luis Cabrejo. Construyendo el futuro del bienestar económico en América.</p>
-          </div>
+      {/* Footer - IMPROVED MOBILE */}
+      <footer className="py-8 sm:py-12 border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+          <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4 inline-block">
+            Luis Cabrejo
+          </Link>
+          <p className="text-gray-400 text-xs sm:text-sm">
+            Arquitecto de Ecosistemas Digitales. Transformando vidas desde 2013.
+          </p>
         </div>
       </footer>
     </div>
