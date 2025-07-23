@@ -27,12 +27,25 @@ export default function HomePage() {
             </div>
 
             {/* Desktop Conectar Button */}
-            <button
-              onClick={() => setContactModalOpen(true)}
-              className="hidden md:block bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full hover:shadow-lg transition-all"
-            >
-              Conectar
-            </button>
+            <div
+  onClick={() => {
+    console.log('🔥 DESKTOP CLICKED');
+    setContactModalOpen(true);
+  }}
+  onMouseDown={() => setContactModalOpen(true)}
+  onTouchStart={() => setContactModalOpen(true)}
+  className="hidden md:block bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full hover:shadow-lg transition-all cursor-pointer select-none"
+  style={{
+    pointerEvents: 'auto',
+    touchAction: 'manipulation',
+    zIndex: 9999,
+    position: 'relative'
+  }}
+  role="button"
+  tabIndex={0}
+>
+  Conectar
+</div>
 
             {/* Mobile Menu Button */}
             <button
@@ -70,15 +83,32 @@ export default function HomePage() {
                 Visión 4M
               </Link>
               {/* Mobile Conectar Button - FIXED */}
-              <button
-                onClick={() => {
-                  setContactModalOpen(true);
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 rounded-full hover:shadow-lg transition-all font-medium mt-4"
-              >
-                Conectar
-              </button>
+              <div
+  onClick={() => {
+    console.log('🔥 MOBILE CLICKED');
+    setContactModalOpen(true);
+    setMobileMenuOpen(false);
+  }}
+  onMouseDown={() => {
+    setContactModalOpen(true);
+    setMobileMenuOpen(false);
+  }}
+  onTouchStart={() => {
+    setContactModalOpen(true);
+    setMobileMenuOpen(false);
+  }}
+  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 rounded-full hover:shadow-lg transition-all font-medium mt-4 cursor-pointer select-none text-center"
+  style={{
+    pointerEvents: 'auto',
+    touchAction: 'manipulation',
+    zIndex: 9999,
+    position: 'relative'
+  }}
+  role="button"
+  tabIndex={0}
+>
+  Conectar
+</div>
             </div>
           </div>
         )}
