@@ -1,8 +1,13 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { ArrowLeft, Calendar, Target, Users, Globe, TrendingUp, Zap, Heart, Star, ArrowRight, CheckCircle, MapPin } from 'lucide-react';
 import Link from 'next/link';
+import ContactModal from '@/components/ContactModal';
 
 export default function VisionPage() {
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* Navigation */}
@@ -17,7 +22,10 @@ export default function VisionPage() {
               <Link href="/ecosistema" className="hover:text-blue-400 transition-colors">Ecosistema</Link>
               <Link href="/vision" className="text-blue-400">Visión 4M</Link>
             </div>
-            <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-2 rounded-full hover:shadow-lg transition-all text-sm sm:text-base">
+            <button
+              onClick={() => setContactModalOpen(true)}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-2 rounded-full hover:shadow-lg transition-all text-sm sm:text-base"
+            >
               Conectar
             </button>
           </div>
@@ -186,7 +194,7 @@ export default function VisionPage() {
         </div>
       </section>
 
-      {/* Roadmap Detallado - COMPLETELY REDESIGNED FOR MOBILE */}
+      {/* Roadmap Detallado - MOBILE ROADMAP */}
       <section className="py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-16">
@@ -234,28 +242,6 @@ export default function VisionPage() {
                 <div className="text-3xl font-bold text-green-300 mb-2">100,000</div>
                 <div className="text-green-400 font-semibold text-sm">Usuarios Meta Fase 1</div>
               </div>
-
-              <div className="mt-6 bg-gray-800/50 rounded-lg p-4">
-                <h4 className="text-base font-semibold mb-3 text-green-400">Objetivos Específicos 2025-2027:</h4>
-                <div className="space-y-3">
-                  <div className="border-l-2 border-green-500 pl-3">
-                    <div className="font-semibold text-sm">Tecnología</div>
-                    <div className="text-xs text-gray-400">Escalabilidad global, IA personalizada, automatización completa</div>
-                  </div>
-                  <div className="border-l-2 border-green-500 pl-3">
-                    <div className="font-semibold text-sm">Geografía</div>
-                    <div className="text-xs text-gray-400">Operación en los 16 países con mentores locales</div>
-                  </div>
-                  <div className="border-l-2 border-green-500 pl-3">
-                    <div className="font-semibold text-sm">Comunidad</div>
-                    <div className="text-xs text-gray-400">Academia consolidada, eventos semanales, certificaciones</div>
-                  </div>
-                  <div className="border-l-2 border-green-500 pl-3">
-                    <div className="font-semibold text-sm">Resultados</div>
-                    <div className="text-xs text-gray-400">100K usuarios activos, casos de éxito en cada país</div>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* FASE 2: 2027-2029 ESCALAMIENTO */}
@@ -294,28 +280,6 @@ export default function VisionPage() {
               <div className="bg-purple-800/30 rounded-lg p-4">
                 <div className="text-3xl font-bold text-purple-300 mb-2">1,000,000</div>
                 <div className="text-purple-400 font-semibold text-sm">Usuarios Meta Fase 2</div>
-              </div>
-
-              <div className="mt-6 bg-gray-800/50 rounded-lg p-4">
-                <h4 className="text-base font-semibold mb-3 text-purple-400">Objetivos Específicos 2027-2029:</h4>
-                <div className="space-y-3">
-                  <div className="border-l-2 border-purple-500 pl-3">
-                    <div className="font-semibold text-sm">Escala Masiva</div>
-                    <div className="text-xs text-gray-400">De 100K a 1M usuarios. Operación en cada ciudad principal</div>
-                  </div>
-                  <div className="border-l-2 border-purple-500 pl-3">
-                    <div className="font-semibold text-sm">IA Avanzada</div>
-                    <div className="text-xs text-gray-400">Personalización extrema, predicción de comportamiento</div>
-                  </div>
-                  <div className="border-l-2 border-purple-500 pl-3">
-                    <div className="font-semibold text-sm">Ecosistema Completo</div>
-                    <div className="text-xs text-gray-400">Servicios financieros, educación, salud integrados</div>
-                  </div>
-                  <div className="border-l-2 border-purple-500 pl-3">
-                    <div className="font-semibold text-sm">Reconocimiento</div>
-                    <div className="text-xs text-gray-400">Gano Excel posicionado como líder tecnológico mundial</div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -356,112 +320,8 @@ export default function VisionPage() {
                 <div className="text-3xl font-bold bg-gradient-to-r from-pink-300 to-yellow-300 bg-clip-text text-transparent mb-2">4,000,000</div>
                 <div className="text-yellow-400 font-semibold text-sm">VISIÓN CUMPLIDA</div>
               </div>
-
-              <div className="mt-6 bg-gray-800/50 rounded-lg p-4">
-                <h4 className="text-base font-semibold mb-3 text-yellow-400">El Legado 2029-2032:</h4>
-                <div className="space-y-3">
-                  <div className="border-l-2 border-yellow-500 pl-3">
-                    <div className="font-semibold text-sm">Transformación Social</div>
-                    <div className="text-xs text-gray-400">Una generación completa con nuevo modelo de bienestar</div>
-                  </div>
-                  <div className="border-l-2 border-yellow-500 pl-3">
-                    <div className="font-semibold text-sm">Liderazgo Mundial</div>
-                    <div className="text-xs text-gray-400">Gano Excel como referente global en ecosistemas empresariales</div>
-                  </div>
-                  <div className="border-l-2 border-yellow-500 pl-3">
-                    <div className="font-semibold text-sm">Legado Familiar</div>
-                    <div className="text-xs text-gray-400">Tres generaciones participando en el ecosistema</div>
-                  </div>
-                  <div className="border-l-2 border-yellow-500 pl-3">
-                    <div className="font-semibold text-sm">Impacto Continental</div>
-                    <div className="text-xs text-gray-400">América Latina como modelo mundial de emprendimiento</div>
-                  </div>
-                </div>
-              </div>
             </div>
 
-          </div>
-
-          {/* DESKTOP ROADMAP (hidden on mobile) - Using original complex timeline */}
-          <div className="hidden lg:block relative">
-            {/* Línea de tiempo central */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-green-500 via-blue-500 via-purple-500 to-pink-500"></div>
-
-            <div className="space-y-32">
-
-              {/* FASE 1: 2025-2027 FUNDACIÓN */}
-              <div className="relative">
-                <div className="flex items-center justify-center">
-                  <div className="bg-green-500 rounded-full p-4 relative z-10 border-4 border-slate-900">
-                    <Calendar className="w-8 h-8 text-white" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mt-8">
-                  <div className="lg:text-right">
-                    <div className="bg-green-900/20 rounded-2xl p-8 border border-green-500/30">
-                      <h3 className="text-3xl font-bold mb-4 text-green-400">FASE 1: FUNDACIÓN</h3>
-                      <div className="text-2xl font-semibold mb-4">2025 - 2027</div>
-                      <p className="text-gray-300 mb-6 text-lg">
-                        Consolidar la base tecnológica, expandir a los 16 países, y crear los primeros 100,000 usuarios del ecosistema.
-                      </p>
-
-                      <div className="space-y-3 mb-6">
-                        <div className="flex items-center gap-2 lg:justify-end">
-                          <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span>Portal 4millones.com a escala continental</span>
-                        </div>
-                        <div className="flex items-center gap-2 lg:justify-end">
-                          <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span>IA avanzada integrada en todas las herramientas</span>
-                        </div>
-                        <div className="flex items-center gap-2 lg:justify-end">
-                          <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span>Red de mentores en cada país</span>
-                        </div>
-                        <div className="flex items-center gap-2 lg:justify-end">
-                          <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span>100+ casos de éxito documentados</span>
-                        </div>
-                      </div>
-
-                      <div className="bg-green-800/30 rounded-lg p-4">
-                        <div className="text-4xl font-bold text-green-300 mb-2">100,000</div>
-                        <div className="text-green-400 font-semibold">Usuarios Meta Fase 1</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700">
-                      <h4 className="text-xl font-semibold mb-4 text-green-400">Objetivos Específicos 2025-2027:</h4>
-                      <div className="space-y-4">
-                        <div className="border-l-4 border-green-500 pl-4">
-                          <div className="font-semibold">Tecnología</div>
-                          <div className="text-sm text-gray-400">Escalabilidad global, IA personalizada, automatización completa</div>
-                        </div>
-                        <div className="border-l-4 border-green-500 pl-4">
-                          <div className="font-semibold">Geografía</div>
-                          <div className="text-sm text-gray-400">Operación en los 16 países con mentores locales</div>
-                        </div>
-                        <div className="border-l-4 border-green-500 pl-4">
-                          <div className="font-semibold">Comunidad</div>
-                          <div className="text-sm text-gray-400">Academia consolidada, eventos semanales, certificaciones</div>
-                        </div>
-                        <div className="border-l-4 border-green-500 pl-4">
-                          <div className="font-semibold">Resultados</div>
-                          <div className="text-sm text-gray-400">100K usuarios activos, casos de éxito en cada país</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Continue with other phases using original desktop layout... */}
-              {/* (The rest of the desktop roadmap follows the same pattern as the original) */}
-
-            </div>
           </div>
         </div>
       </section>
@@ -521,7 +381,10 @@ export default function VisionPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 text-base sm:text-lg justify-center">
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 text-base sm:text-lg justify-center"
+              >
                 Quiero Ser Parte <ArrowRight className="w-4 sm:w-5 h-4 sm:h-5" />
               </button>
               <Link href="/historia" className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all text-base sm:text-lg">
@@ -561,6 +424,13 @@ export default function VisionPage() {
           </p>
         </div>
       </footer>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        formType="vision"
+      />
     </div>
   );
 }

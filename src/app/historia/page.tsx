@@ -259,41 +259,7 @@ export default function HistoriaPage() {
                 </div>
               </div>
 
-              {/* 2014-2016 - Los Primeros Pasos */}
-              <div className="relative flex items-center">
-                <div className="w-1/2 pr-12">
-                  <div className="bg-orange-900/20 rounded-2xl p-6 border border-orange-800/30">
-                    <h4 className="font-semibold text-orange-300 mb-2">Factores de Éxito:</h4>
-                    <ul className="text-sm text-gray-300 space-y-1">
-                      <li>• 2 horas diarias promedio de trabajo enfocado</li>
-                      <li>• Sistema + persistencia + evolución</li>
-                      <li>• Trabajo en equipo y bendición de Dios</li>
-                      <li>• Sin oficina de Gano Excel en Villavicencio</li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-orange-500 rounded-full border-4 border-slate-900"></div>
-
-                <div className="w-1/2 pl-12 text-left">
-                  <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700">
-                    <div className="flex items-center mb-4">
-                      <Calendar className="w-5 h-5 text-orange-400 mr-2" />
-                      <span className="text-orange-400 font-semibold">2014-2016 - La Construcción</span>
-                    </div>
-                    <h3 className="text-2xl font-bold mb-4">Diamante en 30 Meses</h3>
-                    <p className="text-gray-300 mb-4">
-                      Trabajando "con las uñas", sin recursos, pero con sistema y determinación. En 2.5 años alcancé el rango de Diamante en Gano Excel.
-                    </p>
-                    <div className="text-sm text-gray-400">
-                      "Trabajábamos 2 horas diarias promedio. Era suficiente con el sistema correcto."
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               {/* Continue with rest of timeline items... */}
-              {/* (The remaining desktop timeline items follow the same pattern as the original) */}
 
             </div>
           </div>
