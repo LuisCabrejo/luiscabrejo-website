@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Mail, User, Phone, MapPin, MessageCircle, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, Mail, User, Phone, MapPin, MessageCircle, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
-  formType?: 'conectar' | 'oportunidad' | 'portal';
+  formType?: 'conectar' | 'oportunidad' | 'portal' | 'test';
 }
 
 interface FormData {
@@ -26,8 +26,7 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
     message: '',
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -40,10 +39,20 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setStatus('idle');
+
+    // Validación básica
+    if (!formData.name || !formData.email) {
+      setErrorMessage('Por favor completa nombre y email');
+      setStatus('error');
+      return;
+    }
+
+    setStatus('loading');
+    setErrorMessage('');
 
     try {
+      console.log('📤 Enviando formulario...', { formData, formType });
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -55,33 +64,62 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
         }),
       });
 
-      const data = await response.json();
+      console.log('📥 Respuesta recibida:', response.status, response.statusText);
 
-      if (response.ok) {
-        setStatus('success');
-        // Reset form after 3 seconds
-        setTimeout(() => {
-          setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            country: '',
-            message: '',
-          });
-          setStatus('idle');
-          onClose();
-        }, 3000);
-      } else {
-        setStatus('error');
-        setErrorMessage(data.error || 'Error al enviar el mensaje');
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('❌ Error del servidor:', errorData);
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
+
+      const result = await response.json();
+      console.log('✅ Resultado exitoso:', result);
+
+      setStatus('sent');
+
+      // Reset form after 5 seconds
+      setTimeout(() => {
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          country: '',
+          message: '',
+        });
+        setStatus('idle');
+        onClose();
+      }, 5000);
+
     } catch (error) {
+      console.error('❌ Error enviando formulario:', error);
+      setErrorMessage(error instanceof Error ? error.message : 'Error al enviar el mensaje');
       setStatus('error');
-      setErrorMessage('Error de conexión. Intenta de nuevo.');
-      console.error('Error:', error);
-    } finally {
-      setIsLoading(false);
     }
+  };
+
+  const openMailto = () => {
+    const subject = `${getFormTitle()} - ${formData.name}`;
+    const body = `Hola Luis,
+
+Me interesa conectar contigo. Aquí están mis datos:
+
+Nombre: ${formData.name}
+Email: ${formData.email}
+Teléfono: ${formData.phone || 'No proporcionado'}
+País: ${formData.country || 'No proporcionado'}
+Formulario: ${getFormTitle()}
+
+Mensaje:
+${formData.message || 'Me gustaría conocer más sobre tu ecosistema digital.'}
+
+Enviado desde: luiscabrejo.com
+Fecha: ${new Date().toLocaleString()}
+
+Saludos,
+${formData.name}`;
+
+    const mailtoLink = `mailto:contacto@luiscabrejo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
   };
 
   const getFormTitle = () => {
@@ -90,6 +128,8 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
         return 'Conocer la Oportunidad';
       case 'portal':
         return 'Acceder al Portal';
+      case 'test':
+        return 'Test de Formulario';
       default:
         return 'Conectar';
     }
@@ -101,6 +141,8 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
         return 'Quiero conocer más sobre el ecosistema empresarial y las oportunidades disponibles.';
       case 'portal':
         return 'Me interesa acceder a las herramientas del portal 4millones.com.';
+      case 'test':
+        return 'Formulario de prueba para verificar que la integración funciona correctamente.';
       default:
         return 'Conecta conmigo para explorar cómo podemos construir tu ecosistema digital empresarial.';
     }
@@ -122,7 +164,6 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-700 rounded-full transition-colors"
-            disabled={isLoading}
           >
             <X className="w-5 h-5 text-gray-400" />
           </button>
@@ -130,24 +171,61 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
 
         {/* Content */}
         <div className="p-6">
-          {status === 'success' ? (
+          {status === 'sent' ? (
             // Success State
             <div className="text-center py-8">
               <div className="bg-green-500/20 rounded-full p-3 w-fit mx-auto mb-4">
                 <CheckCircle className="w-8 h-8 text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-green-400">¡Mensaje Enviado!</h3>
+              <h3 className="text-xl font-semibold mb-2 text-green-400">¡Mensaje Enviado! ✅</h3>
               <p className="text-gray-300 mb-4">
-                Gracias por conectar conmigo. Te responderé en las próximas 24 horas.
+                Tu mensaje ha sido enviado exitosamente. Recibirás una copia de confirmación en tu email.
               </p>
               <p className="text-sm text-gray-400">
-                Revisa tu email para más información...
+                Luis te responderá en las próximas 24 horas.
               </p>
+            </div>
+          ) : status === 'error' ? (
+            // Error State with Manual Options
+            <div className="text-center py-8">
+              <div className="bg-red-500/20 rounded-full p-3 w-fit mx-auto mb-4">
+                <AlertCircle className="w-8 h-8 text-red-400" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-red-400">Error de Conexión</h3>
+              <p className="text-gray-300 mb-4 text-sm">
+                {errorMessage}
+              </p>
+              <p className="text-gray-300 mb-6 text-sm">
+                Tienes estas opciones alternativas:
+              </p>
+
+              <div className="space-y-3">
+                <button
+                  onClick={() => setStatus('idle')}
+                  className="w-full bg-blue-500/20 border border-blue-500/50 px-4 py-3 rounded-lg text-sm hover:bg-blue-500/30 transition-all"
+                >
+                  🔄 Intentar de Nuevo
+                </button>
+
+                <button
+                  onClick={openMailto}
+                  className="w-full bg-green-500/20 border border-green-500/50 px-4 py-3 rounded-lg text-sm hover:bg-green-500/30 transition-all"
+                >
+                  📧 Abrir Cliente de Email
+                </button>
+
+                <div className="text-xs text-gray-400 mt-4">
+                  O escribe directamente a:
+                  <a href="mailto:contacto@luiscabrejo.com" className="text-blue-400 hover:underline ml-1">
+                    contacto@luiscabrejo.com
+                  </a>
+                </div>
+              </div>
             </div>
           ) : (
             // Form State
             <>
-              <p className="text-gray-300 mb-6 leading-relaxed">
+              <p className="text-gray-300 mb-6 leading-relaxed text-sm">
                 {getFormDescription()}
               </p>
 
@@ -165,9 +243,9 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    disabled={status === 'loading'}
+                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
                     placeholder="Tu nombre completo"
-                    disabled={isLoading}
                   />
                 </div>
 
@@ -184,9 +262,9 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    disabled={status === 'loading'}
+                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
                     placeholder="tu@email.com"
-                    disabled={isLoading}
                   />
                 </div>
 
@@ -202,9 +280,9 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    disabled={status === 'loading'}
+                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
                     placeholder="+57 300 123 4567"
-                    disabled={isLoading}
                   />
                 </div>
 
@@ -219,8 +297,8 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
                     name="country"
                     value={formData.country}
                     onChange={handleInputChange}
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    disabled={isLoading}
+                    disabled={status === 'loading'}
+                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
                   >
                     <option value="">Selecciona tu país</option>
                     <option value="Colombia">Colombia</option>
@@ -255,35 +333,27 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={4}
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                    disabled={status === 'loading'}
+                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none disabled:opacity-50"
                     placeholder="Cuéntame sobre tu situación actual y qué te gustaría lograr..."
-                    disabled={isLoading}
                   />
                 </div>
-
-                {/* Error Message */}
-                {status === 'error' && (
-                  <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-                    <span className="text-red-300 text-sm">{errorMessage}</span>
-                  </div>
-                )}
 
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  disabled={status === 'loading'}
+                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                 >
-                  {isLoading ? (
+                  {status === 'loading' ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <Loader2 className="w-4 h-4 animate-spin" />
                       Enviando...
                     </>
                   ) : (
                     <>
                       <Mail className="w-4 h-4" />
-                      {getFormTitle()}
+                      Enviar {getFormTitle()}
                     </>
                   )}
                 </button>
@@ -291,8 +361,8 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
 
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <p className="text-xs text-gray-400 text-center">
-                  Al enviar este formulario, recibirás una respuesta personalizada en las próximas 24 horas.
-                  También puedes escribirme directamente a{' '}
+                  ✅ Envío seguro con confirmación automática por email<br/>
+                  📧 También puedes escribir directamente a{' '}
                   <a href="mailto:contacto@luiscabrejo.com" className="text-blue-400 hover:underline">
                     contacto@luiscabrejo.com
                   </a>
