@@ -1,8 +1,13 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { ArrowLeft, Monitor, Smartphone, Users, BarChart3, Zap, Globe, Code, Brain, PlayCircle, ExternalLink, Check, ArrowRight, Star } from 'lucide-react';
 import Link from 'next/link';
+import ContactModal from '@/components/ContactModal';
 
 export default function EcosistemaPage() {
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* Navigation */}
@@ -17,7 +22,10 @@ export default function EcosistemaPage() {
               <Link href="/ecosistema" className="text-blue-400">Ecosistema</Link>
               <Link href="/vision" className="hover:text-blue-400 transition-colors">Visión 4M</Link>
             </div>
-            <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-2 rounded-full hover:shadow-lg transition-all text-sm sm:text-base">
+            <button
+              onClick={() => setContactModalOpen(true)}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-2 rounded-full hover:shadow-lg transition-all text-sm sm:text-base"
+            >
               Conectar
             </button>
           </div>
@@ -108,10 +116,16 @@ export default function EcosistemaPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 group justify-center">
+                <button
+                  onClick={() => setContactModalOpen(true)}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 group justify-center"
+                >
                   Acceder al Portal <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <button className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all flex items-center gap-2 justify-center">
+                <button
+                  onClick={() => setContactModalOpen(true)}
+                  className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all flex items-center gap-2 justify-center"
+                >
                   <PlayCircle className="w-4 h-4" /> Ver Demo
                 </button>
               </div>
@@ -214,7 +228,10 @@ export default function EcosistemaPage() {
                   <span>Analytics integrados</span>
                 </div>
               </div>
-              <button className="w-full bg-blue-500/20 border border-blue-500/50 px-4 py-3 rounded-full font-semibold hover:bg-blue-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="w-full bg-blue-500/20 border border-blue-500/50 px-4 py-3 rounded-full font-semibold hover:bg-blue-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
                 Ver Demo <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
               </button>
             </div>
@@ -240,7 +257,10 @@ export default function EcosistemaPage() {
                   <span>Calculadoras de potencial</span>
                 </div>
               </div>
-              <button className="w-full bg-purple-500/20 border border-purple-500/50 px-4 py-3 rounded-full font-semibold hover:bg-purple-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="w-full bg-purple-500/20 border border-purple-500/50 px-4 py-3 rounded-full font-semibold hover:bg-purple-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
                 Ver Presentación <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
               </button>
             </div>
@@ -266,7 +286,10 @@ export default function EcosistemaPage() {
                   <span>Pagos internacionales</span>
                 </div>
               </div>
-              <button className="w-full bg-green-500/20 border border-green-500/50 px-4 py-3 rounded-full font-semibold hover:bg-green-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="w-full bg-green-500/20 border border-green-500/50 px-4 py-3 rounded-full font-semibold hover:bg-green-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
                 Visitar Tienda <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
               </button>
             </div>
@@ -292,7 +315,10 @@ export default function EcosistemaPage() {
                   <span>Biblioteca de casos de éxito</span>
                 </div>
               </div>
-              <button className="w-full bg-orange-500/20 border border-orange-500/50 px-4 py-3 rounded-full font-semibold hover:bg-orange-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="w-full bg-orange-500/20 border border-orange-500/50 px-4 py-3 rounded-full font-semibold hover:bg-orange-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
                 Acceder Academia <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
               </button>
             </div>
@@ -318,7 +344,10 @@ export default function EcosistemaPage() {
                   <span>Grupos de mentoría</span>
                 </div>
               </div>
-              <button className="w-full bg-pink-500/20 border border-pink-500/50 px-4 py-3 rounded-full font-semibold hover:bg-pink-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="w-full bg-pink-500/20 border border-pink-500/50 px-4 py-3 rounded-full font-semibold hover:bg-pink-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
                 Conocer Red <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
               </button>
             </div>
@@ -344,7 +373,10 @@ export default function EcosistemaPage() {
                   <span>Recomendaciones personalizadas</span>
                 </div>
               </div>
-              <button className="w-full bg-indigo-500/20 border border-indigo-500/50 px-4 py-3 rounded-full font-semibold hover:bg-indigo-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="w-full bg-indigo-500/20 border border-indigo-500/50 px-4 py-3 rounded-full font-semibold hover:bg-indigo-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
                 Ver IA en Acción <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
               </button>
             </div>
@@ -402,7 +434,10 @@ export default function EcosistemaPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 justify-center">
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 justify-center"
+              >
                 Acceder al Portal <ArrowRight className="w-4 h-4" />
               </button>
               <Link href="/vision" className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all">
@@ -439,6 +474,13 @@ export default function EcosistemaPage() {
           </p>
         </div>
       </footer>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        formType="ecosistema"
+      />
     </div>
   );
 }

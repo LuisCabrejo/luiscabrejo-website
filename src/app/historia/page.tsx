@@ -1,8 +1,13 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { ArrowLeft, Calendar, MapPin, Users, Target, Heart, Zap } from 'lucide-react';
 import Link from 'next/link';
+import ContactModal from '@/components/ContactModal';
 
 export default function HistoriaPage() {
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       {/* Navigation */}
@@ -17,7 +22,10 @@ export default function HistoriaPage() {
               <Link href="/ecosistema" className="hover:text-blue-400 transition-colors">Ecosistema</Link>
               <Link href="/vision" className="hover:text-blue-400 transition-colors">Visión 4M</Link>
             </div>
-            <button className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-2 rounded-full hover:shadow-lg transition-all text-sm sm:text-base">
+            <button
+              onClick={() => setContactModalOpen(true)}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-2 rounded-full hover:shadow-lg transition-all text-sm sm:text-base"
+            >
               Conectar
             </button>
           </div>
@@ -364,6 +372,13 @@ export default function HistoriaPage() {
           </p>
         </div>
       </footer>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        formType="historia"
+      />
     </div>
   );
 }
