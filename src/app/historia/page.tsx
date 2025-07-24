@@ -148,7 +148,7 @@ export default function HistoriaPage() {
               </div>
               <h3 className="text-xl font-bold mb-4">El Despertar Tecnológico</h3>
               <p className="text-gray-300 mb-4 text-sm leading-relaxed">
-                La pandemia activó mi visión digital. Lancé ganocafe.online, fortaleció conocimientos tecnológicos. Lo que no hicimos en 9 años, lo hicimos en 2 gracias al trabajo digital.
+                La pandemia activó mi visión digital. Lancé <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">ganocafe.online</a>, fortaleció conocimientos tecnológicos. Lo que no hicimos en 9 años, lo hicimos en 2 gracias al trabajo digital.
               </p>
               <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-800/30">
                 <h4 className="font-semibold text-blue-300 mb-2 text-sm">Aprendizajes Pandemia:</h4>
@@ -156,7 +156,7 @@ export default function HistoriaPage() {
                   <li>• "La pandemia fue una bendición para mí"</li>
                   <li>• Comportamiento del mercado hacia digital</li>
                   <li>• Oportunidades de nuevos millonarios</li>
-                  <li>• Nacimiento de ganocafe.online</li>
+                  <li>• Nacimiento de <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">ganocafe.online</a></li>
                 </ul>
               </div>
               <div className="text-xs text-gray-400 italic mt-4">
@@ -174,7 +174,7 @@ export default function HistoriaPage() {
               </div>
               <h3 className="text-xl font-bold mb-4">Nacimiento del Ecosistema</h3>
               <p className="text-gray-300 mb-4 text-sm leading-relaxed">
-                5 años estudiando, desarrollando herramientas. WordPress, Next.js, IA, automatización. Creación de 4millones.com y todo el ecosistema digital.
+                5 años estudiando, desarrollando herramientas. WordPress, Next.js, IA, automatización. Creación de <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">portal.4millones.com</a> y todo el ecosistema digital.
               </p>
               <div className="bg-purple-900/20 rounded-lg p-4 border border-purple-800/30">
                 <h4 className="font-semibold text-purple-300 mb-2 text-sm">Stack Tecnológico:</h4>
@@ -205,11 +205,11 @@ export default function HistoriaPage() {
               <div className="bg-green-900/20 rounded-lg p-4 border border-green-800/30">
                 <h4 className="font-semibold text-green-300 mb-2 text-sm">El Ecosistema Completo:</h4>
                 <ul className="text-xs text-gray-300 space-y-1">
-                  <li>• luiscabrejo.com - Marca personal</li>
-                  <li>• portal.4millones.com - Centro de herramientas</li>
-                  <li>• catalogo.4millones.com - Catálogos personalizados</li>
-                  <li>• oportunidad.4millones.com - Presentaciones</li>
-                  <li>• ganocafe.online - E-commerce funcional</li>
+                  <li>• <a href="https://luiscabrejo.com" className="text-green-400 hover:underline">luiscabrejo.com</a> - Marca personal</li>
+                  <li>• <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">portal.4millones.com</a> - Centro de herramientas</li>
+                  <li>• <a href="https://catalogo.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">catalogo.4millones.com</a> - Catálogos personalizados</li>
+                  <li>• <a href="https://oportunidad.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">oportunidad.4millones.com</a> - Presentaciones</li>
+                  <li>• <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">ganocafe.online</a> - E-commerce funcional</li>
                 </ul>
               </div>
               <div className="text-sm text-green-300 font-medium mt-4">
@@ -259,7 +259,172 @@ export default function HistoriaPage() {
                 </div>
               </div>
 
-              {/* Continue with rest of timeline items... */}
+              {/* 2014-2016 - Los Primeros Pasos */}
+              <div className="relative flex items-center">
+                <div className="w-1/2 pr-12">
+                  <div className="bg-orange-900/20 rounded-2xl p-6 border border-orange-800/30">
+                    <h4 className="font-semibold text-orange-300 mb-2">Factores de Éxito:</h4>
+                    <ul className="text-sm text-gray-300 space-y-1">
+                      <li>• 2 horas diarias promedio de trabajo enfocado</li>
+                      <li>• Sistema + persistencia + evolución</li>
+                      <li>• Trabajo en equipo y bendición de Dios</li>
+                      <li>• Sin oficina de Gano Excel en Villavicencio</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-orange-500 rounded-full border-4 border-slate-900"></div>
+
+                <div className="w-1/2 pl-12 text-left">
+                  <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700">
+                    <div className="flex items-center mb-4">
+                      <Calendar className="w-5 h-5 text-orange-400 mr-2" />
+                      <span className="text-orange-400 font-semibold">2014-2016 - La Construcción</span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4">Diamante en 30 Meses</h3>
+                    <p className="text-gray-300 mb-4">
+                      Trabajando "con las uñas", sin recursos, pero con sistema y determinación. En 2.5 años alcancé el rango de Diamante en Gano Excel.
+                    </p>
+                    <div className="text-sm text-gray-400">
+                      "Trabajábamos 2 horas diarias promedio. Era suficiente con el sistema correcto."
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Continue with rest of timeline items - all following same pattern */}
+              {/* 2017-2020 - Power Couple */}
+              <div className="relative flex items-center">
+                <div className="w-1/2 pr-12 text-right">
+                  <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700">
+                    <div className="flex items-center justify-end mb-4">
+                      <Heart className="w-5 h-5 text-pink-400 mr-2" />
+                      <span className="text-pink-400 font-semibold">2017-2020 - Power Couple</span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4">La Fuerza de la Unión</h3>
+                    <p className="text-gray-300 mb-4">
+                      Mi esposa también alcanza el rango Diamante. Construimos un legado familiar empresarial. 25 años de matrimonio sólido como base del éxito.
+                    </p>
+                    <div className="text-sm text-gray-400">
+                      "Un power couple empresarial: dos diamantes, una visión, una familia."
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-pink-500 rounded-full border-4 border-slate-900"></div>
+
+                <div className="w-1/2 pl-12">
+                  <div className="bg-pink-900/20 rounded-2xl p-6 border border-pink-800/30">
+                    <h4 className="font-semibold text-pink-300 mb-2">Logros Familiares:</h4>
+                    <ul className="text-sm text-gray-300 space-y-1">
+                      <li>• Esposa también Diamante (duplicación comprobada)</li>
+                      <li>• Hija desarrollando exitosamente el negocio</li>
+                      <li>• Red creciendo en Colombia y región</li>
+                      <li>• Viajes internacionales (7+ países, Asia corporativa)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2020-2022 - Digital Revolution */}
+              <div className="relative flex items-center">
+                <div className="w-1/2 pr-12">
+                  <div className="bg-blue-900/20 rounded-2xl p-6 border border-blue-800/30">
+                    <h4 className="font-semibold text-blue-300 mb-2">Aprendizajes Pandemia:</h4>
+                    <ul className="text-sm text-gray-300 space-y-1">
+                      <li>• "La pandemia fue una bendición para mí"</li>
+                      <li>• Comportamiento del mercado hacia digital</li>
+                      <li>• Oportunidades de nuevos millonarios</li>
+                      <li>• Nacimiento de <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">ganocafe.online</a></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-blue-500 rounded-full border-4 border-slate-900"></div>
+
+                <div className="w-1/2 pl-12 text-left">
+                  <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700">
+                    <div className="flex items-center mb-4">
+                      <Zap className="w-5 h-5 text-blue-400 mr-2" />
+                      <span className="text-blue-400 font-semibold">2020-2022 - Revolución Digital</span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4">El Despertar Tecnológico</h3>
+                    <p className="text-gray-300 mb-4">
+                      La pandemia activó mi visión digital. Lancé <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">ganocafe.online</a>, fortaleció conocimientos tecnológicos. Lo que no hicimos en 9 años, lo hicimos en 2 gracias al trabajo digital.
+                    </p>
+                    <div className="text-sm text-gray-400">
+                      "Le decía a mi esposa: te aseguro que nacerán nuevos millonarios."
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2023-2024 - El Arquitecto */}
+              <div className="relative flex items-center">
+                <div className="w-1/2 pr-12 text-right">
+                  <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700">
+                    <div className="flex items-center justify-end mb-4">
+                      <Target className="w-5 h-5 text-purple-400 mr-2" />
+                      <span className="text-purple-400 font-semibold">2023-2024 - El Arquitecto</span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4">Nacimiento del Ecosistema</h3>
+                    <p className="text-gray-300 mb-4">
+                      5 años estudiando, desarrollando herramientas. WordPress, Next.js, IA, automatización. Creación de <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">portal.4millones.com</a> y todo el ecosistema digital.
+                    </p>
+                    <div className="text-sm text-gray-400">
+                      "Soy obstinado. No te imaginas las horas dedicadas, días completos estudiando."
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-purple-500 rounded-full border-4 border-slate-900"></div>
+
+                <div className="w-1/2 pl-12">
+                  <div className="bg-purple-900/20 rounded-2xl p-6 border border-purple-800/30">
+                    <h4 className="font-semibold text-purple-300 mb-2">Stack Tecnológico:</h4>
+                    <ul className="text-sm text-gray-300 space-y-1">
+                      <li>• WordPress, Flatsome, Visual Studio Code</li>
+                      <li>• SEO, GitHub, Vercel, Next.js</li>
+                      <li>• Google Ads, estrategias de conversión</li>
+                      <li>• Integración de IA para optimización</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2025 - La Visión 4M */}
+              <div className="relative flex items-center">
+                <div className="w-1/2 pr-12">
+                  <div className="bg-green-900/20 rounded-2xl p-6 border border-green-800/30">
+                    <h4 className="font-semibold text-green-300 mb-2">El Ecosistema Completo:</h4>
+                    <ul className="text-sm text-gray-300 space-y-1">
+                      <li>• <a href="https://luiscabrejo.com" className="text-green-400 hover:underline">luiscabrejo.com</a> - Marca personal</li>
+                      <li>• <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">portal.4millones.com</a> - Centro de herramientas</li>
+                      <li>• <a href="https://catalogo.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">catalogo.4millones.com</a> - Catálogos personalizados</li>
+                      <li>• <a href="https://oportunidad.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">oportunidad.4millones.com</a> - Presentaciones</li>
+                      <li>• <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">ganocafe.online</a> - E-commerce funcional</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-green-400 to-blue-500 rounded-full border-4 border-slate-900"></div>
+
+                <div className="w-1/2 pl-12 text-left">
+                  <div className="bg-gradient-to-r from-green-800/30 to-blue-800/30 rounded-2xl p-8 border border-green-500/30">
+                    <div className="flex items-center mb-4">
+                      <MapPin className="w-5 h-5 text-green-400 mr-2" />
+                      <span className="text-green-400 font-semibold">2025 - La Visión 4M</span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4">Arquitecto de Ecosistemas Digitales</h3>
+                    <p className="text-gray-300 mb-4">
+                      Hoy tengo las herramientas, la experiencia y la visión para impactar 4 millones de vidas. Red de consumidores en todo América. El legado apenas comienza.
+                    </p>
+                    <div className="text-sm text-green-300 font-medium">
+                      "No busco protagonismo - busco transformar 4 millones de vidas."
+                    </div>
+                  </div>
+                </div>
+              </div>
 
             </div>
           </div>

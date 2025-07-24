@@ -83,9 +83,9 @@ export default function EcosistemaPage() {
               </div>
 
               <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent hover:underline">
                   portal.4millones.com
-                </span>
+                </a>
               </h2>
 
               <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed">
@@ -122,12 +122,14 @@ export default function EcosistemaPage() {
                 >
                   Acceder al Portal <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <button
-                  onClick={() => setContactModalOpen(true)}
+                <a
+                  href="https://portal.4millones.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all flex items-center gap-2 justify-center"
                 >
                   <PlayCircle className="w-4 h-4" /> Ver Demo
-                </button>
+                </a>
               </div>
             </div>
 
@@ -212,7 +214,11 @@ export default function EcosistemaPage() {
               <div className="bg-blue-500 p-2 sm:p-3 rounded-full w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                 <Monitor className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-4">catalogo.4millones.com</h3>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4">
+                <a href="https://catalogo.4millones.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
+                  catalogo.4millones.com
+                </a>
+              </h3>
               <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">Sistema de catálogos personalizados y escalables. Cada miembro tiene su propia tienda digital optimizada.</p>
               <div className="space-y-2 mb-4 sm:mb-6">
                 <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
@@ -228,12 +234,14 @@ export default function EcosistemaPage() {
                   <span>Analytics integrados</span>
                 </div>
               </div>
-              <button
-                onClick={() => setContactModalOpen(true)}
+              <a
+                href="https://catalogo.4millones.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full bg-blue-500/20 border border-blue-500/50 px-4 py-3 rounded-full font-semibold hover:bg-blue-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 Ver Demo <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
-              </button>
+              </a>
             </div>
 
             {/* Presentación Empresarial */}
@@ -241,7 +249,11 @@ export default function EcosistemaPage() {
               <div className="bg-purple-500 p-2 sm:p-3 rounded-full w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                 <PlayCircle className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-4">oportunidad.4millones.com</h3>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4">
+                <a href="https://oportunidad.4millones.com" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition-colors">
+                  oportunidad.4millones.com
+                </a>
+              </h3>
               <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">Presentación profesional del modelo empresarial. Sin jerga MLM tradicional, enfoque corporativo.</p>
               <div className="space-y-2 mb-4 sm:mb-6">
                 <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
@@ -257,12 +269,14 @@ export default function EcosistemaPage() {
                   <span>Calculadoras de potencial</span>
                 </div>
               </div>
-              <button
-                onClick={() => setContactModalOpen(true)}
+              <a
+                href="https://oportunidad.4millones.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full bg-purple-500/20 border border-purple-500/50 px-4 py-3 rounded-full font-semibold hover:bg-purple-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 Ver Presentación <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
-              </button>
+              </a>
             </div>
 
             {/* E-commerce */}
@@ -270,7 +284,11 @@ export default function EcosistemaPage() {
               <div className="bg-green-500 p-2 sm:p-3 rounded-full w-fit mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                 <Smartphone className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-4">ganocafe.online</h3>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4">
+                <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition-colors">
+                  ganocafe.online
+                </a>
+              </h3>
               <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">E-commerce funcional con Google Ads activo. Tu tienda personal optimizada para conversión.</p>
               <div className="space-y-2 mb-4 sm:mb-6">
                 <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
@@ -286,12 +304,14 @@ export default function EcosistemaPage() {
                   <span>Pagos internacionales</span>
                 </div>
               </div>
-              <button
-                onClick={() => setContactModalOpen(true)}
+              <a
+                href="https://ganocafe.online"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full bg-green-500/20 border border-green-500/50 px-4 py-3 rounded-full font-semibold hover:bg-green-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 Visitar Tienda <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
-              </button>
+              </a>
             </div>
 
             {/* Academia Digital */}
