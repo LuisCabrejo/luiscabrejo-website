@@ -1,388 +1,317 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Mail, User, Phone, MapPin, MessageCircle, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { X, Mail, User, Phone, MapPin, MessageSquare } from 'lucide-react';
 
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
-  formType?: 'conectar' | 'oportunidad' | 'portal' | 'historia' | 'ecosistema' | 'vision' | 'test';
-}
-
-interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  country: string;
-  message: string;
+  formType?: string;
 }
 
 export default function ContactModal({ isOpen, onClose, formType = 'conectar' }: ContactModalProps) {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    phone: '',
-    country: '',
-    message: '',
-  });
-
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [country, setCountry] = useState('');
+  const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  // Configuración específica por tipo de formulario
+  const getFormConfig = () => {
+    switch (formType) {
+      case 'fundadores':
+        return {
+          title: 'Visión 4 Millones',
+          subtitle: 'Luis Cabrejo',
+          description: 'Me interesa ser parte de la Visión 4 Millones y contribuir a esta transformación.',
+          defaultMessage: 'Cuéntame sobre tu situación actual y qué te gustaría lograr...',
+          showPhone: true,
+          showCountry: true,
+          submitText: 'Enviar Mensaje'
+        };
+      case 'historia':
+        return {
+          title: 'Mi Historia Te Inspiró',
+          subtitle: 'Luis Cabrejo',
+          description: 'Después de conocer mi historia, quieres saber más sobre el ecosistema empresarial.',
+          defaultMessage: 'Cuéntame qué parte de mi historia más te conectó y qué te gustaría lograr...',
+          showPhone: true,
+          showCountry: true,
+          submitText: 'Enviar Mensaje'
+        };
+      case 'ecosistema':
+        return {
+          title: 'Interés en el Ecosistema',
+          subtitle: 'Luis Cabrejo',
+          description: 'Te interesa conocer más sobre las herramientas digitales y tecnología avanzada.',
+          defaultMessage: 'Cuéntame qué herramientas del ecosistema te llamaron más la atención...',
+          showPhone: true,
+          showCountry: true,
+          submitText: 'Enviar Mensaje'
+        };
+      case 'vision':
+        return {
+          title: 'Visión 4 Millones',
+          subtitle: 'Luis Cabrejo',
+          description: 'Te interesa ser parte de la visión de transformar 4 millones de vidas para 2032.',
+          defaultMessage: 'Cuéntame cómo te ves participando en la visión de 4 millones...',
+          showPhone: true,
+          showCountry: true,
+          submitText: 'Enviar Mensaje'
+        };
+      case 'general':
+      case 'conectar':
+      default:
+        return {
+          title: 'Conectar',
+          subtitle: 'Luis Cabrejo',
+          description: 'Conéctate conmigo para explorar oportunidades empresariales.',
+          defaultMessage: 'Cuéntame sobre tu situación actual y qué te gustaría lograr...',
+          showPhone: true,
+          showCountry: true,
+          submitText: 'Enviar Mensaje'
+        };
+    }
   };
+
+  const config = getFormConfig();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validación básica
-    if (!formData.name || !formData.email) {
-      setErrorMessage('Por favor completa nombre y email');
-      setStatus('error');
+    if (!name || !email) {
+      alert('Por favor completa nombre y email');
+      return;
+    }
+
+    if (formType === 'fundadores' && !phone) {
+      alert('Por favor completa el teléfono');
       return;
     }
 
     setStatus('loading');
-    setErrorMessage('');
 
     try {
-      console.log('📤 Enviando formulario...', { formData, formType });
+      const payload = {
+        name,
+        email,
+        message: message || config.defaultMessage,
+        formType,
+        ...(config.showPhone && { phone }),
+        ...(config.showCountry && { country })
+      };
 
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          formType: getFormTitle(),
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
-      console.log('📥 Respuesta recibida:', response.status, response.statusText);
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('❌ Error del servidor:', errorData);
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      if (response.ok) {
+        setStatus('sent');
+        setTimeout(() => {
+          setName('');
+          setEmail('');
+          setPhone('');
+          setCountry('');
+          setMessage('');
+          setStatus('idle');
+          onClose();
+        }, 3000);
+      } else {
+        throw new Error('Error en el servidor');
       }
-
-      const result = await response.json();
-      console.log('✅ Resultado exitoso:', result);
-
-      setStatus('sent');
-
-      // Reset form after 5 seconds
-      setTimeout(() => {
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          country: '',
-          message: '',
-        });
-        setStatus('idle');
-        onClose();
-      }, 5000);
-
     } catch (error) {
-      console.error('❌ Error enviando formulario:', error);
-      setErrorMessage(error instanceof Error ? error.message : 'Error al enviar el mensaje');
+      console.error('Error:', error);
       setStatus('error');
-    }
-  };
-
-  const openMailto = () => {
-    const subject = `${getFormTitle()} - ${formData.name}`;
-    const body = `Hola Luis,
-
-Me interesa conectar contigo. Aquí están mis datos:
-
-Nombre: ${formData.name}
-Email: ${formData.email}
-Teléfono: ${formData.phone || 'No proporcionado'}
-País: ${formData.country || 'No proporcionado'}
-Formulario: ${getFormTitle()}
-
-Mensaje:
-${formData.message || 'Me gustaría conocer más sobre tu ecosistema digital.'}
-
-Enviado desde: luiscabrejo.com
-Fecha: ${new Date().toLocaleString()}
-
-Saludos,
-${formData.name}`;
-
-    const mailtoLink = `mailto:contacto@luiscabrejo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
-  };
-
-  const getFormTitle = () => {
-    switch (formType) {
-      case 'oportunidad':
-        return 'Conocer la Oportunidad';
-      case 'portal':
-        return 'Acceder al Portal';
-      case 'historia':
-        return 'Mi Historia';
-      case 'ecosistema':
-        return 'Ecosistema Digital';
-      case 'vision':
-        return 'Visión 4 Millones';
-      case 'test':
-        return 'Test de Formulario';
-      default:
-        return 'Conectar';
-    }
-  };
-
-  const getFormDescription = () => {
-    switch (formType) {
-      case 'oportunidad':
-        return 'Quiero conocer más sobre el ecosistema empresarial y las oportunidades disponibles.';
-      case 'portal':
-        return 'Me interesa acceder a las herramientas del portal 4millones.com.';
-      case 'historia':
-        return 'Me interesa conocer más sobre tu historia y cómo puedo aplicar esos aprendizajes.';
-      case 'ecosistema':
-        return 'Quiero explorar las herramientas y tecnologías de tu ecosistema digital.';
-      case 'vision':
-        return 'Me interesa ser parte de la Visión 4 Millones y contribuir a esta transformación.';
-      case 'test':
-        return 'Formulario de prueba para verificar que la integración funciona correctamente.';
-      default:
-        return 'Conecta conmigo para explorar cómo podemos construir tu ecosistema digital empresarial.';
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl border border-gray-700 max-w-md w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div
+        className="rounded-2xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto"
+        style={{
+          background: 'rgba(23, 31, 42, 0.95)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(12px)'
+        }}
+      >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex justify-between items-start mb-6">
           <div>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              {getFormTitle()}
-            </h2>
-            <p className="text-sm text-gray-400 mt-1">Luis Cabrejo</p>
+            <h2 className="text-xl font-bold text-white">{config.title}</h2>
+            {config.subtitle && (
+              <p className="text-sm text-slate-400 mt-1">{config.subtitle}</p>
+            )}
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-700 rounded-full transition-colors"
+            className="text-gray-400 hover:text-white transition-colors p-1"
           >
-            <X className="w-5 h-5 text-gray-400" />
+            <X className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6">
-          {status === 'sent' ? (
-            // Success State
-            <div className="text-center py-8">
-              <div className="bg-green-500/20 rounded-full p-3 w-fit mx-auto mb-4">
-                <CheckCircle className="w-8 h-8 text-green-400" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-green-400">¡Mensaje Enviado! ✅</h3>
-              <p className="text-gray-300 mb-4">
-                Tu mensaje ha sido enviado exitosamente. Recibirás una copia de confirmación en tu email.
-              </p>
-              <p className="text-sm text-gray-400">
-                Luis te responderá en las próximas 24 horas.
-              </p>
+        {/* Description para fundadores */}
+        {config.description && (
+          <div className="mb-6 p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
+            <p className="text-sm text-blue-200">{config.description}</p>
+          </div>
+        )}
+
+        {status === 'sent' ? (
+          <div className="text-center py-8">
+            <div className="text-green-400 text-2xl mb-4">✅</div>
+            <h3 className="text-xl font-semibold text-green-400 mb-2">¡Mensaje Enviado!</h3>
+            <p className="text-gray-300">
+              Luis se comunicará contigo en las próximas 24 horas.
+            </p>
+          </div>
+        ) : status === 'error' ? (
+          <div className="text-center py-8">
+            <div className="text-red-400 text-2xl mb-4">❌</div>
+            <h3 className="text-xl font-semibold text-red-400 mb-2">Error</h3>
+            <p className="text-gray-300 mb-4">Hubo un problema. Inténtalo de nuevo.</p>
+            <button
+              onClick={() => setStatus('idle')}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-lg text-white font-medium hover:shadow-lg transition-all"
+            >
+              Reintentar
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Nombre */}
+            <div>
+              <label className="flex items-center gap-2 text-sm text-gray-300 mb-2">
+                <User className="w-4 h-4" />
+                Nombre Completo *
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                disabled={status === 'loading'}
+                className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                placeholder="Tu nombre completo"
+              />
             </div>
-          ) : status === 'error' ? (
-            // Error State with Manual Options
-            <div className="text-center py-8">
-              <div className="bg-red-500/20 rounded-full p-3 w-fit mx-auto mb-4">
-                <AlertCircle className="w-8 h-8 text-red-400" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-red-400">Error de Conexión</h3>
-              <p className="text-gray-300 mb-4 text-sm">
-                {errorMessage}
-              </p>
-              <p className="text-gray-300 mb-6 text-sm">
-                Tienes estas opciones alternativas:
-              </p>
 
-              <div className="space-y-3">
-                <button
-                  onClick={() => setStatus('idle')}
-                  className="w-full bg-blue-500/20 border border-blue-500/50 px-4 py-3 rounded-lg text-sm hover:bg-blue-500/30 transition-all"
-                >
-                  🔄 Intentar de Nuevo
-                </button>
-
-                <button
-                  onClick={openMailto}
-                  className="w-full bg-green-500/20 border border-green-500/50 px-4 py-3 rounded-lg text-sm hover:bg-green-500/30 transition-all"
-                >
-                  📧 Abrir Cliente de Email
-                </button>
-
-                <div className="text-xs text-gray-400 mt-4">
-                  O escribe directamente a:
-                  <a href="mailto:contacto@luiscabrejo.com" className="text-blue-400 hover:underline ml-1">
-                    contacto@luiscabrejo.com
-                  </a>
-                </div>
-              </div>
+            {/* Email */}
+            <div>
+              <label className="flex items-center gap-2 text-sm text-gray-300 mb-2">
+                <Mail className="w-4 h-4" />
+                Email *
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={status === 'loading'}
+                className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                placeholder="tu@email.com"
+              />
             </div>
-          ) : (
-            // Form State
-            <>
-              <p className="text-gray-300 mb-6 leading-relaxed text-sm">
-                {getFormDescription()}
-              </p>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Name */}
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                    <User className="w-4 h-4 inline mr-2" />
-                    Nombre Completo *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    disabled={status === 'loading'}
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
-                    placeholder="Tu nombre completo"
-                  />
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                    <Mail className="w-4 h-4 inline mr-2" />
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    disabled={status === 'loading'}
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
-                    placeholder="tu@email.com"
-                  />
-                </div>
-
-                {/* Phone */}
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2">
-                    <Phone className="w-4 h-4 inline mr-2" />
-                    Teléfono
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    disabled={status === 'loading'}
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
-                    placeholder="+57 300 123 4567"
-                  />
-                </div>
-
-                {/* Country */}
-                <div>
-                  <label htmlFor="country" className="block text-sm font-medium text-gray-300 mb-2">
-                    <MapPin className="w-4 h-4 inline mr-2" />
-                    País
-                  </label>
-                  <select
-                    id="country"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleInputChange}
-                    disabled={status === 'loading'}
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
-                  >
-                    <option value="">Selecciona tu país</option>
-                    <option value="Colombia">Colombia</option>
-                    <option value="México">México</option>
-                    <option value="Estados Unidos">Estados Unidos</option>
-                    <option value="Guatemala">Guatemala</option>
-                    <option value="El Salvador">El Salvador</option>
-                    <option value="Costa Rica">Costa Rica</option>
-                    <option value="Honduras">Honduras</option>
-                    <option value="Panamá">Panamá</option>
-                    <option value="Venezuela">Venezuela</option>
-                    <option value="Brasil">Brasil</option>
-                    <option value="Ecuador">Ecuador</option>
-                    <option value="Perú">Perú</option>
-                    <option value="Bolivia">Bolivia</option>
-                    <option value="Chile">Chile</option>
-                    <option value="Argentina">Argentina</option>
-                    <option value="Uruguay">Uruguay</option>
-                    <option value="Otro">Otro</option>
-                  </select>
-                </div>
-
-                {/* Message */}
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                    <MessageCircle className="w-4 h-4 inline mr-2" />
-                    Mensaje
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={4}
-                    disabled={status === 'loading'}
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none disabled:opacity-50"
-                    placeholder="Cuéntame sobre tu situación actual y qué te gustaría lograr..."
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
+            {/* Teléfono - Todos los formularios */}
+            {config.showPhone && (
+              <div>
+                <label className="flex items-center gap-2 text-sm text-gray-300 mb-2">
+                  <Phone className="w-4 h-4" />
+                  Teléfono
+                </label>
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   disabled={status === 'loading'}
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                >
-                  {status === 'loading' ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Enviando...
-                    </>
-                  ) : (
-                    <>
-                      <Mail className="w-4 h-4" />
-                      Enviar Mensaje
-                    </>
-                  )}
-                </button>
-              </form>
-
-              <div className="mt-6 pt-6 border-t border-gray-700">
-                <p className="text-xs text-gray-400 text-center">
-                  ✅ Envío seguro con confirmación automática por email<br/>
-                  📧 También puedes escribir directamente a{' '}
-                  <a href="mailto:contacto@luiscabrejo.com" className="text-blue-400 hover:underline">
-                    contacto@luiscabrejo.com
-                  </a>
-                </p>
+                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                  placeholder="+57 300 123 4567"
+                />
               </div>
-            </>
-          )}
-        </div>
+            )}
+
+            {/* País - Solo países donde operan */}
+            {config.showCountry && (
+              <div>
+                <label className="flex items-center gap-2 text-sm text-gray-300 mb-2">
+                  <MapPin className="w-4 h-4" />
+                  País
+                </label>
+                <select
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  disabled={status === 'loading'}
+                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                >
+                  <option value="">Selecciona tu país</option>
+                  <option value="CA">🇨🇦 Canadá (+1)</option>
+                  <option value="US">🇺🇸 Estados Unidos (+1)</option>
+                  <option value="MX">🇲🇽 México (+52)</option>
+                  <option value="PR">🇵🇷 Puerto Rico (+1)</option>
+                  <option value="DO">🇩🇴 República Dominicana (+1)</option>
+                  <option value="HN">🇭🇳 Honduras (+504)</option>
+                  <option value="GT">🇬🇹 Guatemala (+502)</option>
+                  <option value="CR">🇨🇷 Costa Rica (+506)</option>
+                  <option value="SV">🇸🇻 El Salvador (+503)</option>
+                  <option value="PA">🇵🇦 Panamá (+507)</option>
+                  <option value="CO">🇨🇴 Colombia (+57)</option>
+                  <option value="BR">🇧🇷 Brasil (+55)</option>
+                  <option value="EC">🇪🇨 Ecuador (+593)</option>
+                  <option value="PE">🇵🇪 Perú (+51)</option>
+                  <option value="BO">🇧🇴 Bolivia (+591)</option>
+                  <option value="CL">🇨🇱 Chile (+56)</option>
+                </select>
+              </div>
+            )}
+
+            {/* Mensaje */}
+            <div>
+              <label className="flex items-center gap-2 text-sm text-gray-300 mb-2">
+                <MessageSquare className="w-4 h-4" />
+                Mensaje
+              </label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                disabled={status === 'loading'}
+                rows={4}
+                className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none"
+                placeholder={config.defaultMessage}
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={status === 'loading'}
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg text-white font-semibold py-3 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              <Mail className="w-4 h-4" />
+              {status === 'loading' ? 'Enviando...' : config.submitText}
+            </button>
+
+            {/* Footer universal */}
+            <div className="mt-4 space-y-2">
+              <div className="flex items-center gap-2 text-xs text-green-400">
+                <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+                <span>Envío seguro con confirmación automática por email</span>
+              </div>
+              <div className="text-xs text-slate-400">
+                También puedes escribir directamente a{' '}
+                <a href="mailto:contacto@luiscabrejo.com" className="text-blue-400 hover:text-blue-300 underline">
+                  contacto@luiscabrejo.com
+                </a>
+              </div>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

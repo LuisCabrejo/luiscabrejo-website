@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import {
   Zap,
@@ -14,7 +14,6 @@ import {
   Users,
   Globe,
   Target,
-  ArrowRight,
   Sparkles,
   Bot
 } from 'lucide-react';
@@ -30,19 +29,30 @@ interface ChatMessage {
 
 export default function FundadoresPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isChatOpen, setChatOpen] = useState(false);
   const [showChatPrompt, setShowChatPrompt] = useState(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
       id: '1',
-      text: '¡Hola! Soy NEXUS, tu socio estratégico de IA. ¿Qué quieres saber sobre el ecosistema de fundadores?',
+      text: '¡Hola! Soy NEXUS, tu asistente experto en activos empresariales. Conozco profundamente la economía latinoamericana y cómo construir franquicias personales que generen ingresos 24/7. ¿Cuál es tu situación actual?',
       isUser: false,
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const chatMessagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll al último mensaje
+  const scrollToBottom = () => {
+    chatMessagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
 
   // Lógica del Contador
   useEffect(() => {
@@ -76,6 +86,23 @@ export default function FundadoresPage() {
     }, 7000);
     return () => clearTimeout(timer);
   }, [isChatOpen]);
+
+  // Cerrar menú móvil al hacer clic fuera
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    if (mobileMenuOpen) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
 
   const handleChatToggle = () => {
     setChatOpen(!isChatOpen);
@@ -144,30 +171,99 @@ export default function FundadoresPage() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-green-600 rounded-full opacity-10 blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      {/* Navegación Simplificada */}
+      {/* Navegación Completa */}
       <nav className="fixed top-0 w-full bg-slate-900/50 backdrop-blur-md z-50 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-          <Link href="/">
-            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent cursor-pointer">
-              Luis Cabrejo
-            </span>
-          </Link>
-          <button
-            onClick={() => setContactModalOpen(true)}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-2 rounded-full hover:shadow-lg transition-all text-sm sm:text-base"
-          >
-            Conectar
-          </button>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex justify-between items-center">
+            {/* Logo */}
+            <Link href="/">
+              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent cursor-pointer">
+                Luis Cabrejo
+              </span>
+            </Link>
+
+            {/* Menú Desktop */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link href="/" className="text-gray-300 hover:text-white transition-colors">
+                Inicio
+              </Link>
+              <Link href="/historia" className="text-gray-300 hover:text-white transition-colors">
+                Historia
+              </Link>
+              <Link href="/ecosistema" className="text-gray-300 hover:text-white transition-colors">
+                Ecosistema
+              </Link>
+              <Link href="/vision" className="text-gray-300 hover:text-white transition-colors">
+                Visión
+              </Link>
+              <span className="text-purple-400 font-medium">
+                Fundadores
+              </span>
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full hover:shadow-lg transition-all"
+              >
+                Conectar
+              </button>
+            </div>
+
+            {/* Menú Mobile Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="text-gray-300 hover:text-white p-2"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Menú Mobile Dropdown */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4">
+              <div className="flex flex-col space-y-3">
+                <Link href="/" className="text-gray-300 hover:text-white transition-colors py-2">
+                  Inicio
+                </Link>
+                <Link href="/historia" className="text-gray-300 hover:text-white transition-colors py-2">
+                  Historia
+                </Link>
+                <Link href="/ecosistema" className="text-gray-300 hover:text-white transition-colors py-2">
+                  Ecosistema
+                </Link>
+                <Link href="/vision" className="text-gray-300 hover:text-white transition-colors py-2">
+                  Visión
+                </Link>
+                <span className="text-purple-400 font-medium py-2">
+                  Fundadores
+                </span>
+                <button
+                  onClick={() => setContactModalOpen(true)}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 rounded-full hover:shadow-lg transition-all mt-4 text-center"
+                >
+                  Conectar
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
       <div className="container mx-auto px-4 pt-28 pb-12 md:pt-36 md:pb-20">
+        {/* Banner de Contexto */}
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 rounded-full px-6 py-3 mb-4">
+            <Sparkles className="w-5 h-5 text-blue-400" />
+            <span className="text-sm font-medium text-blue-200">
+              Estás viendo contenido exclusivo para fundadores
+            </span>
+          </div>
+        </div>
+
         {/* Encabezado */}
         <header className="text-center mb-12">
-          <div className="inline-block bg-purple-500/10 text-purple-300 text-sm font-semibold px-4 py-1 rounded-full mb-4">
-            <Sparkles className="inline w-4 h-4 mr-2" />
-            INVITACIÓN PRIVADA PARA FUNDADORES
-          </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight">
             El Ecosistema que lo <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Cambia Todo</span>.
           </h1>
@@ -191,11 +287,6 @@ export default function FundadoresPage() {
                   <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
                 </svg>
               </div>
-            </div>
-            {/* Overlay con información del video */}
-            <div className="absolute bottom-4 left-4 text-white">
-              <p className="text-sm opacity-90">🎥 Presentación Exclusiva de Fundadores</p>
-              <p className="text-xs opacity-70">15:42 min - Luis & Luz Cabrejo</p>
             </div>
           </div>
 
@@ -226,15 +317,6 @@ export default function FundadoresPage() {
             <a href="#activacion" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold text-lg px-12 py-4 rounded-full inline-block shadow-lg hover:scale-105 transition-transform duration-300">
               QUIERO MI CÓDIGO DE FUNDADOR
             </a>
-            <div className="mt-4">
-              <a href="https://wa.me/573101234567?text=Hola%2C%20vi%20la%20invitaci%C3%B3n%20de%20fundadores%20y%20tengo%20una%20pregunta..."
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="text-slate-400 hover:text-white transition-colors text-sm inline-flex items-center gap-2">
-                <MessageSquare className="w-4 h-4" />
-                ¿Dudas? Habla con un fundador
-              </a>
-            </div>
           </div>
 
           {/* 3 Puntos Clave */}
@@ -296,7 +378,7 @@ export default function FundadoresPage() {
             </div>
           </section>
 
-          {/* Sección de Activación */}
+          {/* Sección de Activación - Paquetes */}
           <section id="activacion" className="text-center p-8 rounded-3xl mb-16"
                    style={{
                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
@@ -304,45 +386,72 @@ export default function FundadoresPage() {
                      backdropFilter: 'blur(12px)'
                    }}>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Tu Código de <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Fundador</span>
+              Activa tu <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Franquicia de Fundador</span> Ahora
             </h2>
-            <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
-              Complete el formulario y recibe inmediatamente tu código de activación exclusivo.
-              Solo disponible para los primeros 147 fundadores.
+            <p className="text-lg text-slate-300 mb-12 max-w-2xl mx-auto">
+              Elige tu primer inventario para asegurar tu posición. Hoy el rápido se come al lento. La velocidad es la clave.
             </p>
 
-            {/* Formulario de Activación */}
-            <div className="max-w-md mx-auto space-y-4">
-              <input
-                type="text"
-                placeholder="Nombre completo"
-                className="w-full p-4 rounded-xl bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
-              />
-              <input
-                type="email"
-                placeholder="Email empresarial"
-                className="w-full p-4 rounded-xl bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
-              />
-              <input
-                type="tel"
-                placeholder="WhatsApp"
-                className="w-full p-4 rounded-xl bg-slate-800/50 border border-slate-700 text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
-              />
-              <select className="w-full p-4 rounded-xl bg-slate-800/50 border border-slate-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
-                <option value="">País</option>
-                <option value="CO">Colombia</option>
-                <option value="MX">México</option>
-                <option value="PE">Perú</option>
-                <option value="EC">Ecuador</option>
-                <option value="other">Otro</option>
-              </select>
-              <button
-                onClick={() => setContactModalOpen(true)}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-4 px-8 rounded-xl hover:scale-105 transition-transform duration-300 flex items-center justify-center gap-2"
-              >
-                OBTENER MI CÓDIGO AHORA
-                <ArrowRight className="w-5 h-5" />
-              </button>
+            {/* Paquetes */}
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {/* Paquete Emprendedor */}
+              <div className="p-6 rounded-2xl text-center"
+                   style={{
+                     background: 'rgba(255, 255, 255, 0.05)',
+                     border: '1px solid rgba(255, 255, 255, 0.1)',
+                     backdropFilter: 'blur(12px)'
+                   }}>
+                <h3 className="text-xl font-bold text-white mb-4">Paquete Emprendedor</h3>
+                <p className="text-slate-400 mb-6">Ideal para empezar a construir tu activo y posicionarte.</p>
+                <div className="mb-6">
+                  <div className="text-4xl font-bold text-white mb-2">$200</div>
+                  <div className="text-sm text-slate-400">$900.000 COP</div>
+                </div>
+                <button className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl transition-colors">
+                  Activar Ahora
+                </button>
+              </div>
+
+              {/* Paquete Empresarial */}
+              <div className="p-6 rounded-2xl text-center"
+                   style={{
+                     background: 'rgba(255, 255, 255, 0.05)',
+                     border: '1px solid rgba(255, 255, 255, 0.1)',
+                     backdropFilter: 'blur(12px)'
+                   }}>
+                <h3 className="text-xl font-bold text-white mb-4">Paquete Empresarial</h3>
+                <p className="text-slate-400 mb-6">Un inventario sólido para operar y maximizar tus primeras ganancias.</p>
+                <div className="mb-6">
+                  <div className="text-4xl font-bold text-white mb-2">$500</div>
+                  <div className="text-sm text-slate-400">$2.250.000 COP</div>
+                </div>
+                <button className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl transition-colors">
+                  Activar Ahora
+                </button>
+              </div>
+
+              {/* Paquete Visionario - Más Popular */}
+              <div className="p-6 rounded-2xl text-center relative"
+                   style={{
+                     background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
+                     border: '2px solid rgba(139, 92, 246, 0.5)',
+                     backdropFilter: 'blur(12px)'
+                   }}>
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-bold px-4 py-1 rounded-full">
+                    MÁS POPULAR
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-4">Paquete Visionario</h3>
+                <p className="text-slate-300 mb-6">Para los que piensan en grande y quieren el 100% de los bonos desde el día uno.</p>
+                <div className="mb-6">
+                  <div className="text-4xl font-bold text-white mb-2">$1000</div>
+                  <div className="text-sm text-slate-300">$4.500.000 COP</div>
+                </div>
+                <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-transform">
+                  Activar Ahora
+                </button>
+              </div>
             </div>
 
             {/* Garantías */}
@@ -386,9 +495,9 @@ export default function FundadoresPage() {
           <div className="absolute bottom-20 right-0 w-64 bg-slate-800 p-4 rounded-lg shadow-lg animate-bounce"
                style={{ backdropFilter: 'blur(12px)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
             <p className="text-sm text-white">
-              ¿Tienes una pregunta estratégica? <br />
+              ¿Quieres construir un activo empresarial? <br />
               <span className="font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Pregúntale a NEXUS.
+                NEXUS conoce la fórmula Ray Kroc.
               </span>
             </p>
             <button
@@ -408,11 +517,12 @@ export default function FundadoresPage() {
         </button>
 
         {isChatOpen && (
-          <div className="absolute bottom-20 right-0 w-80 sm:w-96 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-96"
+          <div className="absolute bottom-20 right-0 w-80 sm:w-96 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
                style={{
-                 background: 'rgba(23, 31, 42, 0.9)',
+                 background: 'rgba(23, 31, 42, 0.95)',
                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                 backdropFilter: 'blur(12px)'
+                 backdropFilter: 'blur(12px)',
+                 height: '500px' // Altura fija para mejor control
                }}>
             {/* Header del Chat */}
             <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white flex-shrink-0">
@@ -426,16 +536,16 @@ export default function FundadoresPage() {
             </div>
 
             {/* Mensajes del Chat */}
-            <div className="p-4 h-80 overflow-y-auto flex-grow space-y-4">
+            <div className="flex-1 p-4 overflow-y-auto space-y-4" style={{ maxHeight: '360px' }}>
               {chatMessages.map((message) => (
                 <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-xs p-3 rounded-2xl ${
+                  <div className={`max-w-[280px] p-3 rounded-2xl break-words ${
                     message.isUser
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
-                      : 'bg-slate-700 text-gray-200'
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white ml-4'
+                      : 'bg-slate-700 text-gray-200 mr-4'
                   }`}>
-                    <p className="text-sm">{message.text}</p>
-                    <p className="text-xs opacity-70 mt-1">
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                    <p className="text-xs opacity-70 mt-2">
                       {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
@@ -444,28 +554,36 @@ export default function FundadoresPage() {
 
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="bg-slate-700 text-gray-200 p-3 rounded-2xl">
-                    <p className="text-sm">NEXUS está escribiendo...</p>
+                  <div className="bg-slate-700 text-gray-200 p-3 rounded-2xl mr-4">
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <span className="text-sm ml-2">NEXUS está escribiendo...</span>
+                    </div>
                   </div>
                 </div>
               )}
+
+              {/* Elemento invisible para auto-scroll */}
+              <div ref={chatMessagesEndRef} />
             </div>
 
             {/* Input del Chat */}
-            <div className="p-3 border-t border-slate-700">
+            <div className="p-3 border-t border-slate-700 flex-shrink-0">
               <form onSubmit={handleSendMessage} className="flex items-center gap-2">
                 <input
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   placeholder="Escribe tu pregunta..."
-                  className="w-full bg-slate-800 text-white p-3 rounded-lg border-none focus:ring-2 focus:ring-blue-500 transition-shadow text-sm"
+                  className="flex-1 bg-slate-800 text-white p-3 rounded-lg border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                   disabled={isTyping}
                 />
                 <button
                   type="submit"
                   disabled={isTyping || !inputMessage.trim()}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-all"
                 >
                   <Send className="w-4 h-4" />
                 </button>
