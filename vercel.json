@@ -1,0 +1,40 @@
+// vercel.json - Configuración optimizada para NEXUS
+{
+  "functions": {
+    "src/app/api/claude-chat/route.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "ANTHROPIC_API_KEY": "@anthropic-api-key"
+  },
+  "rewrites": [
+    {
+      "source": "/api/claude-chat",
+      "destination": "/api/claude-chat"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/claude-chat",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
+}
