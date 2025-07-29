@@ -1,9 +1,9 @@
-// /src/components/NexusChat.tsx - ARCHIVO COMPLETO CON UI FIX APLICADO
+// /src/components/NexusChat.tsx - CON MEJORAS DE CONECTIVIDAD
 
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Zap, Sparkles, Maximize2, Minimize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Zap, Sparkles, Maximize2, Minimize2, Wifi, WifiOff, RefreshCw } from 'lucide-react';
 
 interface ChatMessage {
   id: string;
@@ -12,6 +12,8 @@ interface ChatMessage {
   timestamp: Date;
   emotion?: string;
   responseType?: string;
+  isOffline?: boolean; // NUEVO: Marca mensajes offline
+  retryCount?: number; // NUEVO: Contador de reintentos
 }
 
 interface NexusState {
@@ -20,6 +22,14 @@ interface NexusState {
   isTyping: boolean;
   currentTypedMessage: string;
   loadingPhase: 'analysis' | 'processing' | 'writing' | 'complete';
+}
+
+// NUEVO: Estados de conexión
+interface ConnectionState {
+  status: 'connected' | 'connecting' | 'disconnected' | 'retrying';
+  lastSuccessfulConnection: Date | null;
+  consecutiveFailures: number;
+  averageResponseTime: number;
 }
 
 interface NexusChatProps {
@@ -36,7 +46,7 @@ export default function NexusChat({
   promptMessage = '¿Listo para construir tu activo empresarial con Gano Excel? NEXUS conoce el sistema 4M completo.'
 }: NexusChatProps) {
   const [isChatOpen, setChatOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false); // NUEVO: Estado expandido
+  const [isExpanded, setIsExpanded] = useState(false);
   const [showChatPrompt, setShowChatPrompt] = useState(false);
 
   // Estados para efecto galáctico
@@ -46,7 +56,7 @@ export default function NexusChat({
   // Estados del chat con MEMORIA MEJORADA
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
-  const [conversationSummary, setConversationSummary] = useState<string[]>([]); // NUEVO: Resumen de temas
+  const [conversationSummary, setConversationSummary] = useState<string[]>([]);
 
   // Estados para delays inteligentes
   const [nexusState, setNexusState] = useState<NexusState>({
@@ -57,7 +67,31 @@ export default function NexusChat({
     loadingPhase: 'complete'
   });
 
+  // NUEVO: Estado de conexión
+  const [connectionState, setConnectionState] = useState<ConnectionState>({
+    status: 'connected',
+    lastSuccessfulConnection: new Date(),
+    consecutiveFailures: 0,
+    averageResponseTime: 2000
+  });
+
   const chatMessagesEndRef = useRef<HTMLDivElement>(null);
+  const responseTimeRef = useRef<number[]>([]); // NUEVO: Tracking response times
+
+  // NUEVO: Mensajes de fallback para conexión débil
+  const OFFLINE_RESPONSES = {
+    general: "Disculpa, tengo una dificultad técnica temporal. Mientras tanto, puedes explorar portal.4millones.com para ver las herramientas del sistema 4M funcionando. ¿Hay algo específico sobre Gano Excel o el sistema 4M que te gustaría saber?",
+
+    fundador: "Temporalmente tengo dificultades técnicas, pero ser Fundador significa tres cosas concretas: **Posicionamiento** (primeros 150 antes del lanzamiento masivo), **Participación** (en la construcción del sistema) y **Privilegio** (acceso a herramientas antes que nadie). El programa está diseñado por Luis y Liliana para crear una base sólida antes del 1 de septiembre.",
+
+    inversion: "Durante esta dificultad técnica: Los paquetes fundadores son **$200** (Emprendedor), **$500** (Empresarial) y **$1000** (Visionario). Inversión única sin costos ocultos. Además, solo 50 PV mensual (aprox $80 USD) por el cual recibes producto de igual valor.",
+
+    ganoexcel: "Aunque tengo dificultades técnicas: Gano Excel es una empresa de **30+ años** con patente mundial sobre Ganoderma Lucidum creada por **Leow Soon Seng** en 1995. Luis y Liliana crearon el **sistema 4M** para facilitar la distribución de estos productos únicos.",
+
+    funcionamiento: "Con dificultades técnicas, pero el sistema funciona así: **3 C's** - Conectar (personas con mentalidad correcta), Compartir (herramientas 4M automatizadas), Acompañar (durante su proceso). La tecnología hace la presentación, tú haces la conexión humana.",
+
+    resultados: "Temporalmente offline, pero timeline realista: **2-4 semanas** primeras comisiones con plan Arranque Explosivo, **3-6 meses** activo significativo, **12-18 meses** riqueza real. No es fácil, pero es simple con el sistema 4M."
+  };
 
   // Auto-scroll al último mensaje
   const scrollToBottom = () => {
@@ -67,6 +101,160 @@ export default function NexusChat({
   useEffect(() => {
     scrollToBottom();
   }, [chatMessages, nexusState.currentTypedMessage]);
+
+  // NUEVO: Detección automática de problemas de red
+  useEffect(() => {
+    const handleNetworkChange = () => {
+      if (!navigator.onLine) {
+        setConnectionState(prev => ({
+          ...prev,
+          status: 'disconnected'
+        }));
+
+        // Agregar mensaje de estado offline
+        if (isChatOpen && chatMessages.length > 0) {
+          addOfflineMessage("Se detectó pérdida de conexión. Puedes seguir preguntando - tengo respuestas básicas disponibles offline.");
+        }
+      } else {
+        setConnectionState(prev => ({
+          ...prev,
+          status: 'connected',
+          lastSuccessfulConnection: new Date(),
+          consecutiveFailures: 0
+        }));
+      }
+    };
+
+    window.addEventListener('online', handleNetworkChange);
+    window.addEventListener('offline', handleNetworkChange);
+
+    return () => {
+      window.removeEventListener('online', handleNetworkChange);
+      window.removeEventListener('offline', handleNetworkChange);
+    };
+  }, [isChatOpen, chatMessages.length]);
+
+  // NUEVO: Función para agregar mensaje offline
+  const addOfflineMessage = (text: string) => {
+    const offlineMessage: ChatMessage = {
+      id: `offline-${Date.now()}`,
+      text,
+      isUser: false,
+      timestamp: new Date(),
+      isOffline: true
+    };
+    setChatMessages(prev => [...prev, offlineMessage]);
+  };
+
+  // NUEVO: Función para obtener respuesta offline inteligente
+  const getOfflineResponse = (message: string): string => {
+    const normalizedMessage = message.toLowerCase();
+
+    if (normalizedMessage.includes('fundador') || normalizedMessage.includes('programa')) {
+      return OFFLINE_RESPONSES.fundador;
+    }
+    if (normalizedMessage.includes('invest') || normalizedMessage.includes('dinero') || normalizedMessage.includes('precio') || normalizedMessage.includes('cuesta')) {
+      return OFFLINE_RESPONSES.inversion;
+    }
+    if (normalizedMessage.includes('gano excel') || normalizedMessage.includes('ganoderma') || normalizedMessage.includes('empresa')) {
+      return OFFLINE_RESPONSES.ganoexcel;
+    }
+    if (normalizedMessage.includes('funciona') || normalizedMessage.includes('sistema') || normalizedMessage.includes('cómo')) {
+      return OFFLINE_RESPONSES.funcionamiento;
+    }
+    if (normalizedMessage.includes('resultado') || normalizedMessage.includes('tiempo') || normalizedMessage.includes('cuándo')) {
+      return OFFLINE_RESPONSES.resultados;
+    }
+
+    return OFFLINE_RESPONSES.general;
+  };
+
+  // NUEVO: Función de envío con retry automático
+  const sendMessageWithRetry = async (message: string, maxRetries = 3): Promise<any> => {
+    const startTime = Date.now();
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        setConnectionState(prev => ({
+          ...prev,
+          status: attempt > 1 ? 'retrying' : 'connecting'
+        }));
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 segundos timeout
+
+        const formattedHistory = chatMessages
+          .filter(msg => !msg.isOffline) // Excluir mensajes offline del historial
+          .map(msg => ({
+            role: msg.isUser ? 'user' : 'assistant',
+            content: msg.text
+          }));
+
+        const response = await fetch('/api/claude-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message,
+            conversationHistory: formattedHistory,
+            context
+          }),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          const responseTime = Date.now() - startTime;
+
+          // Actualizar métricas de conexión
+          responseTimeRef.current.push(responseTime);
+          if (responseTimeRef.current.length > 10) {
+            responseTimeRef.current = responseTimeRef.current.slice(-10); // Mantener últimas 10
+          }
+
+          const avgResponseTime = responseTimeRef.current.reduce((a, b) => a + b, 0) / responseTimeRef.current.length;
+
+          setConnectionState(prev => ({
+            ...prev,
+            status: 'connected',
+            lastSuccessfulConnection: new Date(),
+            consecutiveFailures: 0,
+            averageResponseTime: avgResponseTime
+          }));
+
+          return await response.json();
+        }
+
+        throw new Error(`HTTP ${response.status}`);
+
+      } catch (error) {
+        console.log(`Intento ${attempt}/${maxRetries} fallido:`, error);
+
+        setConnectionState(prev => ({
+          ...prev,
+          consecutiveFailures: prev.consecutiveFailures + 1
+        }));
+
+        if (attempt === maxRetries) {
+          setConnectionState(prev => ({
+            ...prev,
+            status: 'disconnected'
+          }));
+
+          // Retornar respuesta offline
+          return {
+            message: getOfflineResponse(message),
+            delay: 1000,
+            metadata: { responseType: 'offline' },
+            isOffline: true
+          };
+        }
+
+        // Esperar antes del siguiente intento (backoff exponencial)
+        await new Promise(resolve => setTimeout(resolve, Math.min(1000 * Math.pow(2, attempt - 1), 5000)));
+      }
+    }
+  };
 
   // Lógica para la invitación proactiva del chat
   useEffect(() => {
@@ -80,11 +268,10 @@ export default function NexusChat({
     return () => clearTimeout(timer);
   }, [isChatOpen, showPrompt]);
 
-  // NUEVO: Función para agregar temas a memoria conversacional
+  // Función para agregar temas a memoria conversacional
   const addToConversationMemory = (userMessage: string, botResponse: string) => {
     const topics: string[] = [];
 
-    // Detectar temas en el mensaje del usuario
     const topicPatterns = {
       'paquetes': /paquete|precio|invertir|cuesta|valor/i,
       'funcionamiento': /funciona|sistema|plataforma|cómo/i,
@@ -110,21 +297,17 @@ export default function NexusChat({
   const initializeGalacticSequence = () => {
     setChatPhase('initializing');
 
-    // Fase 1: Inicializando NEXUS (0.8s)
     setTimeout(() => {
       setChatPhase('connecting');
     }, 800);
 
-    // Fase 2: Glow effect + connecting (1.5s total)
     setTimeout(() => {
       setChatPhase('typing');
     }, 1500);
 
-    // Fase 3: Typing animation (3.5s total)
     setTimeout(() => {
       setChatPhase('ready');
 
-      // ✅ MENSAJE INICIAL ACTUALIZADO
       const galacticMessage: ChatMessage = {
         id: 'galactic-intro',
         text: '⚡ ¡Hola! Soy NEXUS, el representante digital del sistema 4M que Luis Cabrejo y Liliana Moreno desarrollaron para distribución masiva de Gano Excel.\n\n🎯 Mi función: Ayudarte a evaluar si este ecosistema empresarial se alinea con tus objetivos de crecimiento.\n\n¿Qué aspecto del sistema 4M o la oportunidad Gano Excel te gustaría explorar?',
@@ -153,7 +336,6 @@ export default function NexusChat({
         const word = words[currentIndex];
         currentText += (currentIndex > 0 ? ' ' : '') + word;
 
-        // Actualizar el mensaje en tiempo real
         setChatMessages(prevMessages => {
           const newMessages = [...prevMessages];
           if (newMessages.length > 0) {
@@ -167,12 +349,9 @@ export default function NexusChat({
 
         currentIndex++;
 
-        // Velocidad variable: más lento en palabras clave
         const keyWords = ['monopolio', 'tecnológico', 'estratégico', 'fundador', 'filosofía', 'Luis'];
         const isKeyWord = keyWords.some(kw => word.toLowerCase().includes(kw));
-        const speed = isKeyWord ? 120 : 60; // ms por palabra
-
-        // Pausa extra en signos de puntuación
+        const speed = isKeyWord ? 120 : 60;
         const extraDelay = word.endsWith('.') || word.endsWith('!') || word.endsWith('?') ? 300 : 0;
 
         setTimeout(typeNextWord, speed + extraDelay);
@@ -182,39 +361,36 @@ export default function NexusChat({
     });
   };
 
-  // Secuencia completa de respuesta con delays inteligentes - UX MEJORADA
+  // MEJORADO: Secuencia completa de respuesta con retry automático
   const executeResponseSequence = async (userMessage: string) => {
     try {
-      // FASE 1: Pensamiento inicial - MENSAJE MEJORADO
+      // FASE 1: Pensamiento inicial
       setNexusState({
         isLoading: true,
-        loadingMessage: 'NEXUS está pensando...',
+        loadingMessage: connectionState.status === 'connected' ? 'NEXUS está pensando...' : 'Intentando conectar...',
         isTyping: false,
         currentTypedMessage: '',
         loadingPhase: 'analysis'
       });
 
-      // MEMORIA MEJORADA: Enviar historial completo con formato correcto
-      const formattedHistory = chatMessages.map(msg => ({
-        role: msg.isUser ? 'user' : 'assistant',
-        content: msg.text
-      }));
+      // NUEVO: Usar función con retry
+      const data = await sendMessageWithRetry(userMessage);
+      const { message: responseMessage, delay: calculatedDelay, metadata, isOffline } = data;
 
-      // Llamar a la API para obtener respuesta y delay calculado
-      const response = await fetch('/api/claude-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: userMessage,
-          conversationHistory: formattedHistory, // MEJORADO: Historial completo
-          context
-        })
-      });
+      if (isOffline) {
+        // Respuesta offline inmediata
+        const offlineMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          text: responseMessage,
+          isUser: false,
+          timestamp: new Date(),
+          isOffline: true
+        };
 
-      if (!response.ok) throw new Error('Error en la respuesta');
-
-      const data = await response.json();
-      const { message: responseMessage, delay: calculatedDelay, metadata } = data;
+        setChatMessages(prev => [...prev, offlineMessage]);
+        setNexusState(prev => ({ ...prev, isLoading: false, loadingPhase: 'complete' }));
+        return;
+      }
 
       // Calcular fases del delay
       const phases = {
@@ -223,10 +399,9 @@ export default function NexusChat({
         writing: Math.floor(calculatedDelay * 0.3)
       };
 
-      // Esperar fase de análisis
       await new Promise(resolve => setTimeout(resolve, phases.analysis));
 
-      // ✅ FASE 2: Procesamiento - MENSAJE MEJORADO
+      // FASE 2: Procesamiento
       const processingMessage = metadata.responseType === 'strategic'
         ? 'Preparando respuesta estratégica sobre Gano Excel...'
         : 'NEXUS está analizando tu consulta sobre el sistema 4M...';
@@ -239,7 +414,7 @@ export default function NexusChat({
 
       await new Promise(resolve => setTimeout(resolve, phases.processing));
 
-      // FASE 3: Escritura - MENSAJE MEJORADO
+      // FASE 3: Escritura
       setNexusState(prev => ({
         ...prev,
         isLoading: false,
@@ -248,7 +423,6 @@ export default function NexusChat({
         loadingPhase: 'writing'
       }));
 
-      // Crear mensaje temporal para el efecto de tipeo - SIN METADATA VISIBLE
       const tempMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         text: '',
@@ -257,14 +431,9 @@ export default function NexusChat({
       };
 
       setChatMessages(prev => [...prev, tempMessage]);
-
-      // Simular tipeo realista
       await simulateTyping(responseMessage);
-
-      // NUEVO: Agregar a memoria conversacional
       addToConversationMemory(userMessage, responseMessage);
 
-      // Finalizar tipeo
       setNexusState(prev => ({
         ...prev,
         isTyping: false,
@@ -281,11 +450,13 @@ export default function NexusChat({
         loadingPhase: 'complete'
       });
 
+      // Respuesta de error offline
       setChatMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
-        text: 'Disculpa, tuve un problema técnico. ¿Podrías repetir tu pregunta?',
+        text: getOfflineResponse(userMessage),
         isUser: false,
-        timestamp: new Date()
+        timestamp: new Date(),
+        isOffline: true
       }]);
     }
   };
@@ -305,33 +476,112 @@ export default function NexusChat({
     setChatMessages(prev => [...prev, userMessage]);
     setInputMessage('');
 
-    // Ejecutar secuencia de respuesta con delays
     await executeResponseSequence(userMessage.text);
   };
 
-  // NUEVO: Función para manejar expansión
+  // NUEVO: Función para retry manual
+  const handleRetryConnection = async () => {
+    setConnectionState(prev => ({ ...prev, status: 'connecting' }));
+
+    try {
+      const response = await fetch('/api/claude-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'test connection',
+          conversationHistory: [],
+          context: 'test'
+        })
+      });
+
+      if (response.ok) {
+        setConnectionState(prev => ({
+          ...prev,
+          status: 'connected',
+          lastSuccessfulConnection: new Date(),
+          consecutiveFailures: 0
+        }));
+
+        addOfflineMessage("✅ Conexión restablecida. ¡Ya puedo responder normalmente!");
+      } else {
+        throw new Error('Connection failed');
+      }
+    } catch (error) {
+      setConnectionState(prev => ({
+        ...prev,
+        status: 'disconnected',
+        consecutiveFailures: prev.consecutiveFailures + 1
+      }));
+    }
+  };
+
   const handleToggleExpansion = () => {
     setIsExpanded(!isExpanded);
   };
 
-  // Manejar toggle del chat
   const handleChatToggle = () => {
     if (!isChatOpen) {
       setChatOpen(true);
       setShowChatPrompt(false);
 
-      // Solo hacer secuencia galáctica si es la primera vez
       if (!isInitialMessageShown) {
         initializeGalacticSequence();
       }
     } else {
       setChatOpen(false);
       setChatPhase('closed');
-      setIsExpanded(false); // Resetear expansión al cerrar
+      setIsExpanded(false);
     }
   };
 
-  // Componente para renderizar las fases galácticas - MENSAJES MEJORADOS
+  // NUEVO: Componente indicador de conexión
+  const ConnectionIndicator = () => {
+    if (connectionState.status === 'connected') return null;
+
+    const statusConfig = {
+      connecting: {
+        icon: <RefreshCw className="w-4 h-4 animate-spin" />,
+        color: 'bg-yellow-500',
+        text: 'Conectando...',
+        textColor: 'text-yellow-700'
+      },
+      retrying: {
+        icon: <RefreshCw className="w-4 h-4 animate-spin" />,
+        color: 'bg-orange-500',
+        text: `Reintentando... (${connectionState.consecutiveFailures} fallos)`,
+        textColor: 'text-orange-700'
+      },
+      disconnected: {
+        icon: <WifiOff className="w-4 h-4" />,
+        color: 'bg-red-500',
+        text: 'Sin conexión - Modo offline',
+        textColor: 'text-red-700'
+      }
+    };
+
+    const config = statusConfig[connectionState.status as keyof typeof statusConfig];
+
+    return (
+      <div className="flex items-center justify-between gap-2 p-2 bg-gray-100 text-sm border-b">
+        <div className="flex items-center gap-2">
+          <div className={`w-2 h-2 rounded-full ${config.color}`}></div>
+          {config.icon}
+          <span className={config.textColor}>{config.text}</span>
+        </div>
+
+        {connectionState.status === 'disconnected' && (
+          <button
+            onClick={handleRetryConnection}
+            className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+          >
+            Reconectar
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  // Componente para renderizar las fases galácticas
   const renderChatPhase = () => {
     switch (chatPhase) {
       case 'initializing':
@@ -373,7 +623,7 @@ export default function NexusChat({
     }
   };
 
-  // Componente de estado de carga - MEJORADO
+  // Componente de estado de carga
   const LoadingIndicator = () => {
     if (!nexusState.isLoading && !nexusState.isTyping) return null;
 
@@ -401,7 +651,7 @@ export default function NexusChat({
     );
   };
 
-  // ✅ UI FIX APLICADO - Función para obtener tamaño del chat
+  // Función para obtener tamaño del chat
   const getChatDimensions = () => {
     if (isExpanded) {
       return {
@@ -419,16 +669,14 @@ export default function NexusChat({
     };
   };
 
-  // ✅ UI FIX APLICADO - Función para obtener clases dinámicas del chat container
+  // Función para obtener clases dinámicas del chat container
   const getChatContainerClasses = () => {
     const dimensions = getChatDimensions();
 
     if (isExpanded) {
-      // Posicionamiento centrado y responsive para expansión
       return `fixed inset-4 ${dimensions.width} ${dimensions.height} rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 z-50 mx-auto`;
     }
 
-    // Posicionamiento normal (no expandido)
     return `absolute bottom-20 right-0 ${dimensions.width} ${dimensions.height} rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300`;
   };
 
@@ -439,7 +687,6 @@ export default function NexusChat({
       backdropFilter: 'blur(12px)'
     };
 
-    // Estilos según la fase
     switch (chatPhase) {
       case 'connecting':
         styles.border = '1px solid rgba(139, 92, 246, 0.6)';
@@ -486,9 +733,16 @@ export default function NexusChat({
       {/* Botón del chat */}
       <button
         onClick={handleChatToggle}
-        className="bg-gradient-to-r from-blue-500 to-purple-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
+        className="bg-gradient-to-r from-blue-500 to-purple-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform relative"
       >
         {isChatOpen ? <X className="w-8 h-8"/> : <MessageCircle className="w-8 h-8"/>}
+
+        {/* NUEVO: Indicador de estado de conexión en el botón */}
+        {connectionState.status !== 'connected' && (
+          <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 flex items-center justify-center">
+            <WifiOff className="w-2 h-2 text-white" />
+          </div>
+        )}
       </button>
 
       {/* Ventana del chat */}
@@ -497,13 +751,16 @@ export default function NexusChat({
           className={getChatContainerClasses()}
           style={getChatContainerStyles()}
         >
-          {/* Header del Chat - CON BOTÓN EXPANDIR */}
+          {/* NUEVO: Indicador de conexión */}
+          <ConnectionIndicator />
+
+          {/* Header del Chat */}
           <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Sparkles className="w-6 h-6" />
                 <div>
-                  <h4 className="font-bold">
+                  <h4 className="font-bold flex items-center gap-2">
                     NEXUS
                     {chatPhase !== 'ready' && chatPhase !== 'closed' && (
                       <span className="ml-2 text-xs opacity-75">
@@ -512,15 +769,21 @@ export default function NexusChat({
                         {chatPhase === 'typing' && '✍️'}
                       </span>
                     )}
+                    {/* NUEVO: Indicador de conexión en header */}
+                    {connectionState.status === 'connected' ? (
+                      <Wifi className="w-4 h-4 text-green-300" />
+                    ) : (
+                      <WifiOff className="w-4 h-4 text-red-300" />
+                    )}
                   </h4>
-                  {/* ✅ TEXTO DEL HEADER ACTUALIZADO */}
                   <p className="text-xs opacity-90">
-                    {chatPhase === 'ready' ? 'Sistema 4M • Gano Excel' : 'Inicializando...'}
+                    {chatPhase === 'ready'
+                      ? `Sistema 4M • Gano Excel ${connectionState.status === 'connected' ? '• Online' : '• Offline'}`
+                      : 'Inicializando...'}
                   </p>
                 </div>
               </div>
 
-              {/* NUEVO: Botón expandir/reducir */}
               {chatPhase === 'ready' && (
                 <button
                   onClick={handleToggleExpansion}
@@ -537,12 +800,11 @@ export default function NexusChat({
             </div>
           </div>
 
-          {/* Contenido del Chat - ALTURA DINÁMICA */}
+          {/* Contenido del Chat */}
           <div
             className="flex-1 p-4 overflow-y-auto space-y-4"
             style={{ maxHeight: dimensions.messagesHeight }}
           >
-            {/* Mostrar fase actual o mensajes */}
             {chatPhase !== 'ready' && chatPhase !== 'closed' ? (
               renderChatPhase()
             ) : (
@@ -554,13 +816,22 @@ export default function NexusChat({
                     } p-3 rounded-2xl break-words transition-all duration-300 ${
                       message.isUser
                         ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white ml-4'
+                        : message.isOffline
+                        ? 'bg-orange-100 text-orange-800 mr-4 border-l-4 border-orange-500'
                         : 'bg-slate-700 text-gray-200 mr-4'
                     }`}>
                       <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
-                      {/* SOLO mostrar timestamp, NO metadata técnica */}
-                      <p className="text-xs opacity-70 mt-2">
-                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </p>
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="text-xs opacity-70">
+                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                        {/* NUEVO: Indicador de mensaje offline */}
+                        {message.isOffline && (
+                          <span className="text-xs bg-orange-200 text-orange-700 px-1 rounded">
+                            📡 Offline
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -571,16 +842,19 @@ export default function NexusChat({
             )}
           </div>
 
-          {/* Input del Chat - Solo mostrar cuando esté listo */}
+          {/* Input del Chat */}
           {chatPhase === 'ready' && (
             <div className="p-3 border-t border-slate-700 flex-shrink-0">
               <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-                {/* ✅ PLACEHOLDER INPUT ACTUALIZADO */}
                 <input
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
-                  placeholder="Pregúntame sobre Gano Excel o el sistema 4M..."
+                  placeholder={
+                    connectionState.status === 'connected'
+                      ? "Pregúntame sobre Gano Excel o el sistema 4M..."
+                      : "Modo offline - Respuestas básicas disponibles..."
+                  }
                   className="flex-1 bg-slate-800 text-white p-3 rounded-lg border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                   disabled={nexusState.isLoading || nexusState.isTyping}
                 />
@@ -593,10 +867,19 @@ export default function NexusChat({
                 </button>
               </form>
 
-              {/* ✅ STATUS INDICATOR ACTUALIZADO */}
+              {/* Status indicator actualizado */}
               <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
-                <span>🤖 NEXUS Sistema 4M online • Especialista Gano Excel</span>
-                {nexusState.isLoading && <span className="animate-pulse">⚡ Procesando...</span>}
+                <span>
+                  🤖 NEXUS Sistema 4M {connectionState.status === 'connected' ? 'online' : 'offline'} • Especialista Gano Excel
+                </span>
+                <div className="flex items-center gap-2">
+                  {nexusState.isLoading && <span className="animate-pulse">⚡ Procesando...</span>}
+                  {connectionState.status === 'connected' && (
+                    <span className="text-green-600">
+                      ⚡ {Math.round(connectionState.averageResponseTime)}ms
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           )}
