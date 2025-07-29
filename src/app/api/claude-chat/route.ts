@@ -1,135 +1,18 @@
-// /src/app/api/claude-chat/route.ts - MEJORADA PARA MAYOR ESTABILIDAD
+// /src/app/api/claude-chat/route.ts - VERSIÓN MÍNIMA FUNCIONAL
 
 import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest, NextResponse } from 'next/server';
 
-// MEJORADO: Configuración más robusta
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
-  maxRetries: 2, // Reducido para evitar cascading failures
-  timeout: 30000, // Aumentado a 30 segundos
+  maxRetries: 2,
+  timeout: 30000, // 30 segundos
 });
 
-// NUEVO: Configuración de timeouts más generosa
-const API_CONFIG = {
-  maxRetries: 3,
-  baseDelay: 1000,
-  maxDelay: 8000,
-  timeout: 25000, // 25 segundos para Claude
-  fallbackTimeout: 3000, // 3 segundos para fallback
-};
-
-// NUEVO: Sistema de circuit breaker simple
-let consecutiveFailures = 0;
-let lastFailureTime = 0;
-const CIRCUIT_BREAKER_THRESHOLD = 5;
-const CIRCUIT_BREAKER_TIMEOUT = 60000; // 1 minuto
-
-// MEJORADO: Función de retry con backoff exponencial más inteligente
-async function retryWithBackoff<T>(
-  fn: () => Promise<T>,
-  maxRetries: number = API_CONFIG.maxRetries
-): Promise<T> {
-  let lastError: Error;
-
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      const result = await fn();
-
-      // Reset circuit breaker on success
-      consecutiveFailures = 0;
-
-      return result;
-    } catch (error) {
-      console.log(`API attempt ${attempt}/${maxRetries} failed:`, error);
-      lastError = error as Error;
-
-      // Increment failure counter
-      consecutiveFailures++;
-      lastFailureTime = Date.now();
-
-      // Don't retry on final attempt
-      if (attempt === maxRetries) break;
-
-      // Calculate exponential backoff with jitter
-      const baseDelay = API_CONFIG.baseDelay * Math.pow(2, attempt - 1);
-      const jitter = Math.random() * 1000; // Add randomness
-      const delay = Math.min(baseDelay + jitter, API_CONFIG.maxDelay);
-
-      console.log(`Waiting ${delay}ms before retry ${attempt + 1}...`);
-      await new Promise(resolve => setTimeout(resolve, delay));
-    }
-  }
-
-  throw lastError!;
-}
-
-// NUEVO: Check circuit breaker
-function isCircuitBreakerOpen(): boolean {
-  if (consecutiveFailures >= CIRCUIT_BREAKER_THRESHOLD) {
-    const timeSinceLastFailure = Date.now() - lastFailureTime;
-    return timeSinceLastFailure < CIRCUIT_BREAKER_TIMEOUT;
-  }
-  return false;
-}
-
-// MEJORADO: Función para llamar a Claude con mejor error handling
-async function callClaudeAPI(messages: any[], systemPrompt: string): Promise<any> {
-  // Check circuit breaker
-  if (isCircuitBreakerOpen()) {
-    throw new Error('Circuit breaker is open - too many consecutive failures');
-  }
-
-  return retryWithBackoff(async () => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.timeout);
-
-    try {
-      const response = await anthropic.messages.create({
-        model: "claude-3-5-sonnet-20241022",
-        max_tokens: 1500,
-        temperature: 0.7,
-        top_p: 0.9,
-        system: systemPrompt,
-        messages: messages,
-      });
-
-      clearTimeout(timeoutId);
-      return response;
-    } catch (error) {
-      clearTimeout(timeoutId);
-
-      // Log detailed error info
-      if (error instanceof Error) {
-        console.error('Claude API Error Details:', {
-          message: error.message,
-          name: error.name,
-          stack: error.stack?.substring(0, 500),
-          timestamp: new Date().toISOString()
-        });
-
-        // Handle specific Anthropic errors
-        if (error.message.includes('529')) {
-          throw new Error('ANTHROPIC_OVERLOADED');
-        }
-        if (error.message.includes('rate_limit')) {
-          throw new Error('RATE_LIMITED');
-        }
-        if (error.message.includes('timeout') || error.message.includes('aborted')) {
-          throw new Error('TIMEOUT');
-        }
-      }
-
-      throw error;
-    }
-  });
-}
-
-// MEJORADO: Sistema de fallback más robusto
+// Fallback responses mejoradas
 const getIntelligentFallback = (userMessage: string): string => {
   const normalizedMessage = userMessage.toLowerCase();
 
-  // Detección más precisa de intención
   if (normalizedMessage.includes('fundador') || normalizedMessage.includes('programa')) {
     return `Temporalmente tengo dificultades técnicas, pero ser **Fundador** del sistema 4M significa tres cosas concretas:
 
@@ -160,7 +43,7 @@ _Disculpa la dificultad técnica - el sistema está experimentando alta demanda.
   }
 
   if (normalizedMessage.includes('gano excel') || normalizedMessage.includes('ganoderma') || normalizedMessage.includes('empresa') || normalizedMessage.includes('productos')) {
-    return `Aunque tengo dificultades técnicas, aquí está la información esencial:
+    return `Aunque tengo dificultades técnicas:
 
 **🏢 Gano Excel:** Empresa establecida desde 1995 con más de 30 años de operación continua.
 
@@ -188,21 +71,7 @@ _Disculpa la dificultad técnica - puedes explorar portal.4millones.com mientras
 _Disculpa la dificultad técnica - el sistema está bajo alta demanda._`;
   }
 
-  if (normalizedMessage.includes('resultado') || normalizedMessage.includes('tiempo') || normalizedMessage.includes('cuándo') || normalizedMessage.includes('rápido')) {
-    return `Temporalmente offline, pero timeline realista del sistema 4M:
-
-**⚡ Primeras Comisiones:** 2-4 semanas con plan "Arranque Explosivo"
-
-**💰 Activo Significativo:** 3-6 meses de trabajo consistente
-
-**🏆 Riqueza Real:** 12-18 meses de construcción disciplinada
-
-**📈 La Filosofía de Luis:** No es fácil, pero es simple. No es rápido, pero es seguro. No es para todos, pero es para ti si eres "inconformes inteligentes".
-
-_Disculpa la dificultad técnica - puedes seguir preguntando._`;
-  }
-
-  // Fallback general mejorado
+  // Fallback general
   return `Disculpa, estoy experimentando una dificultad técnica temporal debido a alta demanda del sistema.
 
 **🔧 Mientras se resuelve:**
@@ -215,20 +84,11 @@ _Disculpa la dificultad técnica - puedes seguir preguntando._`;
 ¿Hay algo específico sobre Gano Excel, el programa Fundadores, o el sistema 4M que te gustaría saber?`;
 };
 
-// AQUÍ CONTINÚA CON TODAS TUS 23 RESPUESTAS ESTRATÉGICAS EXISTENTES...
-// [TODO EL CÓDIGO DE STRATEGIC RESPONSES SE MANTIENE IGUAL]
-
-// MEJORADO: Función principal con mejor logging
+// Función principal simplificada
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    console.log('=== NEXUS API Request Started ===', {
-      timestamp: new Date().toISOString(),
-      consecutiveFailures,
-      circuitBreakerOpen: isCircuitBreakerOpen()
-    });
-
     const { message, conversationHistory = [], context = 'general' } = await request.json();
 
     if (!message || typeof message !== 'string') {
@@ -238,7 +98,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // MEJORADO: System prompt más conciso para mejor performance
+    // System prompt simplificado
     const systemPrompt = `You are NEXUS, the digital representative of the 4M system developed by Luis Cabrejo and Liliana Moreno for Gano Excel distribution.
 
 CRITICAL IDENTITY: You speak ABOUT the 4M system (third person), never AS Luis or Liliana (first person).
@@ -253,7 +113,7 @@ KEY FACTS:
 
 Respond professionally about Gano Excel distribution opportunities for Colombian "inconformes inteligentes."`;
 
-    // Preparar mensajes para Claude
+    // Preparar mensajes
     const messages = [
       ...conversationHistory.map((msg: any) => ({
         role: msg.role,
@@ -269,97 +129,56 @@ Respond professionally about Gano Excel distribution opportunities for Colombian
     let metadata = { responseType: 'claude', source: 'api' };
 
     try {
-      // Intentar llamada a Claude con retry mejorado
-      console.log('Attempting Claude API call...');
+      // Intentar Claude API con timeout de 25s
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 25000);
 
-      const claudeResponse = await callClaudeAPI(messages, systemPrompt);
-
-      response = claudeResponse.content[0].text;
-      console.log('Claude API call successful', {
-        responseLength: response.length,
-        duration: Date.now() - startTime
+      const claudeResponse = await anthropic.messages.create({
+        model: "claude-3-5-sonnet-20241022",
+        max_tokens: 1500,
+        temperature: 0.7,
+        top_p: 0.9,
+        system: systemPrompt,
+        messages: messages,
       });
+
+      clearTimeout(timeoutId);
+      response = claudeResponse.content[0].text;
 
     } catch (error) {
-      console.error('Claude API failed after all retries:', error);
-
-      // Use intelligent fallback
+      console.error('Claude API failed:', error);
       response = getIntelligentFallback(message);
-      metadata = { responseType: 'fallback', source: 'local', error: (error as Error).message };
-
-      console.log('Using fallback response', {
-        fallbackLength: response.length,
-        duration: Date.now() - startTime
-      });
+      metadata = { responseType: 'fallback', source: 'local' };
     }
 
-    // MEJORADO: Calcular delay más realista
-    const calculateResponseDelay = (text: string, responseType: string): number => {
-      const wordCount = text.split(' ').length;
-      const baseDelays = {
-        claude: 1800,    // Reducido para mejor UX
-        fallback: 800,   // Más rápido para fallbacks
-        strategic: 1500  // Intermedio
-      };
+    // Calcular delay
+    const wordCount = response.split(' ').length;
+    const baseDelay = metadata.responseType === 'fallback' ? 800 : 1800;
+    const wordDelay = Math.min(wordCount * 12, 1000);
+    const calculatedDelay = baseDelay + wordDelay + (Math.random() * 300 - 150);
+    const finalDelay = Math.max(800, Math.min(calculatedDelay, 3500));
 
-      const wordDelay = Math.min(wordCount * 12, 1000); // Reducido
-      const randomVariation = Math.random() * 300 - 150; // Menos variación
-      const totalDelay = (baseDelays[responseType as keyof typeof baseDelays] || 1200) + wordDelay + randomVariation;
-
-      return Math.max(800, Math.min(totalDelay, 3500)); // Rango más estrecho
-    };
-
-    const calculatedDelay = calculateResponseDelay(response, metadata.responseType);
-
-    const responseData = {
+    return NextResponse.json({
       message: response,
-      delay: calculatedDelay,
+      delay: finalDelay,
       metadata: {
         ...metadata,
         timestamp: new Date().toISOString(),
-        processingTime: Date.now() - startTime,
-        consecutiveFailures,
-        circuitBreakerStatus: isCircuitBreakerOpen() ? 'open' : 'closed'
+        processingTime: Date.now() - startTime
       }
-    };
-
-    console.log('=== NEXUS API Request Completed ===', {
-      success: true,
-      duration: Date.now() - startTime,
-      responseType: metadata.responseType,
-      fallbackUsed: metadata.responseType === 'fallback'
     });
-
-    return NextResponse.json(responseData);
 
   } catch (error) {
-    console.error('=== NEXUS API Request Failed ===', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      duration: Date.now() - startTime,
-      timestamp: new Date().toISOString()
-    });
+    console.error('API Error:', error);
 
-    // Emergency fallback
     return NextResponse.json({
       message: getIntelligentFallback('error'),
       delay: 1000,
       metadata: {
         responseType: 'emergency',
         source: 'error_handler',
-        timestamp: new Date().toISOString(),
-        error: error instanceof Error ? error.message : 'Unknown error'
+        timestamp: new Date().toISOString()
       }
     });
   }
-}
-
-// NUEVO: Health check endpoint
-export async function GET() {
-  return NextResponse.json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    consecutiveFailures,
-    circuitBreakerOpen: isCircuitBreakerOpen(),
-    version: '4.0-resilient'
-  });
 }
