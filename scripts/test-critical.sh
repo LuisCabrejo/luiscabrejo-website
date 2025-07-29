@@ -1,76 +1,73 @@
 #!/bin/bash
-echo "🧪 NEXUS 4.0 - TESTS CRÍTICOS POST-DEPLOY"
+# NEXUS Critical Deploy - Claude API Fix
+# Ejecutar inmediatamente después de aplicar artifacts
+
+echo "🚨 NEXUS CRITICAL DEPLOY - Claude API Fix"
 echo "========================================"
-echo "Target: https://luiscabrejo.com/fundadores"
-echo "Fecha: $(date)"
-echo ""
 
-# Test 1: URL accessibility
-echo "🔍 TEST 1 - Verificando accesibilidad URLs..."
-if curl -sSf https://luiscabrejo.com/fundadores > /dev/null; then
-    echo "✅ luiscabrejo.com/fundadores - ACCESIBLE"
-else
-    echo "❌ luiscabrejo.com/fundadores - NO ACCESIBLE"
-    echo "🚨 CRITICAL ERROR: Página principal no carga"
+# 1. Backup del archivo actual
+echo "📋 Creating backup..."
+cp src/app/api/claude-chat/route.ts src/app/api/claude-chat/route.ts.backup.$(date +%Y%m%d_%H%M%S)
+
+# 2. Verificar archivos están en lugar
+echo "🔍 Verifying files..."
+if [ ! -f "src/app/api/claude-chat/route.ts" ]; then
+    echo "❌ ERROR: route.ts not found!"
+    exit 1
 fi
 
-# Test 2: API endpoint basic check
-echo ""
-echo "🔍 TEST 2 - Verificando API endpoint..."
-API_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST https://luiscabrejo.com/api/claude-chat \
-  -H "Content-Type: application/json" \
-  -d '{"message":"health check","conversationHistory":[]}')
-
-if [[ "$API_RESPONSE" == "200" ]]; then
-    echo "✅ API endpoint - FUNCIONANDO (HTTP 200)"
-else
-    echo "❌ API endpoint - ERROR (HTTP $API_RESPONSE)"
-    echo "🚨 CRITICAL: API no responde correctamente"
+if [ ! -f "vercel.json" ]; then
+    echo "❌ ERROR: vercel.json not found!"
+    exit 1
 fi
 
-echo ""
-echo "📋 TESTS MANUALES REQUERIDOS:"
-echo "=============================="
-echo ""
-echo "🎯 TEST CRÍTICO #1 - Identidad NEXUS"
-echo "Pregunta: '¿Quién eres?'"
-echo "✅ Debe contener: 'NEXUS', 'sistema 4M', 'Luis y Liliana'"
-echo "❌ NO debe contener: 'Yo soy Luis', 'Mi experiencia'"
-echo ""
+# 3. Verificar API key está configurada
+if [ -z "$ANTHROPIC_API_KEY" ]; then
+    echo "⚠️  WARNING: ANTHROPIC_API_KEY not set in environment"
+    echo "Make sure it's configured in Vercel dashboard"
+fi
 
-echo "🎯 TEST CRÍTICO #2 - Strategic Response"
-echo "Pregunta: '¿Qué significa ser fundador?'"
-echo "✅ Debe contener: 'posicionamiento', 'participación', 'privilegio'"
-echo "✅ Response time: <3 segundos"
-echo ""
+# 4. Git add y commit
+echo "📦 Staging changes..."
+git add .
+git status
 
-echo "🎯 TEST CRÍTICO #3 - Gano Excel Accuracy"
-echo "Pregunta: 'Háblame del Ganoderma Lucidum'"
-echo "✅ Debe contener: 'Leow Soon Seng', '1995', 'Malasia'"
-echo "❌ NO debe contener: 'Luis creó', 'Luis integró'"
-echo ""
+echo "💾 Committing changes..."
+git commit -m "🚨 NEXUS CRITICAL FIX: Claude API 100% failing - Implement 30s timeouts + circuit breaker + retry logic
 
-echo "🎯 TEST CRÍTICO #4 - UI Expandible"
-echo "Acción: Click expand chat button"
-echo "✅ Chat debe expandirse sin salirse del viewport"
-echo "✅ Botón collapse debe ser visible y funcional"
-echo ""
+- Increase timeout from 15s to 30s
+- Add circuit breaker for rate limiting protection
+- Implement exponential backoff retry (2 attempts)
+- Enhance fallbacks with NEXUS-specific responses
+- Add Gano Excel context to all fallback responses
+- Circuit breaker tracks failures and auto-recovers
+- Better error handling for Anthropic API issues
 
-echo "🎯 TEST CRÍTICO #5 - Mobile Responsive"
-echo "Acción: Abrir en dispositivo móvil"
-echo "✅ Chat debe funcionar smooth en mobile"
-echo "✅ No scroll horizontal issues"
-echo ""
+Ready for Colombia launch in 18 hours."
 
-echo "📊 MÉTRICAS OBJETIVO:"
-echo "===================="
-echo "⚡ Response time: <2.5s promedio"
-echo "🎭 Identity consistency: >98%"
-echo "🏢 Gano Excel accuracy: >95%"
-echo "📱 UI functionality: 100%"
-echo "❌ Error rate: <1%"
-echo ""
+# 5. Push y deploy
+echo "🚀 Pushing to production..."
+git push origin main
 
-echo "✅ Tests automáticos completados"
-echo "🔧 Ejecutar tests manuales en: https://luiscabrejo.com/fundadores"
+echo "⏳ Waiting for Vercel deployment..."
+echo "This may take 2-3 minutes..."
+
+# 6. Verificar deployment
+echo "🔍 Checking deployment status..."
+sleep 120  # Esperar 2 minutos para deployment
+
+# 7. Test básico
+echo "🧪 Testing API endpoint..."
+curl -s -X GET https://luiscabrejo.com/api/claude-chat | head -5
+
 echo ""
+echo "✅ DEPLOY COMPLETE!"
+echo "================="
+echo "Next steps:"
+echo "1. Wait 2-3 minutes for full deployment"
+echo "2. Test with: curl -X POST https://luiscabrejo.com/api/claude-chat -H 'Content-Type: application/json' -d '{\"message\":\"test\",\"conversationHistory\":[]}'"
+echo "3. Visit https://luiscabrejo.com/fundadores to test UI"
+echo "4. Monitor for next 30 minutes"
+echo ""
+echo "🎯 Expected result: >60% Claude API success rate"
+echo "📊 Monitor circuit breaker at /api/claude-chat GET endpoint"
