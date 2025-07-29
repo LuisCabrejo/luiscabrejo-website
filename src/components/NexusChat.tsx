@@ -82,7 +82,7 @@ export default function NexusChat({
 
   // NUEVO: Función para agregar temas a memoria conversacional
   const addToConversationMemory = (userMessage: string, botResponse: string) => {
-    const topics = [];
+    const topics: string[] = [];
 
     // Detectar temas en el mensaje del usuario
     const topicPatterns = {

@@ -450,7 +450,7 @@ const findStrategicResponse = (userMessage: string) => {
 
   for (const [responseKey, patternList] of Object.entries(patterns)) {
     if (patternList.some(pattern => pattern.test(normalizedMessage))) {
-      return strategicResponses[responseKey];
+      return strategicResponses[responseKey as keyof typeof strategicResponses];
     }
   }
 
@@ -588,7 +588,7 @@ const calculateIntelligentDelay = (responseType: string, wordCount: number): num
 
   const wordDelay = Math.min(wordCount * 15, 1200);
   const randomVariation = Math.random() * 400 - 200;
-  const totalDelay = (baseDelays[responseType] || 1500) + wordDelay + randomVariation;
+  const totalDelay = (baseDelays[responseType as keyof typeof baseDelays] || 1500) + wordDelay + randomVariation;
 
   return Math.max(1000, Math.min(totalDelay, 4000));
 };
@@ -598,7 +598,7 @@ const extractConversationContext = (history: any[]): string => {
   if (!history || history.length === 0) return '';
 
   const recentMessages = history.slice(-6);
-  const topics = [];
+  const topics: string[] = [];
 
   const topicKeywords = {
     'paquetes': ['paquete', 'precio', 'invertir', 'cuesta', 'valor'],
