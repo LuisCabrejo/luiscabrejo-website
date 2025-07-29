@@ -1,4 +1,4 @@
-// /src/components/NexusChat.tsx - CON MEJORAS DE CONECTIVIDAD
+// /src/components/NexusChat.tsx - CON MEJORAS DE CONECTIVIDAD + FIX CRÍTICO
 
 'use client';
 
@@ -169,7 +169,7 @@ export default function NexusChat({
     return OFFLINE_RESPONSES.general;
   };
 
-  // NUEVO: Función de envío con retry automático
+  // FUNCIÓN CRÍTICA MEJORADA: Envío con retry automático + debug
   const sendMessageWithRetry = async (message: string, maxRetries = 3): Promise<any> => {
     const startTime = Date.now();
 
@@ -228,20 +228,62 @@ export default function NexusChat({
         throw new Error(`HTTP ${response.status}`);
 
       } catch (error) {
-        console.log(`Intento ${attempt}/${maxRetries} fallido:`, error);
+        console.log('🔍 NEXUS DEBUG - Error caught:', error);
+        console.log('🔍 NEXUS DEBUG - Error type:', typeof error);
+        console.log('🔍 NEXUS DEBUG - Error message:', (error as Error).message);
 
+        // ENHANCED ERROR HANDLING - Don't go offline immediately
         setConnectionState(prev => ({
           ...prev,
           consecutiveFailures: prev.consecutiveFailures + 1
         }));
 
         if (attempt === maxRetries) {
+          // Try one more time with a direct API call before going offline
+          try {
+            console.log('🔍 NEXUS DEBUG - Last attempt with simple fetch...');
+            const directResponse = await fetch('/api/claude-chat', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                message,
+                conversationHistory: formattedHistory || [],
+                context: context || 'fundadores'
+              })
+            });
+
+            if (directResponse.ok) {
+              const directData = await directResponse.text(); // Get as text first
+              console.log('🔍 NEXUS DEBUG - Direct response text:', directData.substring(0, 200));
+
+              try {
+                const parsedData = JSON.parse(directData);
+                console.log('🔍 NEXUS DEBUG - Parsed successfully:', parsedData.responseType || parsedData.source);
+
+                // SUCCESS! Reset connection state
+                setConnectionState(prev => ({
+                  ...prev,
+                  status: 'connected',
+                  lastSuccessfulConnection: new Date(),
+                  consecutiveFailures: 0
+                }));
+
+                return parsedData; // SUCCESS!
+              } catch (parseError) {
+                console.error('🔍 NEXUS DEBUG - JSON parse failed:', parseError);
+                console.log('🔍 NEXUS DEBUG - Raw response:', directData);
+              }
+            }
+          } catch (lastError) {
+            console.log('🔍 NEXUS DEBUG - Even direct call failed:', lastError);
+          }
+
           setConnectionState(prev => ({
             ...prev,
             status: 'disconnected'
           }));
 
-          // Retornar respuesta offline
+          // Only NOW use offline response
           return {
             message: getOfflineResponse(message),
             delay: 1000,
