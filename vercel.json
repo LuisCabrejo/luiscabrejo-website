@@ -1,19 +1,9 @@
-// vercel.json - Configuración optimizada para NEXUS
 {
   "functions": {
     "src/app/api/claude-chat/route.ts": {
       "maxDuration": 30
     }
   },
-  "env": {
-    "ANTHROPIC_API_KEY": "@anthropic-api-key"
-  },
-  "rewrites": [
-    {
-      "source": "/api/claude-chat",
-      "destination": "/api/claude-chat"
-    }
-  ],
   "headers": [
     {
       "source": "/api/claude-chat",
