@@ -1,58 +1,23 @@
+// /src/app/fundadores/page.tsx - ARCHIVO COMPLETO CON TODOS LOS AJUSTES APLICADOS
+
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Zap,
-  BarChart3,
-  Star,
-  MessageSquare,
-  MessageCircle,
-  X,
-  Send,
-  CheckCircle2,
   Users,
-  Globe,
   Target,
   Sparkles,
-  Bot
+  CheckCircle2
 } from 'lucide-react';
 import ContactModal from '@/components/ContactModal';
-
-// Tipos para el chat
-interface ChatMessage {
-  id: string;
-  text: string;
-  isUser: boolean;
-  timestamp: Date;
-}
+import NexusChat from '@/components/NexusChat';
 
 export default function FundadoresPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [isChatOpen, setChatOpen] = useState(false);
-  const [showChatPrompt, setShowChatPrompt] = useState(false);
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    {
-      id: '1',
-      text: '¡Hola! Soy NEXUS, tu asistente experto en activos empresariales. Conozco profundamente la economía latinoamericana y cómo construir franquicias personales que generen ingresos 24/7. ¿Cuál es tu situación actual?',
-      isUser: false,
-      timestamp: new Date()
-    }
-  ]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const chatMessagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Auto-scroll al último mensaje
-  const scrollToBottom = () => {
-    chatMessagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [chatMessages]);
 
   // Lógica del Contador
   useEffect(() => {
@@ -77,16 +42,6 @@ export default function FundadoresPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Lógica para la invitación proactiva del chat
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!isChatOpen) {
-        setShowChatPrompt(true);
-      }
-    }, 7000);
-    return () => clearTimeout(timer);
-  }, [isChatOpen]);
-
   // Cerrar menú móvil al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = () => {
@@ -103,64 +58,6 @@ export default function FundadoresPage() {
       document.removeEventListener('click', handleClickOutside);
     };
   }, [mobileMenuOpen]);
-
-  const handleChatToggle = () => {
-    setChatOpen(!isChatOpen);
-    setShowChatPrompt(false);
-  };
-
-  // Función para enviar mensaje al chatbot
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputMessage.trim()) return;
-
-    const userMessage: ChatMessage = {
-      id: Date.now().toString(),
-      text: inputMessage,
-      isUser: true,
-      timestamp: new Date()
-    };
-
-    setChatMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
-    setIsTyping(true);
-
-    try {
-      // Llamada a la API de Gemini
-      const response = await fetch('/api/gemini-chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: inputMessage,
-          context: 'fundadores_landing' // Contexto específico para esta página
-        }),
-      });
-
-      const data = await response.json();
-
-      const botMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        text: data.response || 'Lo siento, no pude procesar tu pregunta. ¿Podrías reformularla?',
-        isUser: false,
-        timestamp: new Date()
-      };
-
-      setChatMessages(prev => [...prev, botMessage]);
-    } catch (error) {
-      console.error('Error en chat:', error);
-      const errorMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        text: 'Disculpa, hay un problema técnico. Puedes contactarnos directamente por WhatsApp.',
-        isUser: false,
-        timestamp: new Date()
-      };
-      setChatMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsTyping(false);
-    }
-  };
 
   return (
     <div className="bg-slate-900 text-gray-300 overflow-x-hidden min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -267,8 +164,9 @@ export default function FundadoresPage() {
           <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight">
             El Ecosistema que lo <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Cambia Todo</span>.
           </h1>
+          {/* ✅ DESCRIPCIÓN PRINCIPAL ACTUALIZADA */}
           <p className="mt-4 text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">
-            Y tú eres de los primeros en verlo. Una oportunidad única para ser parte del círculo fundador antes del lanzamiento público.
+            Sistema 4M + Gano Excel: La primera plataforma tecnológica avanzada para distribución masiva de productos únicos con patente mundial. Tú eres de los primeros en verlo.
           </p>
         </header>
 
@@ -325,7 +223,7 @@ export default function FundadoresPage() {
               3 Razones para ser <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Fundador</span>
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {/* Punto 1 */}
+              {/* ✅ PUNTO 1 ACTUALIZADO */}
               <div className="text-center p-6 rounded-2xl"
                    style={{
                      background: 'rgba(255, 255, 255, 0.05)',
@@ -335,14 +233,14 @@ export default function FundadoresPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4">
                   <Zap className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">Acceso Tecnológico Exclusivo</h3>
+                <h3 className="text-xl font-bold text-white mb-3">Stack Tecnológico Avanzado</h3>
                 <p className="text-slate-400">
-                  Herramientas de IA avanzada, automatización empresarial y el stack tecnológico completo
-                  que nos tomó 11 años desarrollar.
+                  Sistema 4M con automatización empresarial, herramientas de IA y tecnología propietaria
+                  que Luis desarrolló en 11 años distribuyendo Gano Excel.
                 </p>
               </div>
 
-              {/* Punto 2 */}
+              {/* ✅ PUNTO 2 ACTUALIZADO */}
               <div className="text-center p-6 rounded-2xl"
                    style={{
                      background: 'rgba(255, 255, 255, 0.05)',
@@ -352,14 +250,14 @@ export default function FundadoresPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full mb-4">
                   <Users className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">Red de Elite Continental</h3>
+                <h3 className="text-xl font-bold text-white mb-3">Red "Inconformes Inteligentes"</h3>
                 <p className="text-slate-400">
-                  Conecta directamente con otros fundadores de alto nivel en 16 países.
-                  Red privada de empresarios ambiciosos.
+                  Conecta con profesionales de alto nivel en 16 países que distribuyen productos Gano Excel
+                  usando el sistema 4M. Red exclusiva de empresarios ambiciosos.
                 </p>
               </div>
 
-              {/* Punto 3 */}
+              {/* ✅ PUNTO 3 ACTUALIZADO */}
               <div className="text-center p-6 rounded-2xl"
                    style={{
                      background: 'rgba(255, 255, 255, 0.05)',
@@ -369,10 +267,10 @@ export default function FundadoresPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full mb-4">
                   <Target className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">Participación en 4 Millones</h3>
+                <h3 className="text-xl font-bold text-white mb-3">Participación Ecosistema 4M</h3>
                 <p className="text-slate-400">
-                  Como fundador, participas activamente en la construcción del ecosistema
-                  que impactará 4 millones de vidas para 2032.
+                  Como fundador, participas en la construcción del "Amazon del bienestar" que impactará
+                  4 millones de vidas con productos únicos Gano Excel para 2032.
                 </p>
               </div>
             </div>
@@ -388,21 +286,23 @@ export default function FundadoresPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
               Activa tu <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Franquicia de Fundador</span> Ahora
             </h2>
+            {/* ✅ DESCRIPCIÓN DE PAQUETES ACTUALIZADA */}
             <p className="text-lg text-slate-300 mb-12 max-w-2xl mx-auto">
-              Elige tu primer inventario para asegurar tu posición. Hoy el rápido se come al lento. La velocidad es la clave.
+              Elige tu inventario inicial de productos Gano Excel y acceso al sistema 4M.
+              Cada paquete incluye herramientas tecnológicas completas y soporte especializado.
             </p>
 
             {/* Paquetes */}
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {/* Paquete Emprendedor */}
+              {/* ✅ PAQUETE EMPRENDEDOR ACTUALIZADO */}
               <div className="p-6 rounded-2xl text-center"
                    style={{
                      background: 'rgba(255, 255, 255, 0.05)',
                      border: '1px solid rgba(255, 255, 255, 0.1)',
                      backdropFilter: 'blur(12px)'
                    }}>
-                <h3 className="text-xl font-bold text-white mb-4">Paquete Emprendedor</h3>
-                <p className="text-slate-400 mb-6">Ideal para empezar a construir tu activo y posicionarte.</p>
+                <h3 className="text-xl font-bold text-white mb-4">Emprendedor</h3>
+                <p className="text-slate-400 mb-6">Acceso completo al sistema 4M + inventario inicial Gano Excel para validar el modelo.</p>
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-white mb-2">$200</div>
                   <div className="text-sm text-slate-400">$900.000 COP</div>
@@ -412,15 +312,15 @@ export default function FundadoresPage() {
                 </button>
               </div>
 
-              {/* Paquete Empresarial */}
+              {/* ✅ PAQUETE EMPRESARIAL ACTUALIZADO */}
               <div className="p-6 rounded-2xl text-center"
                    style={{
                      background: 'rgba(255, 255, 255, 0.05)',
                      border: '1px solid rgba(255, 255, 255, 0.1)',
                      backdropFilter: 'blur(12px)'
                    }}>
-                <h3 className="text-xl font-bold text-white mb-4">Paquete Empresarial</h3>
-                <p className="text-slate-400 mb-6">Un inventario sólido para operar y maximizar tus primeras ganancias.</p>
+                <h3 className="text-xl font-bold text-white mb-4">Empresarial</h3>
+                <p className="text-slate-400 mb-6">Inventario sólido Gano Excel + herramientas 4M para operación profesional y primeras ganancias.</p>
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-white mb-2">$500</div>
                   <div className="text-sm text-slate-400">$2.250.000 COP</div>
@@ -430,7 +330,7 @@ export default function FundadoresPage() {
                 </button>
               </div>
 
-              {/* Paquete Visionario - Más Popular */}
+              {/* ✅ PAQUETE VISIONARIO ACTUALIZADO */}
               <div className="p-6 rounded-2xl text-center relative"
                    style={{
                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
@@ -442,8 +342,8 @@ export default function FundadoresPage() {
                     MÁS POPULAR
                   </span>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">Paquete Visionario</h3>
-                <p className="text-slate-300 mb-6">Para los que piensan en grande y quieren el 100% de los bonos desde el día uno.</p>
+                <h3 className="text-xl font-bold text-white mb-4">Visionario</h3>
+                <p className="text-slate-300 mb-6">Inventario premium Gano Excel + sistema 4M completo para máximo potencial desde día uno.</p>
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-white mb-2">$1000</div>
                   <div className="text-sm text-slate-300">$4.500.000 COP</div>
@@ -480,118 +380,22 @@ export default function FundadoresPage() {
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
                 LC
               </div>
+              {/* ✅ BIO DE LUIS ACTUALIZADA */}
               <div className="text-left">
                 <p className="text-white font-semibold">Luis Cabrejo</p>
-                <p className="text-slate-400 text-sm">Arquitecto de Ecosistemas Digitales</p>
+                <p className="text-slate-400 text-sm">Arquitecto Sistema 4M • Diamante Gano Excel</p>
               </div>
             </div>
           </section>
         </main>
       </div>
 
-      {/* Chatbot Flotante */}
-      <div className="fixed bottom-5 right-5 z-50">
-        {showChatPrompt && (
-          <div className="absolute bottom-20 right-0 w-64 bg-slate-800 p-4 rounded-lg shadow-lg animate-bounce"
-               style={{ backdropFilter: 'blur(12px)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-            <p className="text-sm text-white">
-              ¿Quieres construir un activo empresarial? <br />
-              <span className="font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                NEXUS conoce la fórmula Ray Kroc.
-              </span>
-            </p>
-            <button
-              onClick={() => setShowChatPrompt(false)}
-              className="absolute top-2 right-2 text-slate-400 hover:text-white"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-
-        <button
-          onClick={handleChatToggle}
-          className="bg-gradient-to-r from-blue-500 to-purple-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
-        >
-          {isChatOpen ? <X className="w-8 h-8"/> : <MessageCircle className="w-8 h-8"/>}
-        </button>
-
-        {isChatOpen && (
-          <div className="absolute bottom-20 right-0 w-80 sm:w-96 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
-               style={{
-                 background: 'rgba(23, 31, 42, 0.95)',
-                 border: '1px solid rgba(255, 255, 255, 0.1)',
-                 backdropFilter: 'blur(12px)',
-                 height: '500px' // Altura fija para mejor control
-               }}>
-            {/* Header del Chat */}
-            <div className="p-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white flex-shrink-0">
-              <div className="flex items-center gap-3">
-                <Bot className="w-6 h-6" />
-                <div>
-                  <h4 className="font-bold">NEXUS</h4>
-                  <p className="text-xs opacity-90">Tu Socio Estratégico de IA</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Mensajes del Chat */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-4" style={{ maxHeight: '360px' }}>
-              {chatMessages.map((message) => (
-                <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[280px] p-3 rounded-2xl break-words ${
-                    message.isUser
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white ml-4'
-                      : 'bg-slate-700 text-gray-200 mr-4'
-                  }`}>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
-                    <p className="text-xs opacity-70 mt-2">
-                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </p>
-                  </div>
-                </div>
-              ))}
-
-              {isTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-slate-700 text-gray-200 p-3 rounded-2xl mr-4">
-                    <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                      <span className="text-sm ml-2">NEXUS está escribiendo...</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Elemento invisible para auto-scroll */}
-              <div ref={chatMessagesEndRef} />
-            </div>
-
-            {/* Input del Chat */}
-            <div className="p-3 border-t border-slate-700 flex-shrink-0">
-              <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                  placeholder="Escribe tu pregunta..."
-                  className="flex-1 bg-slate-800 text-white p-3 rounded-lg border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
-                  disabled={isTyping}
-                />
-                <button
-                  type="submit"
-                  disabled={isTyping || !inputMessage.trim()}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-all"
-                >
-                  <Send className="w-4 h-4" />
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
-      </div>
+      {/* ✅ COMPONENTE NEXUS ACTUALIZADO */}
+      <NexusChat
+        context="fundadores"
+        showPrompt={true}
+        promptMessage="¿Listo para construir un activo empresarial con Gano Excel? NEXUS conoce el sistema 4M completo."
+      />
 
       {/* Modal de Contacto */}
       <ContactModal
