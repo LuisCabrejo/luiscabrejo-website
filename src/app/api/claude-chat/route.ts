@@ -1,4 +1,4 @@
-// /src/app/api/claude-chat/route.ts - ARCHIVO FINAL CONSOLIDADO CON TODOS LOS AJUSTES
+// /src/app/api/claude-chat/route.ts - ARCHIVO FINAL CONSOLIDADO CON TODOS LOS AJUSTES + TYPESCRIPT FIXES
 
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
@@ -8,7 +8,7 @@ const anthropic = new Anthropic({
 });
 
 // SISTEMA DE RESPUESTAS ESTRATÉGICAS COMPLETO (23 RESPUESTAS - INCLUYE GANODERMA)
-const strategicResponses = {
+const strategicResponses: Record<string, any> = {
   // GRUPO 1: Respuestas Fundacionales (10)
   "que_significa_ser_fundador": {
     emotion: "BUSQUEDA_DE_EXCLUSIVIDAD",
@@ -450,7 +450,8 @@ const findStrategicResponse = (userMessage: string) => {
 
   for (const [responseKey, patternList] of Object.entries(patterns)) {
     if (patternList.some(pattern => pattern.test(normalizedMessage))) {
-      return strategicResponses[responseKey];
+      // ✅ FIX TYPESCRIPT ERROR: Add type assertion
+      return strategicResponses[responseKey] as any;
     }
   }
 
@@ -580,7 +581,8 @@ const callAnthropicWithRetry = async (messages: any[], maxRetries = 3): Promise<
 
 // Sistema de delays inteligentes
 const calculateIntelligentDelay = (responseType: string, wordCount: number): number => {
-  const baseDelays = {
+  // ✅ FIX TYPESCRIPT ERROR: Add type assertion
+  const baseDelays: Record<string, number> = {
     'basic': 800,
     'strategic': 1800,
     'claude': 2200,
