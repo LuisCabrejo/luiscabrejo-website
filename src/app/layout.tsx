@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     canonical: 'https://luiscabrejo.com',
   },
   verification: {
-    // google: 'tu-codigo-de-verificacion-aqui', // Agregar después de crear property en GSC
+    google: 'DQHUrBjPBwHbzbzvOREAeL_M8Z38CkS2UbTM2jkqoM4',
   },
 };
 
