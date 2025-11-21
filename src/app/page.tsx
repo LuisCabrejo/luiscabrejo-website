@@ -266,7 +266,7 @@ export default function HomePage() {
               <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-gray-700">
                 <div className="text-center mb-6">
                   <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                    portal.4millones.com
+                    app.creatuactivo.com
                   </div>
                   <p className="text-gray-400 mt-2 text-sm sm:text-base">Tu centro de comando empresarial</p>
                 </div>
@@ -379,9 +379,8 @@ export default function HomePage() {
             <div className="text-center sm:text-left">
               <h4 className="font-semibold mb-4">Ecosistema</h4>
               <div className="space-y-2 text-xs sm:text-sm text-gray-400">
-                <div>portal.4millones.com</div>
-                <div>catalogo.4millones.com</div>
-                <div>oportunidad.4millones.com</div>
+                <div>creatuactivo.com</div>
+                <div>app.creatuactivo.com</div>
                 <div>ganocafe.online</div>
               </div>
             </div>

@@ -166,7 +166,7 @@ export default function FundadoresPage() {
           </h1>
           {/* ✅ DESCRIPCIÓN PRINCIPAL ACTUALIZADA */}
           <p className="mt-4 text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">
-            Sistema 4M + Gano Excel: La primera plataforma tecnológica avanzada para distribución masiva de productos únicos con patente mundial. Tú eres de los primeros en verlo.
+            CreaTuActivo.com: La primera App en América para construir un activo.
           </p>
         </header>
 
@@ -235,8 +235,9 @@ export default function FundadoresPage() {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">Stack Tecnológico Avanzado</h3>
                 <p className="text-slate-400">
-                  Sistema 4M con automatización empresarial, herramientas de IA y tecnología propietaria
-                  que Luis desarrolló en 11 años distribuyendo Gano Excel.
+                  App CreaTuActivo.com con automatización empresarial, NEXUS (IA conversacional),
+                  tracking de prospectos, sistema de referidos, y tecnología propietaria desarrollada
+                  en 11 años distribuyendo Gano Excel.
                 </p>
               </div>
 
@@ -253,7 +254,7 @@ export default function FundadoresPage() {
                 <h3 className="text-xl font-bold text-white mb-3">Red "Inconformes Inteligentes"</h3>
                 <p className="text-slate-400">
                   Conecta con profesionales de alto nivel en 16 países que distribuyen productos Gano Excel
-                  usando el sistema 4M. Red exclusiva de empresarios ambiciosos.
+                  usando CreaTuActivo. Red exclusiva de empresarios ambiciosos.
                 </p>
               </div>
 
@@ -267,7 +268,7 @@ export default function FundadoresPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full mb-4">
                   <Target className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">Participación Ecosistema 4M</h3>
+                <h3 className="text-xl font-bold text-white mb-3">Participación Ecosistema CreaTuActivo</h3>
                 <p className="text-slate-400">
                   Como fundador, participas en la construcción del "Amazon del bienestar" que impactará
                   4 millones de vidas con productos únicos Gano Excel para 2032.
@@ -288,7 +289,7 @@ export default function FundadoresPage() {
             </h2>
             {/* ✅ DESCRIPCIÓN DE PAQUETES ACTUALIZADA */}
             <p className="text-lg text-slate-300 mb-12 max-w-2xl mx-auto">
-              Elige tu inventario inicial de productos Gano Excel y acceso al sistema 4M.
+              Elige tu inventario inicial de productos Gano Excel y acceso a CreaTuActivo.
               Cada paquete incluye herramientas tecnológicas completas y soporte especializado.
             </p>
 
@@ -302,7 +303,7 @@ export default function FundadoresPage() {
                      backdropFilter: 'blur(12px)'
                    }}>
                 <h3 className="text-xl font-bold text-white mb-4">Emprendedor</h3>
-                <p className="text-slate-400 mb-6">Acceso completo al sistema 4M + inventario inicial Gano Excel para validar el modelo.</p>
+                <p className="text-slate-400 mb-6">Acceso completo a CreaTuActivo + inventario inicial Gano Excel para validar el modelo.</p>
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-white mb-2">$200</div>
                   <div className="text-sm text-slate-400">$900.000 COP</div>
@@ -320,7 +321,7 @@ export default function FundadoresPage() {
                      backdropFilter: 'blur(12px)'
                    }}>
                 <h3 className="text-xl font-bold text-white mb-4">Empresarial</h3>
-                <p className="text-slate-400 mb-6">Inventario sólido Gano Excel + herramientas 4M para operación profesional y primeras ganancias.</p>
+                <p className="text-slate-400 mb-6">Inventario sólido Gano Excel + herramientas CreaTuActivo para operación profesional y primeras ganancias.</p>
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-white mb-2">$500</div>
                   <div className="text-sm text-slate-400">$2.250.000 COP</div>
@@ -343,7 +344,7 @@ export default function FundadoresPage() {
                   </span>
                 </div>
                 <h3 className="text-xl font-bold text-white mb-4">Visionario</h3>
-                <p className="text-slate-300 mb-6">Inventario premium Gano Excel + sistema 4M completo para máximo potencial desde día uno.</p>
+                <p className="text-slate-300 mb-6">Inventario premium Gano Excel + plataforma CreaTuActivo completa para máximo potencial desde día uno.</p>
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-white mb-2">$1000</div>
                   <div className="text-sm text-slate-300">$4.500.000 COP</div>
@@ -383,7 +384,7 @@ export default function FundadoresPage() {
               {/* ✅ BIO DE LUIS ACTUALIZADA */}
               <div className="text-left">
                 <p className="text-white font-semibold">Luis Cabrejo</p>
-                <p className="text-slate-400 text-sm">Arquitecto Sistema 4M • Diamante Gano Excel</p>
+                <p className="text-slate-400 text-sm">Arquitecto CreaTuActivo • Diamante Gano Excel</p>
               </div>
             </div>
           </section>
@@ -394,7 +395,7 @@ export default function FundadoresPage() {
       <NexusChat
         context="fundadores"
         showPrompt={true}
-        promptMessage="¿Listo para construir un activo empresarial con Gano Excel? NEXUS conoce el sistema 4M completo."
+        promptMessage="¿Listo para construir un activo empresarial con Gano Excel? NEXUS conoce la plataforma CreaTuActivo completa."
       />
 
       {/* Modal de Contacto */}

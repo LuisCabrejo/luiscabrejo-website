@@ -174,7 +174,7 @@ export default function HistoriaPage() {
               </div>
               <h3 className="text-xl font-bold mb-4">Nacimiento del Ecosistema</h3>
               <p className="text-gray-300 mb-4 text-sm leading-relaxed">
-                5 años estudiando, desarrollando herramientas. WordPress, Next.js, IA, automatización. Creación de <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">portal.4millones.com</a> y todo el ecosistema digital.
+                5 años estudiando, desarrollando herramientas. WordPress, Next.js, IA, automatización. Creación de <a href="https://creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">CreaTuActivo.com</a> y todo el ecosistema digital.
               </p>
               <div className="bg-purple-900/20 rounded-lg p-4 border border-purple-800/30">
                 <h4 className="font-semibold text-purple-300 mb-2 text-sm">Stack Tecnológico:</h4>
@@ -206,9 +206,8 @@ export default function HistoriaPage() {
                 <h4 className="font-semibold text-green-300 mb-2 text-sm">El Ecosistema Completo:</h4>
                 <ul className="text-xs text-gray-300 space-y-1">
                   <li>• <a href="https://luiscabrejo.com" className="text-green-400 hover:underline">luiscabrejo.com</a> - Marca personal</li>
-                  <li>• <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">portal.4millones.com</a> - Centro de herramientas</li>
-                  <li>• <a href="https://catalogo.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">catalogo.4millones.com</a> - Catálogos personalizados</li>
-                  <li>• <a href="https://oportunidad.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">oportunidad.4millones.com</a> - Presentaciones</li>
+                  <li>• <a href="https://creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">CreaTuActivo.com</a> - Plataforma empresarial</li>
+                  <li>• <a href="https://app.creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">App CreaTuActivo</a> - Herramientas y automatización</li>
                   <li>• <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">ganocafe.online</a> - E-commerce funcional</li>
                 </ul>
               </div>
@@ -369,7 +368,7 @@ export default function HistoriaPage() {
                     </div>
                     <h3 className="text-2xl font-bold mb-4">Nacimiento del Ecosistema</h3>
                     <p className="text-gray-300 mb-4">
-                      5 años estudiando, desarrollando herramientas. WordPress, Next.js, IA, automatización. Creación de <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">portal.4millones.com</a> y todo el ecosistema digital.
+                      5 años estudiando, desarrollando herramientas. WordPress, Next.js, IA, automatización. Creación de <a href="https://creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">CreaTuActivo.com</a> y todo el ecosistema digital.
                     </p>
                     <div className="text-sm text-gray-400">
                       "Soy obstinado. No te imaginas las horas dedicadas, días completos estudiando."
@@ -399,9 +398,8 @@ export default function HistoriaPage() {
                     <h4 className="font-semibold text-green-300 mb-2">El Ecosistema Completo:</h4>
                     <ul className="text-sm text-gray-300 space-y-1">
                       <li>• <a href="https://luiscabrejo.com" className="text-green-400 hover:underline">luiscabrejo.com</a> - Marca personal</li>
-                      <li>• <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">portal.4millones.com</a> - Centro de herramientas</li>
-                      <li>• <a href="https://catalogo.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">catalogo.4millones.com</a> - Catálogos personalizados</li>
-                      <li>• <a href="https://oportunidad.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">oportunidad.4millones.com</a> - Presentaciones</li>
+                      <li>• <a href="https://creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">CreaTuActivo.com</a> - Plataforma empresarial</li>
+                      <li>• <a href="https://app.creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">App CreaTuActivo</a> - Herramientas y automatización</li>
                       <li>• <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">ganocafe.online</a> - E-commerce funcional</li>
                     </ul>
                   </div>

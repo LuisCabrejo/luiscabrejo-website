@@ -83,8 +83,8 @@ export default function EcosistemaPage() {
               </div>
 
               <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-                <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent hover:underline">
-                  portal.4millones.com
+                <a href="https://app.creatuactivo.com" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent hover:underline">
+                  app.creatuactivo.com
                 </a>
               </h2>
 
@@ -123,7 +123,7 @@ export default function EcosistemaPage() {
                   Acceder al Portal <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <a
-                  href="https://portal.4millones.com"
+                  href="https://app.creatuactivo.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all flex items-center gap-2 justify-center"
@@ -141,7 +141,7 @@ export default function EcosistemaPage() {
                     <div className="w-2 sm:w-3 h-2 sm:h-3 bg-red-500 rounded-full"></div>
                     <div className="w-2 sm:w-3 h-2 sm:h-3 bg-yellow-500 rounded-full"></div>
                     <div className="w-2 sm:w-3 h-2 sm:h-3 bg-green-500 rounded-full"></div>
-                    <div className="ml-2 sm:ml-4 text-xs text-gray-400">portal.4millones.com</div>
+                    <div className="ml-2 sm:ml-4 text-xs text-gray-400">app.creatuactivo.com</div>
                   </div>
 
                   <div className="space-y-3 sm:space-y-4">
@@ -215,8 +215,8 @@ export default function EcosistemaPage() {
                 <Monitor className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-4">
-                <a href="https://catalogo.4millones.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                  catalogo.4millones.com
+                <a href="https://creatuactivo.com/sistema/productos" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
+                  Catálogo Productos
                 </a>
               </h3>
               <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">Sistema de catálogos personalizados y escalables. Cada miembro tiene su propia tienda digital optimizada.</p>
@@ -235,12 +235,12 @@ export default function EcosistemaPage() {
                 </div>
               </div>
               <a
-                href="https://catalogo.4millones.com"
+                href="https://creatuactivo.com/sistema/productos"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full bg-blue-500/20 border border-blue-500/50 px-4 py-3 rounded-full font-semibold hover:bg-blue-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
               >
-                Ver Demo <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
+                Ver Catálogo <ExternalLink className="w-3 sm:w-4 h-3 sm:h-4" />
               </a>
             </div>
 
@@ -250,8 +250,8 @@ export default function EcosistemaPage() {
                 <PlayCircle className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
               </div>
               <h3 className="text-lg sm:text-xl font-semibold mb-4">
-                <a href="https://oportunidad.4millones.com" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition-colors">
-                  oportunidad.4millones.com
+                <a href="https://creatuactivo.com/presentacion-empresarial" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition-colors">
+                  Presentación Empresarial
                 </a>
               </h3>
               <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">Presentación profesional del modelo empresarial. Sin jerga MLM tradicional, enfoque corporativo.</p>
@@ -270,7 +270,7 @@ export default function EcosistemaPage() {
                 </div>
               </div>
               <a
-                href="https://oportunidad.4millones.com"
+                href="https://creatuactivo.com/presentacion-empresarial"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full bg-purple-500/20 border border-purple-500/50 px-4 py-3 rounded-full font-semibold hover:bg-purple-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"

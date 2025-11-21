@@ -222,7 +222,7 @@ export default function VisionPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                  <span className="text-sm">Portal <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">4millones.com</a> a escala continental</span>
+                  <span className="text-sm">Plataforma <a href="https://creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">CreaTuActivo.com</a> a escala continental</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
@@ -417,7 +417,7 @@ export default function VisionPage() {
                       <div className="space-y-3 mb-6">
                         <div className="flex items-center gap-2 lg:justify-end">
                           <CheckCircle className="w-5 h-5 text-green-400" />
-                          <span>Portal <a href="https://portal.4millones.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">4millones.com</a> a escala continental</span>
+                          <span>Plataforma <a href="https://creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">CreaTuActivo.com</a> a escala continental</span>
                         </div>
                         <div className="flex items-center gap-2 lg:justify-end">
                           <CheckCircle className="w-5 h-5 text-green-400" />
