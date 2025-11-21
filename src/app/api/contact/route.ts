@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { createClient } from '@supabase/supabase-js';
 
 // Debugging específico para Luis Cabrejo
 function debugLog(message: string, data?: any) {
   const timestamp = new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' });
   console.log(`🔧 [${timestamp}] ${message}`, data || '');
 }
+
+// Inicializar Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 export async function POST(request: NextRequest) {
   debugLog('🚀 INICIO - Procesando formulario luiscabrejo.com');
@@ -190,6 +196,35 @@ Arquitecto de Ecosistemas Digitales
       }
     } catch (userEmailError) {
       debugLog('⚠️ Error en confirmación al usuario (continuando...)', userEmailError);
+    }
+
+    // Guardar contacto en Supabase
+    debugLog('💾 Guardando contacto en Supabase...');
+    try {
+      const { data: contactData, error: supabaseError } = await supabase
+        .from('contacts_luiscabrejo')
+        .insert({
+          name,
+          email,
+          phone: phone || null,
+          country: country || null,
+          message: message || null,
+          form_type: formType || 'Contacto General',
+          source: 'luiscabrejo.com',
+          email_sent_to_luis: emailToLuisResult.data?.id || null,
+          email_sent_to_user: userEmailId,
+          created_at: new Date().toISOString()
+        })
+        .select()
+        .single();
+
+      if (supabaseError) {
+        debugLog('⚠️ Error guardando en Supabase (no crítico)', supabaseError);
+      } else {
+        debugLog('✅ Contacto guardado en Supabase', { id: contactData?.id });
+      }
+    } catch (supabaseError) {
+      debugLog('⚠️ Error en Supabase (continuando...)', supabaseError);
     }
 
     // Respuesta exitosa
