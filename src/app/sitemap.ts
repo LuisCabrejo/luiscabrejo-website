@@ -64,5 +64,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 0.95,
     },
+
+    // ========================================
+    // LEGAL
+    // ========================================
+    {
+      url: `${baseUrl}/privacidad`,
+      lastModified,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
   ];
 }
