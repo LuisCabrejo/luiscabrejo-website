@@ -26,7 +26,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
 
     // ========================================
-    // PÁGINAS DE ECOSISTEMA
+    // HISTORIA
+    // ========================================
+    {
+      url: `${baseUrl}/historia`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+
+    // ========================================
+    // ECOSISTEMA
     // ========================================
     {
       url: `${baseUrl}/ecosistema`,
@@ -34,17 +44,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+
+    // ========================================
+    // VISIÓN 4M
+    // ========================================
     {
-      url: `${baseUrl}/ecosistema/academia`,
+      url: `${baseUrl}/vision`,
       lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/ecosistema/comunidad`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.8,
+      changeFrequency: 'monthly',
+      priority: 0.85,
     },
 
     // ========================================
@@ -55,129 +63,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: 'daily',
       priority: 0.95,
-    },
-    {
-      url: `${baseUrl}/fundadores-network`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/fundadores-profesionales`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-
-    // ========================================
-    // PRESENTACIÓN EMPRESARIAL
-    // ========================================
-    {
-      url: `${baseUrl}/presentacion-empresarial`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-
-    // ========================================
-    // MODELO DE VALOR Y PAQUETES
-    // ========================================
-    {
-      url: `${baseUrl}/modelo-de-valor`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/paquetes`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/planes`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.7, // Menor prioridad (similar a paquetes)
-    },
-
-    // ========================================
-    // SISTEMA
-    // ========================================
-    {
-      url: `${baseUrl}/sistema/framework-iaa`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/sistema/tecnologia`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/sistema/productos`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.95,
-    },
-    {
-      url: `${baseUrl}/sistema/socio-corporativo`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-
-    // ========================================
-    // SOLUCIONES (6 arquetipos)
-    // ========================================
-    {
-      url: `${baseUrl}/soluciones/profesional-con-vision`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/soluciones/emprendedor-negocio`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/soluciones/independiente-freelancer`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/soluciones/lider-del-hogar`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/soluciones/lider-comunidad`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/soluciones/joven-con-ambicion`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.85,
-    },
-
-    // ========================================
-    // LEGAL
-    // Privacidad tiene prioridad baja (no es contenido de conversión)
-    // ========================================
-    {
-      url: `${baseUrl}/privacidad`,
-      lastModified,
-      changeFrequency: 'yearly',
-      priority: 0.3,
     },
   ];
 }
