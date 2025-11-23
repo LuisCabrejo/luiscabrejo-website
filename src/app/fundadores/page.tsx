@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import ContactModal from '@/components/ContactModal';
 import NexusChat from '@/components/NexusChat';
+import Footer from '@/components/Footer';
 
 export default function FundadoresPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
@@ -404,6 +405,9 @@ export default function FundadoresPage() {
         onClose={() => setContactModalOpen(false)}
         formType="fundadores"
       />
+
+      {/* Footer Unificado */}
+      <Footer />
     </div>
   );
 }
