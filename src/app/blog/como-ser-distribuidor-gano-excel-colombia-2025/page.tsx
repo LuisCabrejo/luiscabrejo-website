@@ -101,9 +101,17 @@ export default function ArticlePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <article className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 pt-20">
+      <article className="min-h-screen bg-slate-900 overflow-x-hidden">
+        {/* Fondo decorativo con gradientes */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+          <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-blue-600 rounded-full opacity-20 blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-purple-600 rounded-full opacity-20 blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+        </div>
+
+        <Navigation />
+
         {/* Hero */}
-        <div className="relative overflow-hidden border-b border-slate-700/50">
+        <div className="relative overflow-hidden border-b border-slate-700/50 pt-28 md:pt-36">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10"></div>
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
             <div className="mb-6 flex items-center justify-between">

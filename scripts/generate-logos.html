@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Logos LC - Luis Cabrejo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .logos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid #e9ecef;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .logo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .logo-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .logo-preview {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            border: 1px solid #dee2e6;
+        }
+
+        .logo-preview.dark {
+            background: #1a202c;
+        }
+
+        .logo-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-download {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        .btn-copy {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background: #38a169;
+            transform: scale(1.05);
+        }
+
+        .info-section {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .info-section h3 {
+            color: #1976d2;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-section p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .info-section ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+            color: #555;
+        }
+
+        .info-section li {
+            margin: 0.5rem 0;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Generador de Logos LC</h1>
+        <p class="subtitle">Luis Cabrejo - CreaTuActivo.com | Selecciona y descarga tu logo favorito</p>
+
+        <div class="logos-grid">
+            <!-- Logo 1: Minimalista Circular -->
+            <div class="logo-card">
+                <h3 class="logo-title">1. Minimalista Circular</h3>
+                <div class="logo-preview">
+                    <svg id="logo1" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="90" cy="90" r="85" fill="#667eea" stroke="#5568d3" stroke-width="4"/>
+                        <text x="90" y="115" font-family="Arial, sans-serif" font-size="72" font-weight="700" fill="white" text-anchor="middle">LC</text>
+                    </svg>
+                </div>
+                <div class="logo-actions">
+                    <button class="btn-download" onclick="downloadSVG('logo1', 'LC-logo-circular.svg')">📥 Descargar</button>
+                    <button class="btn-copy" onclick="copySVG('logo1')">📋 Copiar SVG</button>
+                </div>
+            </div>
+
+            <!-- Logo 2: Cuadrado con Gradiente -->
+            <div class="logo-card">
+                <h3 class="logo-title">2. Cuadrado con Gradiente</h3>
+                <div class="logo-preview">
+                    <svg id="logo2" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="5" y="5" width="170" height="170" rx="20" fill="url(#grad1)"/>
+                        <text x="90" y="120" font-family="Arial, sans-serif" font-size="80" font-weight="700" fill="white" text-anchor="middle">LC</text>
+                    </svg>
+                </div>
+                <div class="logo-actions">
+                    <button class="btn-download" onclick="downloadSVG('logo2', 'LC-logo-gradient.svg')">📥 Descargar</button>
+                    <button class="btn-copy" onclick="copySVG('logo2')">📋 Copiar SVG</button>
+                </div>
+            </div>
+
+            <!-- Logo 3: Hexágono Moderno -->
+            <div class="logo-card">
+                <h3 class="logo-title">3. Hexágono Moderno</h3>
+                <div class="logo-preview">
+                    <svg id="logo3" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <polygon points="90,10 165,50 165,130 90,170 15,130 15,50" fill="url(#grad2)"/>
+                        <text x="90" y="115" font-family="Arial, sans-serif" font-size="70" font-weight="700" fill="white" text-anchor="middle">LC</text>
+                    </svg>
+                </div>
+                <div class="logo-actions">
+                    <button class="btn-download" onclick="downloadSVG('logo3', 'LC-logo-hexagon.svg')">📥 Descargar</button>
+                    <button class="btn-copy" onclick="copySVG('logo3')">📋 Copiar SVG</button>
+                </div>
+            </div>
+
+            <!-- Logo 4: Escudo Profesional -->
+            <div class="logo-card">
+                <h3 class="logo-title">4. Escudo Profesional</h3>
+                <div class="logo-preview">
+                    <svg id="logo4" width="180" height="200" viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="grad3" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M 90,10 L 170,40 L 170,100 Q 170,160 90,190 Q 10,160 10,100 L 10,40 Z" fill="url(#grad3)" stroke="#5568d3" stroke-width="3"/>
+                        <text x="90" y="120" font-family="Arial, sans-serif" font-size="75" font-weight="700" fill="white" text-anchor="middle">LC</text>
+                    </svg>
+                </div>
+                <div class="logo-actions">
+                    <button class="btn-download" onclick="downloadSVG('logo4', 'LC-logo-shield.svg')">📥 Descargar</button>
+                    <button class="btn-copy" onclick="copySVG('logo4')">📋 Copiar SVG</button>
+                </div>
+            </div>
+
+            <!-- Logo 5: Minimalista Monocromático -->
+            <div class="logo-card">
+                <h3 class="logo-title">5. Minimalista Negro (Favicon)</h3>
+                <div class="logo-preview">
+                    <svg id="logo5" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="5" width="170" height="170" rx="15" fill="#1a202c"/>
+                        <text x="90" y="125" font-family="Arial, sans-serif" font-size="85" font-weight="700" fill="white" text-anchor="middle">LC</text>
+                    </svg>
+                </div>
+                <div class="logo-actions">
+                    <button class="btn-download" onclick="downloadSVG('logo5', 'LC-logo-minimal.svg')">📥 Descargar</button>
+                    <button class="btn-copy" onclick="copySVG('logo5')">📋 Copiar SVG</button>
+                </div>
+            </div>
+
+            <!-- Logo 6: Círculo con Borde Dorado -->
+            <div class="logo-card">
+                <h3 class="logo-title">6. Premium Gold</h3>
+                <div class="logo-preview dark">
+                    <svg id="logo6" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ffed4e;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="90" cy="90" r="85" fill="#1a202c" stroke="url(#goldGrad)" stroke-width="6"/>
+                        <text x="90" y="115" font-family="Arial, sans-serif" font-size="72" font-weight="700" fill="url(#goldGrad)" text-anchor="middle">LC</text>
+                    </svg>
+                </div>
+                <div class="logo-actions">
+                    <button class="btn-download" onclick="downloadSVG('logo6', 'LC-logo-gold.svg')">📥 Descargar</button>
+                    <button class="btn-copy" onclick="copySVG('logo6')">📋 Copiar SVG</button>
+                </div>
+            </div>
+
+            <!-- Logo 7: Cuadrado Redondeado Simple -->
+            <div class="logo-card">
+                <h3 class="logo-title">7. Cuadrado Simple (Favicon)</h3>
+                <div class="logo-preview">
+                    <svg id="logo7" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="5" width="170" height="170" rx="25" fill="#667eea"/>
+                        <text x="90" y="125" font-family="Arial, sans-serif" font-size="85" font-weight="700" fill="white" text-anchor="middle">LC</text>
+                    </svg>
+                </div>
+                <div class="logo-actions">
+                    <button class="btn-download" onclick="downloadSVG('logo7', 'LC-logo-square.svg')">📥 Descargar</button>
+                    <button class="btn-copy" onclick="copySVG('logo7')">📋 Copiar SVG</button>
+                </div>
+            </div>
+
+            <!-- Logo 8: Estilo Tech/Startup -->
+            <div class="logo-card">
+                <h3 class="logo-title">8. Tech Startup Style</h3>
+                <div class="logo-preview">
+                    <svg id="logo8" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="techGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="15" y="15" width="150" height="150" rx="30" fill="url(#techGrad)"/>
+                        <text x="90" y="120" font-family="Arial, sans-serif" font-size="75" font-weight="700" fill="white" text-anchor="middle">LC</text>
+                        <circle cx="135" cy="45" r="8" fill="#fbbf24" opacity="0.8"/>
+                    </svg>
+                </div>
+                <div class="logo-actions">
+                    <button class="btn-download" onclick="downloadSVG('logo8', 'LC-logo-tech.svg')">📥 Descargar</button>
+                    <button class="btn-copy" onclick="copySVG('logo8')">📋 Copiar SVG</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>📖 Instrucciones de Uso</h3>
+            <p><strong>Para usar como Favicon en Next.js:</strong></p>
+            <ul>
+                <li>Descarga el logo que prefieras (recomendado: #5 o #7 para favicon)</li>
+                <li>Guárdalo como <code>icon.svg</code> en la carpeta <code>/src/app/</code></li>
+                <li>Next.js 15 generará automáticamente el favicon desde ese archivo</li>
+                <li>También puedes generar versiones PNG con herramientas online si necesitas <code>favicon.ico</code></li>
+            </ul>
+
+            <p><strong>Para usar como Logo en el sitio:</strong></p>
+            <ul>
+                <li>Descarga el SVG y colócalo en <code>/public/logos/</code></li>
+                <li>Importa en tus componentes: <code>&lt;Image src="/logos/LC-logo.svg" alt="LC" /&gt;</code></li>
+                <li>Los SVG son escalables y perfectos para cualquier tamaño</li>
+            </ul>
+
+            <p><strong>Tamaños recomendados:</strong></p>
+            <ul>
+                <li><strong>Favicon:</strong> 32x32, 64x64, 128x128 píxeles</li>
+                <li><strong>Logo header:</strong> Altura 40-60px</li>
+                <li><strong>Logo hero:</strong> 200-400px</li>
+                <li><strong>Social media:</strong> 1200x1200px (exportar a PNG)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="successMessage" class="success-message">
+        ✓ Copiado al portapapeles
+    </div>
+
+    <script>
+        function downloadSVG(elementId, filename) {
+            const svgElement = document.getElementById(elementId);
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const blob = new Blob([svgData], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showSuccess('Descargado: ' + filename);
+        }
+
+        function copySVG(elementId) {
+            const svgElement = document.getElementById(elementId);
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+
+            navigator.clipboard.writeText(svgData).then(() => {
+                showSuccess('Código SVG copiado al portapapeles');
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+                alert('No se pudo copiar. Intenta con el botón de descarga.');
+            });
+        }
+
+        function showSuccess(message) {
+            const successEl = document.getElementById('successMessage');
+            successEl.textContent = '✓ ' + message;
+            successEl.classList.add('show');
+
+            setTimeout(() => {
+                successEl.classList.remove('show');
+            }, 3000);
+        }
+
+        // Información al cargar
+        console.log('🎨 Generador de Logos LC - Luis Cabrejo');
+        console.log('💡 Tip: Haz clic en "Descargar" para guardar el SVG');
+        console.log('📋 Tip: Haz clic en "Copiar SVG" para copiar el código');
+    </script>
+</body>
+</html>
