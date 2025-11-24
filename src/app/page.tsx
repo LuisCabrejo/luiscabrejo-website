@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ChevronDown, Play, Users, Globe, Zap, ArrowRight, Star, Check, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import ContactModal from '@/components/ContactModal';
+import Footer from '@/components/Footer';
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function HomePage() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8 text-sm">
+              <Link href="/fundadores" className="hover:text-purple-400 transition-colors font-semibold">Programa Fundadores</Link>
               <Link href="/historia" className="hover:text-blue-400 transition-colors">Mi Historia</Link>
               <Link href="/ecosistema" className="hover:text-blue-400 transition-colors">Ecosistema</Link>
               <Link href="/vision" className="hover:text-blue-400 transition-colors">Visión 4M</Link>
@@ -48,6 +50,13 @@ export default function HomePage() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-black/90 backdrop-blur-lg border-t border-white/10">
             <div className="px-6 py-4 space-y-4">
+              <Link
+                href="/fundadores"
+                className="block text-lg font-bold hover:text-purple-400 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Programa Fundadores
+              </Link>
               <Link
                 href="/historia"
                 className="block text-lg font-medium hover:text-blue-400 transition-colors"
@@ -95,27 +104,27 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
           <div className="space-y-6 lg:space-y-8 text-center lg:text-left">
             <div className="inline-block bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm border border-blue-500/30">
-              ✨ Arquitecto de Ecosistemas Digitales
+              💎 Diamante Gano Excel 11 años | 16 países
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-6xl xl:text-7xl font-bold leading-tight">
-              Construyendo
+              Gano Excel con
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent block">
-                Activos Empresariales
+                Tecnología e IA
               </span>
-              en América
+              Ingresos Residuales Simples
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              En 12 meses transformé mi vida de la quiebra total a construir un activo empresarial con <Link href="/ecosistema" className="text-blue-400 hover:underline">Gano Excel y CreaTuActivo.com</Link> que genera ingresos en todo el continente. Ahora ayudo a profesionales ambiciosos a crear sus propios ecosistemas digitales de negocio.
+              <strong className="text-purple-300">¿Ya conoces Gano Excel pero lo dejaste porque era complicado?</strong> Reactiva tu negocio con <Link href="/ecosistema" className="text-blue-400 hover:underline">tecnología IA + automatización</Link> que hace fácil lo que antes era difícil. Sistema probado en 16 países para construir ingresos residuales sin complicaciones.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Link href="/historia" className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 group justify-center">
-                Ver Mi Historia <ArrowRight className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform" />
+              <Link href="/fundadores" className="bg-gradient-to-r from-purple-500 to-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all flex items-center gap-2 group justify-center">
+                <Zap className="w-4 sm:w-5 h-4 sm:h-5" /> Ver Programa Fundadores
               </Link>
-              <Link href="/ecosistema" className="border border-white/30 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white/10 transition-all flex items-center gap-2 justify-center">
-                <Play className="w-4 sm:w-5 h-4 sm:h-5" /> Conoce el Ecosistema
+              <Link href="/ecosistema" className="border border-purple-400/50 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-purple-500/10 transition-all flex items-center gap-2 justify-center">
+                <Play className="w-4 sm:w-5 h-4 sm:h-5" /> Conoce la Tecnología
               </Link>
             </div>
 
@@ -306,6 +315,111 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Sección REACTIVACIÓN - Para 550K ex-distribuidores */}
+      <section className="py-16 sm:py-20 bg-gradient-to-br from-purple-900/30 via-slate-900 to-blue-900/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="inline-block bg-purple-500/20 rounded-full px-4 py-2 text-sm border border-purple-500/30 mb-6">
+              💡 Para quienes ya conocen Gano Excel
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+              ¿Dejaste Gano Excel Porque Era Complicado?
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Más de <strong className="text-purple-300">550,000 personas en Colombia</strong> conocen Gano Excel y saben que funciona.
+              Pero sin herramientas, era complicado. <strong className="text-blue-300">Ahora puedes volver con tecnología</strong> que hace todo más simple.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+            {/* Antes */}
+            <div className="bg-red-900/10 border border-red-500/30 rounded-2xl p-6 sm:p-8">
+              <div className="text-red-400 text-4xl mb-4">❌</div>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 text-red-300">Antes (Por eso lo dejaste)</h3>
+              <ul className="space-y-3 text-gray-300">
+                <li className="flex items-start gap-3">
+                  <span className="text-red-400 mt-1">•</span>
+                  <span>Seguimiento manual de contactos</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-red-400 mt-1">•</span>
+                  <span>Explicar lo mismo 100 veces</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-red-400 mt-1">•</span>
+                  <span>Sin sistema para escalar</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-red-400 mt-1">•</span>
+                  <span>Demasiado tiempo invertido</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-red-400 mt-1">•</span>
+                  <span>Difícil enseñar a tu equipo</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Ahora */}
+            <div className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 border border-purple-500/50 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                2025
+              </div>
+              <div className="text-green-400 text-4xl mb-4">✅</div>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 text-green-300">Ahora (Con Tecnología)</h3>
+              <ul className="space-y-3 text-gray-200">
+                <li className="flex items-start gap-3">
+                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
+                  <span><strong>IA NEXUS</strong> responde dudas 24/7</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
+                  <span><strong>CRM automatizado</strong> hace seguimiento</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
+                  <span><strong>Sistema replicable</strong> para tu equipo</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
+                  <span><strong>Dashboard en tiempo real</strong></span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
+                  <span><strong>Capacitación automática</strong> integrada</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* CTA Reactivación */}
+          <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/30 rounded-2xl p-8 sm:p-12 text-center max-w-4xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-bold mb-4">
+              Regla de los 6 Meses: Puedes Empezar de Nuevo
+            </h3>
+            <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+              Si dejaste de comprar hace más de 6 meses, puedes reactivarte con cualquier líder.
+              <strong className="text-purple-300"> Ahora con tecnología que hace la diferencia.</strong>
+              Sistema probado en 16 países.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/fundadores"
+                className="bg-gradient-to-r from-purple-500 to-blue-600 px-8 py-4 rounded-full font-bold text-lg hover:shadow-xl transition-all inline-flex items-center gap-2 justify-center"
+              >
+                <Zap className="w-5 h-5" /> Ver Programa con Tecnología
+              </Link>
+              <button
+                onClick={() => setContactModalOpen(true)}
+                className="border border-purple-400/50 px-8 py-4 rounded-full font-semibold text-lg hover:bg-purple-500/10 transition-all"
+              >
+                Hablar con Luis Cabrejo
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Vision 4M Section - IMPROVED MOBILE */}
       <section className="py-16 sm:py-20 bg-gradient-to-r from-blue-900/20 to-purple-900/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
@@ -372,52 +486,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer - IMPROVED MOBILE */}
-      <footer className="py-8 sm:py-12 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            <div className="text-center sm:text-left">
-              <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                Luis Cabrejo
-              </div>
-              <p className="text-gray-400 text-xs sm:text-sm">
-                Arquitecto de Ecosistemas Digitales. Transformando vidas desde 2013.
-              </p>
-            </div>
-
-            <div className="text-center sm:text-left">
-              <h4 className="font-semibold mb-4">Ecosistema</h4>
-              <div className="space-y-2 text-xs sm:text-sm text-gray-400">
-                <div>creatuactivo.com</div>
-                <div>app.creatuactivo.com</div>
-                <div>ganocafe.online</div>
-              </div>
-            </div>
-
-            <div className="text-center sm:text-left">
-              <h4 className="font-semibold mb-4">Conecta</h4>
-              <div className="space-y-2 text-xs sm:text-sm text-gray-400">
-                <div>LinkedIn</div>
-                <div>Instagram</div>
-                <div>Newsletter</div>
-                <div>Discord</div>
-              </div>
-            </div>
-
-            <div className="text-center sm:text-left">
-              <h4 className="font-semibold mb-4">Países Activos</h4>
-              <div className="text-xs text-gray-400 leading-relaxed">
-                México, Guatemala, El Salvador, Costa Rica, Honduras, Panamá, Colombia,
-                Venezuela, Brasil, Ecuador, Perú, Bolivia, Chile, Argentina, Uruguay, Estados Unidos
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center text-gray-400 text-xs sm:text-sm">
-            <p>&copy; 2025 Luis Cabrejo. Construyendo el futuro del bienestar económico en América.</p>
-          </div>
-        </div>
-      </footer>
+      {/* Footer Unificado */}
+      <Footer />
 
       {/* Contact Modal */}
       <ContactModal
