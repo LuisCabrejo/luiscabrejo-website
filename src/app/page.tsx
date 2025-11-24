@@ -327,7 +327,7 @@ export default function HomePage() {
             </h2>
             <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Miles de personas conocen esta industria y saben que funciona.
-              Pero sin herramientas, era complicado. <strong className="text-blue-300">Ahora puedes desarrollar tu negocio con tecnología que hace sencillo lo complejo</strong>, como Netflix hizo fácil lo que antes requería ir a Blockbuster.
+              Pero sin herramientas, era complicado. <strong className="text-blue-300">Ahora puedes desarrollar tu negocio con tecnología que hace sencillo lo complejo</strong>, como Nequi hizo fácil lo que antes requería ir al banco.
             </p>
           </div>
 
@@ -339,9 +339,9 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-600/30">
-                <div className="text-sm text-gray-400 mb-2">Antes: Alquilar películas</div>
-                <div className="text-lg font-bold text-white mb-2">Ahora: Netflix</div>
-                <div className="text-sm text-gray-300">Streaming cuando quieras</div>
+                <div className="text-sm text-gray-400 mb-2">Antes: Filas en el banco</div>
+                <div className="text-lg font-bold text-white mb-2">Ahora: Nequi</div>
+                <div className="text-sm text-gray-300">Transacciones instantáneas</div>
               </div>
 
               <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-600/30">
@@ -357,15 +357,15 @@ export default function HomePage() {
               </div>
 
               <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-600/30">
-                <div className="text-sm text-gray-400 mb-2">Antes: Filas en el banco</div>
-                <div className="text-lg font-bold text-white mb-2">Ahora: App Bancaria</div>
-                <div className="text-sm text-gray-300">Transacciones en segundos</div>
+                <div className="text-sm text-gray-400 mb-2">Antes: Llamar taxi</div>
+                <div className="text-lg font-bold text-white mb-2">Ahora: Uber/Didi</div>
+                <div className="text-sm text-gray-300">Movilidad inteligente</div>
               </div>
 
               <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-600/30">
-                <div className="text-sm text-gray-400 mb-2">Antes: Taxi en la calle</div>
-                <div className="text-lg font-bold text-white mb-2">Ahora: Uber</div>
-                <div className="text-sm text-gray-300">Movilidad inteligente</div>
+                <div className="text-sm text-gray-400 mb-2">Antes: Ir al supermercado</div>
+                <div className="text-lg font-bold text-white mb-2">Ahora: Rappi</div>
+                <div className="text-sm text-gray-300">Domicilios en minutos</div>
               </div>
 
               <div className="bg-gradient-to-br from-purple-900/50 to-blue-900/50 rounded-xl p-6 border-2 border-purple-500/50">
