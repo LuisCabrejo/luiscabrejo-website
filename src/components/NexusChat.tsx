@@ -1033,8 +1033,8 @@ Portal: luiscabrejo.com/fundadores`;
   const getChatContainerClasses = () => {
     const dimensions = getChatDimensions();
 
-    // Todos los estados usan posicionamiento centrado como CreaTuActivo.com
-    return `${dimensions.width} ${dimensions.height} shadow-2xl shadow-purple-500/20 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 z-50`;
+    // Solo devolvemos las dimensiones, el resto está en el div interno
+    return `${dimensions.width} ${dimensions.height}`;
   };
 
   // Función para obtener estilos dinámicos del chat container (igual a CreaTuActivo.com)
@@ -1216,11 +1216,12 @@ Portal: luiscabrejo.com/fundadores`;
           className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 bg-black/20 backdrop-blur-sm"
           onClick={handleChatToggle}
         >
-          <div
-            className={getChatContainerClasses()}
-            style={getChatContainerStyles()}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className={`${getChatContainerClasses()} z-50 transition-all duration-300`}>
+            <div
+              className="h-full flex flex-col shadow-2xl shadow-purple-500/20 rounded-2xl overflow-hidden"
+              style={getChatContainerStyles()}
+              onClick={(e) => e.stopPropagation()}
+            >
           <ConnectionIndicator />
 
           {/* Header del Chat */}
@@ -1380,6 +1381,7 @@ Portal: luiscabrejo.com/fundadores`;
               </div>
             </div>
           )}
+            </div>
           </div>
         </div>
       )}
