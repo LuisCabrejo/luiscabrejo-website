@@ -7,6 +7,37 @@ import ContactModal from '@/components/ContactModal';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 
+export const metadata = {
+  title: 'Mi Historia: De la Quiebra a 4 Millones | Luis Cabrejo',
+  description: 'La trayectoria de Luis Cabrejo desde 2013: de vivir en estrato cero a construir un ecosistema empresarial en 16 países. Network marketing moderno, tecnología y liderazgo.',
+  keywords: [
+    'luis cabrejo',
+    'luis cabrejo historia',
+    'network marketing colombia',
+    'lider mlm colombia',
+    'creaturactivo',
+    'diamante gano excel',
+    'emprendedor colombia',
+    'ecosistema digital mlm',
+    'network marketing moderno',
+    'liderazgo mlm latinoamerica'
+  ],
+  openGraph: {
+    title: 'Mi Historia: De la Quiebra a 4 Millones | Luis Cabrejo',
+    description: 'La trayectoria de Luis Cabrejo desde 2013: de vivir en estrato cero a construir un ecosistema empresarial en 16 países.',
+    url: 'https://luiscabrejo.com/historia',
+    type: 'profile',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mi Historia: De la Quiebra a 4 Millones | Luis Cabrejo',
+    description: 'La trayectoria de Luis Cabrejo desde 2013: de vivir en estrato cero a construir un ecosistema empresarial en 16 países.',
+  },
+  alternates: {
+    canonical: 'https://luiscabrejo.com/historia',
+  },
+};
+
 export default function HistoriaPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
 
@@ -53,7 +84,7 @@ export default function HistoriaPage() {
               </div>
               <h3 className="text-xl font-bold mb-4">La Quiebra Total</h3>
               <p className="text-gray-300 mb-4 text-sm leading-relaxed">
-                Vivía en estrato cero en Villavicencio. Vestía mal, tenía problemas dentales, no usaba fragancia ni crema de peinar. No tenía vehículo ni recursos.
+                Vivía en estrato cero en Villavicencio. Vestía mal, no usaba fragancia ni crema de peinar. No tenía vehículo ni recursos.
               </p>
               <div className="bg-red-900/20 rounded-lg p-4 border border-red-800/30">
                 <h4 className="font-semibold text-red-300 mb-2 text-sm">Lecciones del Fondo:</h4>
@@ -218,7 +249,7 @@ export default function HistoriaPage() {
                     </div>
                     <h3 className="text-2xl font-bold mb-4">La Quiebra Total</h3>
                     <p className="text-gray-300 mb-4">
-                      Vivía en estrato cero en Villavicencio. Vestía mal, tenía problemas dentales, no usaba fragancia ni crema de peinar. No tenía vehículo ni recursos.
+                      Vivía en estrato cero en Villavicencio. Vestía mal, no usaba fragancia ni crema de peinar. No tenía vehículo ni recursos.
                     </p>
                     <div className="text-sm text-gray-400">
                       "A veces me pregunto cómo la gente me seguía en esas condiciones..."
@@ -463,12 +494,28 @@ export default function HistoriaPage() {
           <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl sm:rounded-3xl p-8 sm:p-12 border border-blue-500/20">
             <div className="text-4xl sm:text-6xl text-blue-400 mb-6">"</div>
             <blockquote className="text-lg sm:text-2xl text-gray-200 font-medium mb-6 italic leading-relaxed">
-              Si vestía mal, tenía problemas dentales y vivía en estrato cero, pero aún así las personas me seguían...
+              Si vestía mal y vivía en estrato cero, pero aún así las personas me seguían...
               imagina lo que podemos lograr ahora con herramientas de clase mundial.
             </blockquote>
             <div className="text-blue-400 font-semibold">— Luis Cabrejo</div>
             <div className="text-gray-400 text-sm">Arquitecto de Ecosistemas Digitales</div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA to Blog Testimonio - Interlinking SEO */}
+      <section className="py-12 sm:py-16 bg-gradient-to-r from-purple-900/20 to-blue-900/20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">¿Estás Evaluando Gano Excel?</h2>
+          <p className="text-gray-300 mb-8 text-sm sm:text-base max-w-2xl mx-auto">
+            Si quieres conocer mi experiencia completa en Gano Excel —los fracasos, las lecciones, los errores que cometí y cómo la tecnología cambió todo— lee mi testimonio honesto como Diamante durante 11 años.
+          </p>
+          <Link
+            href="/blog/testimonio-11-anos-diamante-gano-excel-colombia"
+            className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full font-semibold hover:shadow-xl transition-all"
+          >
+            Leer Mi Testimonio Completo de Gano Excel →
+          </Link>
         </div>
       </section>
 
