@@ -50,7 +50,7 @@ export default function BlogPage() {
       <Navigation />
 
       {/* Header */}
-      <div className="relative overflow-hidden border-b border-slate-700/50 pt-28 md:pt-36">
+      <div className="relative overflow-hidden border-b border-slate-700/50 pt-24 sm:pt-32">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="text-center">
