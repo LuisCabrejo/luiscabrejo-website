@@ -107,7 +107,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              En 11 años transformé mi vida de la quiebra total a construir un activo empresarial que genera ingresos en todo el continente. Ahora ayudo a profesionales ambiciosos a crear sus propios ecosistemas digitales de negocio.
+              En 12 meses transformé mi vida de la quiebra total a construir un activo empresarial que genera ingresos en todo el continente. Ahora ayudo a profesionales ambiciosos a crear sus propios ecosistemas digitales de negocio.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -146,7 +146,7 @@ export default function HomePage() {
               </div>
               <div className="text-center">
                 <p className="text-sm sm:text-base text-gray-300 mb-4">
-                  "Si vestía mal, tenía problemas dentales y vivía en estrato cero... pero aún así las personas me seguían, imagina lo que podemos lograr ahora con herramientas de clase mundial."
+                  "Si vivía en estrato cero... pero aún así las personas me seguían, imagina lo que podemos lograr ahora con herramientas de clase mundial."
                 </p>
                 <div className="flex justify-center items-center">
                   <div className="flex -space-x-2">
