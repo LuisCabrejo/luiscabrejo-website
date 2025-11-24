@@ -86,20 +86,30 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Luis Cabrejo',
+    alternateName: 'Luis Cabrejo Diamante Gano Excel',
     jobTitle: 'Arquitecto de Ecosistemas Digitales',
-    description: '11 años como Diamante en multinivel, creador de CreaTuActivo.com, desarrollador de plataformas empresariales con IA',
+    description: '11 años como Diamante Gano Excel, fundador de CreaTuActivo.com, desarrollador de ecosistemas digitales con IA. Presencia en 16 países de América.',
     url: 'https://luiscabrejo.com',
+    image: 'https://luiscabrejo.com/images/luis-cabrejo-diamante.jpg',
+    email: 'luiscabrejo@creatuactivo.com',
     sameAs: [
+      'https://linkedin.com/in/luiscabrejo',
+      'https://instagram.com/luiscabrejo',
       'https://creatuactivo.com',
       'https://app.creatuactivo.com',
+      'https://ganocafe.online',
     ],
     knowsAbout: [
+      'Network Marketing',
+      'Gano Excel',
       'Ecosistemas Digitales',
       'Inteligencia Artificial',
       'Next.js',
       'Multinivel',
       'Emprendimiento Digital',
       'Marketing de Redes',
+      'Desarrollo de Software',
+      'Automatización',
     ],
     alumniOf: {
       '@type': 'Organization',
@@ -110,6 +120,58 @@ export default function RootLayout({
       name: 'CreaTuActivo',
       url: 'https://creatuactivo.com',
     },
+    hasOccupation: {
+      '@type': 'Occupation',
+      name: 'Distribuidor Diamante Gano Excel',
+      occupationLocation: {
+        '@type': 'Place',
+        name: 'América Latina',
+        address: {
+          '@type': 'PostalAddress',
+          addressCountry: ['CO', 'MX', 'GT', 'SV', 'CR', 'HN', 'PA', 'VE', 'BR', 'EC', 'PE', 'BO', 'CL', 'AR', 'UY', 'US'],
+        },
+      },
+      skills: 'Network Marketing, Liderazgo, Desarrollo de Ecosistemas Digitales, Gano Excel',
+    },
+    award: ['Diamante Gano Excel 11 años', 'Líder en 16 países'],
+  };
+
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'CreaTuActivo',
+    alternateName: 'CreaTuActivo.com',
+    url: 'https://creatuactivo.com',
+    logo: 'https://luiscabrejo.com/images/creatuactivo-logo.png',
+    description: 'Ecosistema tecnológico para distribuidores de network marketing. Plataforma con IA conversacional NEXUS, herramientas de automatización y metodología empresarial.',
+    founder: {
+      '@type': 'Person',
+      name: 'Luis Cabrejo',
+      url: 'https://luiscabrejo.com',
+    },
+    foundingDate: '2013',
+    sameAs: [
+      'https://luiscabrejo.com',
+      'https://app.creatuactivo.com',
+      'https://ganocafe.online',
+    ],
+    areaServed: {
+      '@type': 'Place',
+      name: 'América Latina',
+    },
+    serviceType: [
+      'Plataforma tecnológica para network marketing',
+      'IA conversacional',
+      'Automatización de negocios MLM',
+      'Herramientas digitales para distribuidores',
+    ],
+    knowsAbout: [
+      'Network Marketing',
+      'Gano Excel',
+      'Inteligencia Artificial',
+      'Desarrollo de Software',
+      'Ecosistemas Digitales',
+    ],
   };
 
   const websiteSchema = {
@@ -117,10 +179,16 @@ export default function RootLayout({
     '@type': 'WebSite',
     name: 'Luis Cabrejo',
     url: 'https://luiscabrejo.com',
-    description: 'Sitio oficial de Luis Cabrejo - Arquitecto de Ecosistemas Digitales, creador de CreaTuActivo.com',
+    description: 'Sitio oficial de Luis Cabrejo - Arquitecto de Ecosistemas Digitales, Diamante Gano Excel 11 años, creador de CreaTuActivo.com',
     publisher: {
       '@type': 'Person',
       name: 'Luis Cabrejo',
+    },
+    inLanguage: 'es-CO',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://luiscabrejo.com/?s={search_term_string}',
+      'query-input': 'required name=search_term_string',
     },
   };
 
@@ -131,6 +199,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         <script
           type="application/ld+json"

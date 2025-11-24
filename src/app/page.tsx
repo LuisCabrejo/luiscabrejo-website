@@ -107,7 +107,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              En 12 meses transformé mi vida de la quiebra total a construir un activo empresarial que genera ingresos en todo el continente. Ahora ayudo a profesionales ambiciosos a crear sus propios ecosistemas digitales de negocio.
+              En 12 meses transformé mi vida de la quiebra total a construir un activo empresarial con <Link href="/ecosistema" className="text-blue-400 hover:underline">Gano Excel y CreaTuActivo.com</Link> que genera ingresos en todo el continente. Ahora ayudo a profesionales ambiciosos a crear sus propios ecosistemas digitales de negocio.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -314,6 +314,9 @@ export default function HomePage() {
             <p className="text-lg sm:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               No es solo un número. Es padres de familia recuperando su tiempo, profesionales construyendo legados,
               y una generación completa reescribiendo las reglas del bienestar económico en América Latina.
+              <Link href="/fundadores" className="text-purple-400 hover:underline ml-2 font-semibold">
+                Únete al Programa Fundadores 2025 →
+              </Link>
             </p>
           </div>
 
@@ -346,6 +349,12 @@ export default function HomePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/fundadores"
+                  className="bg-gradient-to-r from-purple-500 to-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all"
+                >
+                  Ver Programa Fundadores
+                </Link>
                 <button
                   onClick={() => setContactModalOpen(true)}
                   className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:shadow-xl transition-all"

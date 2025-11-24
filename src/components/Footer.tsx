@@ -31,8 +31,8 @@ export default function Footer() {
                 </a>
               </div>
               <div>
-                <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                  ganocafe.online
+                <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition-colors">
+                  ganocafe.online - Tienda Productos Gano Excel
                 </a>
               </div>
             </div>
