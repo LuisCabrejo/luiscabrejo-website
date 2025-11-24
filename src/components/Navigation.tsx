@@ -27,19 +27,19 @@ export default function Navigation({ onContactClick }: NavigationProps) {
           </Link>
 
           <div className="hidden md:flex space-x-8 text-sm">
-            <Link href="/fundadores" className="hover:text-purple-400 transition-colors font-semibold">
+            <Link href="/fundadores" className="text-white hover:text-purple-400 transition-colors font-semibold">
               Programa Fundadores
             </Link>
-            <Link href="/blog" className="hover:text-blue-400 transition-colors">
+            <Link href="/blog" className="text-white hover:text-blue-400 transition-colors">
               Blog
             </Link>
-            <Link href="/historia" className="hover:text-blue-400 transition-colors">
+            <Link href="/historia" className="text-white hover:text-blue-400 transition-colors">
               Mi Historia
             </Link>
-            <Link href="/ecosistema" className="hover:text-blue-400 transition-colors">
+            <Link href="/ecosistema" className="text-white hover:text-blue-400 transition-colors">
               Ecosistema
             </Link>
-            <Link href="/vision" className="hover:text-blue-400 transition-colors">
+            <Link href="/vision" className="text-white hover:text-blue-400 transition-colors">
               Vision 4M
             </Link>
           </div>
@@ -54,7 +54,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
           )}
 
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -67,35 +67,35 @@ export default function Navigation({ onContactClick }: NavigationProps) {
           <div className="px-6 py-4 space-y-4">
             <Link
               href="/fundadores"
-              className="block text-lg font-bold hover:text-purple-400 transition-colors"
+              className="block text-lg font-bold text-white hover:text-purple-400 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Programa Fundadores
             </Link>
             <Link
               href="/blog"
-              className="block text-lg font-medium hover:text-blue-400 transition-colors"
+              className="block text-lg font-medium text-white hover:text-blue-400 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Blog
             </Link>
             <Link
               href="/historia"
-              className="block text-lg font-medium hover:text-blue-400 transition-colors"
+              className="block text-lg font-medium text-white hover:text-blue-400 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Mi Historia
             </Link>
             <Link
               href="/ecosistema"
-              className="block text-lg font-medium hover:text-blue-400 transition-colors"
+              className="block text-lg font-medium text-white hover:text-blue-400 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Ecosistema
             </Link>
             <Link
               href="/vision"
-              className="block text-lg font-medium hover:text-blue-400 transition-colors"
+              className="block text-lg font-medium text-white hover:text-blue-400 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Vision 4M
