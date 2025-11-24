@@ -1,15 +1,8 @@
+'use client';
+
 import Link from 'next/link';
-import type { Metadata } from 'next';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-
-export const metadata: Metadata = {
-  title: 'Blog Gano Excel - Artículos y Guías para Distribuidores',
-  description: 'Artículos sobre Gano Excel, network marketing y tecnología. Testimonios reales, guías prácticas y estrategias de Luis Cabrejo, Diamante 11 años en 16 países.',
-  alternates: {
-    canonical: 'https://luiscabrejo.com/blog',
-  },
-};
 
 interface ArticleCard {
   slug: string;
