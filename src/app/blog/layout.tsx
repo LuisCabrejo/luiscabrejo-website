@@ -15,10 +15,20 @@ export const metadata: Metadata = {
     'testimonios mlm',
     'estrategias network marketing',
   ],
+  alternates: {
+    canonical: 'https://luiscabrejo.com/blog',
+  },
   openGraph: {
+    title: 'Blog Gano Excel y Network Marketing - Luis Cabrejo',
+    description: 'Artículos sobre Gano Excel, network marketing y tecnología. Por Luis Cabrejo, Diamante 11 años en 16 países.',
+    url: 'https://luiscabrejo.com/blog',
     type: 'website',
     locale: 'es_CO',
     siteName: 'Luis Cabrejo Blog',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
