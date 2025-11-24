@@ -77,9 +77,9 @@ export async function POST(request: NextRequest) {
 
     // Email para Luis - AMBOS DESTINOS
     const emailToLuis = {
-      from: 'Luis Cabrejo <send@luiscabrejo.com>',
+      from: 'Luis Cabrejo <contacto@creatuactivo.com>',
       replyTo: email, // El reply va directo al usuario
-      to: ['contacto@luiscabrejo.com', 'luiscabrejo7@gmail.com'], // AMBOS EMAILS
+      to: ['luiscabrejo@creatuactivo.com', 'luiscabrejo7@gmail.com'], // AMBOS EMAILS
       subject: `💼 ${formType || 'Contacto'} desde luiscabrejo.com - ${name}`,
       text: `
 🎯 NUEVO CONTACTO desde luiscabrejo.com
@@ -112,7 +112,7 @@ ID del mensaje: ${Date.now()}
 
 💡 INSTRUCCIONES PARA RESPONDER:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-• Responder desde: contacto@luiscabrejo.com
+• Responder desde: luiscabrejo@creatuactivo.com
 • Email del interesado: ${email}
 • Tiempo de respuesta: Máximo 24 horas
 • Tipo de consulta: ${formType || 'Contacto General'}
@@ -127,8 +127,8 @@ Arquitecto de Ecosistemas Digitales
 
     // Email para el usuario - Más personal
     const emailToUser = {
-      from: 'Luis Cabrejo <send@luiscabrejo.com>',
-      replyTo: 'contacto@luiscabrejo.com',
+      from: 'Luis Cabrejo <contacto@creatuactivo.com>',
+      replyTo: 'luiscabrejo@creatuactivo.com',
       to: email,
       subject: '✅ Mensaje recibido - Te responderé en 24 horas',
       text: `
@@ -165,7 +165,7 @@ Arquitecto de Ecosistemas Digitales
 ---
 "No busco protagonismo - busco transformar 4 millones de vidas"
 
-📧 contacto@luiscabrejo.com
+📧 luiscabrejo@creatuactivo.com
 🌐 luiscabrejo.com
       `
     };
@@ -236,9 +236,9 @@ Arquitecto de Ecosistemas Digitales
         emailsSent: {
           toLuis: emailToLuisResult.data?.id || null,
           toUser: userEmailId,
-          destinations: ['contacto@luiscabrejo.com', 'luiscabrejo7@gmail.com']
+          destinations: ['luiscabrejo@creatuactivo.com', 'luiscabrejo7@gmail.com']
         },
-        nextSteps: 'Luis te responderá desde contacto@luiscabrejo.com en las próximas 24 horas'
+        nextSteps: 'Luis te responderá desde luiscabrejo@creatuactivo.com en las próximas 24 horas'
       }
     };
 
@@ -256,7 +256,7 @@ Arquitecto de Ecosistemas Digitales
         success: false,
         error: 'Error interno del servidor',
         message: 'Hubo un problema enviando tu mensaje. Por favor, inténtalo de nuevo.',
-        fallback: 'Puedes escribir directamente a contacto@luiscabrejo.com',
+        fallback: 'Puedes escribir directamente a luiscabrejo@creatuactivo.com',
         debug: process.env.NODE_ENV === 'development' ? {
           error: error instanceof Error ? error.message : 'Unknown error',
           timestamp: new Date().toISOString()
@@ -274,7 +274,7 @@ export async function GET() {
   return NextResponse.json({
     status: 'API Contact funcionando correctamente',
     service: 'luiscabrejo.com contact form',
-    emailDestinations: ['contacto@luiscabrejo.com', 'luiscabrejo7@gmail.com'],
+    emailDestinations: ['luiscabrejo@creatuactivo.com', 'luiscabrejo7@gmail.com'],
     timestamp: new Date().toISOString(),
     timezone: 'America/Bogota',
     environment: process.env.NODE_ENV,
