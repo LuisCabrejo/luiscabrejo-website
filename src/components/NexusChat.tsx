@@ -1003,54 +1003,49 @@ Portal: luiscabrejo.com/fundadores`;
     }
   };
 
-  // Función para obtener tamaño del chat optimizado
+  // Función para obtener tamaño del chat optimizado (igual a CreaTuActivo.com)
   const getChatDimensions = () => {
     if (isMobile) {
       return {
-        width: 'w-[100vw]',
-        height: 'h-[100vh]',
-        maxHeight: 'max-h-[100vh]',
-        messagesHeight: 'calc(100vh - 200px)'
+        width: 'w-full max-w-lg',
+        height: 'h-[98vh]',
+        maxHeight: 'max-h-[98vh]',
+        messagesHeight: 'calc(98vh - 180px)'
       };
     }
 
     if (isExpanded) {
       return {
-        width: 'w-[50vw] max-w-[600px] min-w-[500px]',
-        height: 'h-[90vh] max-h-[700px]',
-        maxHeight: 'max-h-[90vh]',
-        messagesHeight: 'calc(90vh - 200px)'
+        width: 'w-full max-w-4xl',
+        height: 'h-[95vh]',
+        maxHeight: 'max-h-[95vh]',
+        messagesHeight: 'calc(95vh - 180px)'
       };
     }
 
+    // Desktop normal: igual a CreaTuActivo.com
     return {
-      width: 'w-80 sm:w-96',
-      height: 'h-[500px]',
-      maxHeight: 'max-h-[500px]',
-      messagesHeight: '360px'
+      width: 'w-full max-w-xl lg:max-w-2xl',
+      height: 'h-[85vh] lg:h-[80vh]',
+      maxHeight: 'max-h-[85vh] lg:max-h-[80vh]',
+      messagesHeight: 'calc(85vh - 180px)'
     };
   };
 
-  // Función para obtener clases dinámicas del chat container
+  // Función para obtener clases dinámicas del chat container (igual a CreaTuActivo.com)
   const getChatContainerClasses = () => {
     const dimensions = getChatDimensions();
 
-    if (isMobile) {
-      return `fixed inset-0 ${dimensions.width} ${dimensions.height} rounded-none shadow-2xl overflow-hidden flex flex-col transition-all duration-300 z-50`;
-    }
-
-    if (isExpanded) {
-      return `fixed top-5 right-5 ${dimensions.width} ${dimensions.height} rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 z-50`;
-    }
-
-    return `absolute bottom-20 right-0 ${dimensions.width} ${dimensions.height} rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300`;
+    // Todos los estados usan posicionamiento centrado como CreaTuActivo.com
+    return `${dimensions.width} ${dimensions.height} shadow-2xl shadow-purple-500/20 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 z-50`;
   };
 
-  // Función para obtener estilos dinámicos del chat container
+  // Función para obtener estilos dinámicos del chat container (igual a CreaTuActivo.com)
   const getChatContainerStyles = (): React.CSSProperties => {
     let styles: React.CSSProperties = {
-      background: 'rgba(23, 31, 42, 0.95)',
-      backdropFilter: 'blur(12px)'
+      background: 'rgba(15, 23, 42, 0.85)',
+      backdropFilter: 'blur(24px)',
+      border: '1px solid rgba(124, 58, 237, 0.2)'
     };
 
     switch (chatPhase) {
@@ -1218,12 +1213,13 @@ Portal: luiscabrejo.com/fundadores`;
         )}
       </button>
 
-      {/* Ventana del chat */}
+      {/* Ventana del chat - Overlay centrado igual a CreaTuActivo.com */}
       {isChatOpen && (
-        <div
-          className={getChatContainerClasses()}
-          style={getChatContainerStyles()}
-        >
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 bg-black/20 backdrop-blur-sm">
+          <div
+            className={getChatContainerClasses()}
+            style={getChatContainerStyles()}
+          >
           <ConnectionIndicator />
 
           {/* Header del Chat */}
@@ -1384,6 +1380,7 @@ Portal: luiscabrejo.com/fundadores`;
               </div>
             </div>
           )}
+          </div>
         </div>
       )}
     </div>
