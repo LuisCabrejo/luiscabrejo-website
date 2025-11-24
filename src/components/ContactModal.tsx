@@ -305,8 +305,8 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
               </div>
               <div className="text-xs text-slate-400">
                 También puedes escribir directamente a{' '}
-                <a href="mailto:contacto@luiscabrejo.com" className="text-blue-400 hover:text-blue-300 underline">
-                  contacto@luiscabrejo.com
+                <a href="mailto:luiscabrejo@creatuactivo.com" className="text-blue-400 hover:text-blue-300 underline">
+                  luiscabrejo@creatuactivo.com
                 </a>
               </div>
             </div>
