@@ -564,7 +564,7 @@ export default function ArticlePage() {
                 Ver Programa Fundadores
               </Link>
               <a
-                href="https://wa.me/573102066593"
+                href="https://wa.me/573203415438"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-bold hover:bg-white/10 transition-all"

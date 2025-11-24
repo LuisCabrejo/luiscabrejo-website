@@ -1043,7 +1043,7 @@ ${context}INSTRUCCIONES ARQUITECTURA HÍBRIDA:
 
 **Contacto inmediato disponible:**
 Liliana Moreno - Consultora Senior
-WhatsApp: +573102066593
+WhatsApp: +573203415438
 Horario: 8:00 AM - 8:00 PM (GMT-5)
 
 Información disponible:

@@ -323,13 +323,16 @@ export default function TestimonioPage() {
 
             <div className="bg-pink-900/20 border-l-4 border-pink-500 p-6 rounded-r-lg mb-6">
               <p className="text-gray-300 mb-3">
-                <strong className="text-pink-400">Y la historia continúa:</strong>
+                <strong className="text-pink-400">Y la historia continúa con el equipo:</strong>
               </p>
-              <p className="text-gray-300">
-                Nuestra hija, <strong className="text-white">Jieth Cabrejo Moreno</strong>, actualmente tiene el rango de <strong className="text-yellow-400">ORO</strong> en Gano Excel. Su proyección: <strong className="text-purple-400">Diamante en 2026.</strong>
+              <p className="text-gray-300 mb-3">
+                Nuestra hija, <strong className="text-white">Jieth Cabrejo Moreno</strong>, actualmente tiene el rango de <strong className="text-yellow-400">ORO</strong> en Gano Excel. Jieth y Liliana son mujeres extraordinarias que sirven genuinamente a las personas, con un corazón enorme por Gano Excel. Trabajan con excelencia y dedicación.
               </p>
               <p className="text-gray-300 mt-3">
-                Tres generaciones. Un legado empresarial familiar. Eso es lo que se puede construir con network marketing bien hecho.
+                <strong className="text-white">Objetivo 2026:</strong> Del grupo actual de fundadores CreaTuActivo.com, proyectamos <strong className="text-purple-400">15 nuevos Diamantes</strong> en el equipo. La tecnología y el ecosistema no garantizan el éxito, pero <strong className="text-white">son un apalancamiento enorme</strong> para quienes trabajan con dedicación.
+              </p>
+              <p className="text-gray-300 mt-3 text-sm italic">
+                Tres generaciones. Un equipo creciendo. Un legado empresarial colectivo. Eso es lo que se puede construir con network marketing bien hecho.
               </p>
             </div>
           </section>
@@ -391,7 +394,7 @@ export default function TestimonioPage() {
               <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-6">
                 <h3 className="text-xl font-bold text-purple-400 mb-3">2. La Tecnología es Tu Única Ventaja</h3>
                 <p className="text-gray-300">
-                  Durante la pandemia, mientras el mundo se detenía, yo dije: <em className="text-white">"La pandemia fue una bendición para mí."</em> ¿Por qué? Porque me obligó a digitalizar todo. Lancé <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">ganocafe.online</a>. Lo que no hicimos en 9 años, lo hicimos en 2 con tecnología.
+                  Durante 9 años trabajamos local. Después de la pandemia, digitalizamos todo y lanzamos <a href="https://ganocafe.online" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">ganocafe.online</a>. Resultado: en 3 años, red en toda América. <strong className="text-white">El trabajo digital apalancó resultados que 9 años de trabajo local no lograron.</strong>
                 </p>
               </div>
 
@@ -480,7 +483,7 @@ export default function TestimonioPage() {
                 Conocer Programa Fundadores
               </Link>
               <a
-                href="https://wa.me/573102066593"
+                href="https://wa.me/573203415438"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-bold hover:bg-white/10 transition-all"

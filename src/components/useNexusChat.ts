@@ -190,7 +190,7 @@ const sendMessage = useCallback(async (content: string) => {
 
 **Consultoría estratégica inmediata:**
 Liliana Moreno - Arquitecta Senior
-WhatsApp: +573102066593
+WhatsApp: +573203415438
 Horario: 8:00 AM - 8:00 PM (GMT-5)
 
 ¿Hay algo específico sobre la arquitectura de CreaTuActivo.com que pueda ayudarte mientras tanto?`;
@@ -206,7 +206,7 @@ Horario: 8:00 AM - 8:00 PM (GMT-5)
 • **PUNTO DE ENTRADA EMPRESARIAL:** $500 USD - Más popular, inventario sólido
 • **PUNTO DE ENTRADA VISIONARIO:** $1,000 USD - Premium con consultoría VIP
 
-**Consultoría:** Liliana Moreno +573102066593`;
+**Consultoría:** Liliana Moreno +573203415438`;
 
     } else {
       errorMessage = `🤖 Estoy experimentando dificultades en mi arquitectura de procesamiento.
@@ -215,7 +215,7 @@ Horario: 8:00 AM - 8:00 PM (GMT-5)
 1. **El Motor de Valor** - Los productos únicos con patente mundial
 2. **El Plano Estratégico** - Framework IAA y metodología
 3. **La Maquinaria Tecnológica** - NodeX y automatización
-4. **Consultoría Estratégica** - Liliana Moreno +573102066593
+4. **Consultoría Estratégica** - Liliana Moreno +573203415438
 
 ¿Qué pieza de la arquitectura te interesa más?`;
     }
@@ -257,7 +257,7 @@ const contactLiliana = useCallback(() => {
     content: `🏗️ **Consultoría Estratégica Disponible**
 
 **Liliana Moreno - Arquitecta Senior**
-**WhatsApp:** +573102066593
+**WhatsApp:** +573203415438
 **Horario:** 8:00 AM - 8:00 PM (GMT-5)
 **Experiencia:** 9 años consecutivos líder en arquitectura de activos
 
