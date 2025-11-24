@@ -26,7 +26,6 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             Luis Cabrejo
           </Link>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8 text-sm">
             <Link href="/fundadores" className="hover:text-purple-400 transition-colors font-semibold">
               Programa Fundadores
@@ -41,11 +40,10 @@ export default function Navigation({ onContactClick }: NavigationProps) {
               Ecosistema
             </Link>
             <Link href="/vision" className="hover:text-blue-400 transition-colors">
-              Visión 4M
+              Vision 4M
             </Link>
           </div>
 
-          {/* Desktop Conectar Button */}
           {onContactClick && (
             <button
               onClick={onContactClick}
@@ -55,7 +53,6 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             </button>
           )}
 
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -65,7 +62,6 @@ export default function Navigation({ onContactClick }: NavigationProps) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-black/90 backdrop-blur-lg border-t border-white/10">
           <div className="px-6 py-4 space-y-4">
@@ -102,9 +98,8 @@ export default function Navigation({ onContactClick }: NavigationProps) {
               className="block text-lg font-medium hover:text-blue-400 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Visión 4M
+              Vision 4M
             </Link>
-            {/* Mobile Conectar Button */}
             {onContactClick && (
               <button
                 onClick={handleContactClick}
