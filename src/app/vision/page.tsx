@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, Target, Users, Globe, TrendingUp, Zap, Heart, Star
 import Link from 'next/link';
 import ContactModal from '@/components/ContactModal';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 export default function VisionPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
@@ -539,20 +540,7 @@ export default function VisionPage() {
         </div>
       </section>
 
-      {/* Footer - IMPROVED MOBILE */}
-      <footer className="py-8 sm:py-12 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-          <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4 inline-block">
-            Luis Cabrejo
-          </Link>
-          <p className="text-gray-400 text-xs sm:text-sm mb-4">
-            Arquitecto de Ecosistemas Digitales. Construyendo el futuro del bienestar económico en América.
-          </p>
-          <p className="text-gray-500 text-xs">
-            "No es solo un número. Es una generación completa reescribiendo las reglas." - Visión 4 Millones
-          </p>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Contact Modal */}
       <ContactModal

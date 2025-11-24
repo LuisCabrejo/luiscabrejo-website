@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, MapPin, Users, Target, Heart, Zap } from 'lucide-r
 import Link from 'next/link';
 import ContactModal from '@/components/ContactModal';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 export default function HistoriaPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
@@ -471,17 +472,7 @@ export default function HistoriaPage() {
         </div>
       </section>
 
-      {/* Footer Simplified - IMPROVED MOBILE */}
-      <footer className="py-8 sm:py-12 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-          <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4 inline-block">
-            Luis Cabrejo
-          </Link>
-          <p className="text-gray-400 text-xs sm:text-sm">
-            Arquitecto de Ecosistemas Digitales. Transformando vidas desde 2013.
-          </p>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Contact Modal */}
       <ContactModal

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Política de Privacidad',
@@ -238,17 +239,7 @@ export default function PrivacidadPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="py-12 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center text-gray-400 text-sm">
-            <p>© 2025 Luis Cabrejo. Arquitecto de Ecosistemas Digitales.</p>
-            <p className="mt-2">
-              Construyendo el futuro del bienestar económico en América.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
