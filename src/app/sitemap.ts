@@ -74,5 +74,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
+
+    // ========================================
+    // BLOG
+    // ========================================
+    {
+      url: `${baseUrl}/blog`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/testimonio-11-anos-diamante-gano-excel-colombia`,
+      lastModified: new Date('2025-11-24'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/blog/como-ser-distribuidor-gano-excel-colombia-2025`,
+      lastModified: new Date('2025-11-24'),
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
   ];
 }
