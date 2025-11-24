@@ -1255,19 +1255,30 @@ Portal: luiscabrejo.com/fundadores`;
                 </div>
               </div>
 
-              {chatPhase === 'ready' && !isMobile && (
-                <button
-                  onClick={handleToggleExpansion}
-                  className="text-white hover:text-blue-200 transition-colors p-1"
-                  title={isExpanded ? 'Reducir chat' : 'Expandir chat'}
-                >
-                  {isExpanded ? (
-                    <Minimize2 className="w-5 h-5" />
-                  ) : (
-                    <Maximize2 className="w-5 h-5" />
-                  )}
-                </button>
-              )}
+              <div className="flex items-center gap-2">
+                {chatPhase === 'ready' && !isMobile && (
+                  <button
+                    onClick={handleToggleExpansion}
+                    className="text-white hover:text-blue-200 transition-colors p-1"
+                    title={isExpanded ? 'Reducir chat' : 'Expandir chat'}
+                  >
+                    {isExpanded ? (
+                      <Minimize2 className="w-5 h-5" />
+                    ) : (
+                      <Maximize2 className="w-5 h-5" />
+                    )}
+                  </button>
+                )}
+                {isMobile && (
+                  <button
+                    onClick={handleChatToggle}
+                    className="text-white hover:text-blue-200 transition-colors p-1"
+                    title="Cerrar chat"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
