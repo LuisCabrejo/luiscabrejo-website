@@ -12,7 +12,6 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import ContactModal from '@/components/ContactModal';
-import NexusChat from '@/components/NexusChat';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/Navigation';
 
@@ -298,12 +297,7 @@ export default function FundadoresPage() {
         </main>
       </div>
 
-      {/* ✅ COMPONENTE NEXUS ACTUALIZADO */}
-      <NexusChat
-        context="fundadores"
-        showPrompt={true}
-        promptMessage="¿Listo para construir un activo empresarial con Gano Excel? NEXUS conoce la plataforma CreaTuActivo completa."
-      />
+      {/* NEXUS ahora está disponible globalmente en todas las páginas */}
 
       {/* Modal de Contacto */}
       <ContactModal
