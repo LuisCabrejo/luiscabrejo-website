@@ -23,6 +23,7 @@ export default function HomePage() {
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8 text-sm">
               <Link href="/fundadores" className="hover:text-purple-400 transition-colors font-semibold">Programa Fundadores</Link>
+              <Link href="/blog" className="hover:text-blue-400 transition-colors">Blog</Link>
               <Link href="/historia" className="hover:text-blue-400 transition-colors">Mi Historia</Link>
               <Link href="/ecosistema" className="hover:text-blue-400 transition-colors">Ecosistema</Link>
               <Link href="/vision" className="hover:text-blue-400 transition-colors">Visión 4M</Link>
@@ -56,6 +57,13 @@ export default function HomePage() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Programa Fundadores
+              </Link>
+              <Link
+                href="/blog"
+                className="block text-lg font-medium hover:text-blue-400 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Blog
               </Link>
               <Link
                 href="/historia"
