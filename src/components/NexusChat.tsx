@@ -32,26 +32,10 @@ export default function NexusChat({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      const container = messagesEndRef.current.parentElement;
-      if (container) {
-        const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-        if (isNearBottom || messages.length === 1) {
-          messagesEndRef.current.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'nearest'
-          });
-        }
-      }
-    }
-  };
-
+  // Auto-scroll a último mensaje (copiado de CreaTuActivo.com)
   useEffect(() => {
-    const scrollTimer = setTimeout(scrollToBottom, 50);
-    return () => clearTimeout(scrollTimer);
-  }, [messages.length]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,11 +45,8 @@ export default function NexusChat({
     }
   };
 
-  const quickReplies = [
-    { text: '¿Qué es el programa Fundadores?', icon: '🏗️' },
-    { text: '¿Cuánto cuesta empezar?', icon: '💎' },
-    { text: 'Háblame de Gano Excel', icon: '🌿' }
-  ];
+  // Quick replies desactivados - usando formato limpio de texto A, B, C, D
+  const quickReplies: string[] = [];
 
   const containerClasses = isExpanded
     ? "w-full max-w-4xl h-[95vh]"
@@ -173,34 +154,30 @@ export default function NexusChat({
               className={`flex-1 overflow-y-auto space-y-4 ${isExpanded ? 'p-6' : 'p-4'}`}
               style={{ scrollbarWidth: 'thin' }}
             >
-              {/* Mensaje inicial */}
+              {/* Mensaje inicial (formato limpio de CreaTuActivo.com) */}
               {messages.length === 0 && (
                 <div className="flex items-start">
-                  <div className="w-7 h-7 bg-slate-700 rounded-full flex-shrink-0 flex items-center justify-center mr-2">
-                    <svg className="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white flex-shrink-0 mr-3">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                   </div>
-                  <div className="flex-1 p-3 rounded-lg text-sm bg-slate-800/80 text-slate-200 backdrop-blur-sm">
-                    <p className="font-semibold text-white mb-2">👋 Hola, soy NEXUS</p>
-                    <p className="mb-3">Tu asistente para el programa Fundadores de CreaTuActivo.com con Gano Excel. Estoy aquí para responder tus preguntas sobre cómo construir tu activo empresarial.</p>
+                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 flex-1">
+                    <div className="text-sm text-gray-900 whitespace-pre-wrap">
+                      ¡Hola! 👋 Soy <strong>NEXUS</strong>, tu asistente virtual de CreaTuActivo.com.
 
-                    <div className="grid grid-cols-1 gap-2 my-3">
-                      <div className="text-center p-2 rounded text-xs border border-amber-600/30" style={{ background: 'linear-gradient(135deg, rgba(146, 64, 14, 0.15) 0%, rgba(116, 66, 16, 0.1) 100%)', color: '#f59e0b' }}>
-                        <div className="text-sm">💼</div>
-                        <div className="text-xs font-medium">Programa Fundadores</div>
-                      </div>
-                      <div className="text-center p-2 rounded text-xs border border-green-600/30" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.1) 100%)', color: '#10b981' }}>
-                        <div className="text-sm">🌿</div>
-                        <div className="text-xs font-medium">Gano Excel</div>
-                      </div>
-                      <div className="text-center p-2 rounded text-xs border border-blue-600/30" style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%)', color: '#3b82f6' }}>
-                        <div className="text-sm">⚡</div>
-                        <div className="text-xs font-medium">Plataforma Tecnológica</div>
-                      </div>
+Estoy aquí para ayudarte a construir tu propio activo con productos <strong>Gano Excel</strong> que tienen patente mundial.
+
+¿Qué te gustaría saber?
+
+<strong>A)</strong> ⚙️ Cómo funciona el negocio
+
+<strong>B)</strong> 📦 Qué productos distribuimos
+
+<strong>C)</strong> 💰 Inversión y ganancias
+
+<strong>D)</strong> 🎯 Si esto es para ti
                     </div>
-
-                    <p>¿Qué te gustaría saber?</p>
                   </div>
                 </div>
               )}
@@ -258,38 +235,6 @@ export default function NexusChat({
 
               <div ref={messagesEndRef} />
             </div>
-
-            {/* Quick Replies (solo cuando no hay mensajes) */}
-            {messages.length === 0 && (
-              <div className={`border-t border-white/10 ${isExpanded ? 'p-6 pt-4' : 'p-4'} flex-shrink-0`}>
-                <div className={`space-y-2 mb-3 ${isExpanded ? 'grid grid-cols-2 gap-3 space-y-0' : ''}`}>
-                  {quickReplies.map((reply, index) => (
-                    <button
-                      key={index}
-                      className={`w-full text-left p-2.5 rounded-lg font-medium flex items-center gap-2 transition-all duration-300 hover:scale-105 ${
-                        isExpanded ? 'text-sm' : 'text-xs'
-                      }`}
-                      style={{
-                        background: 'rgba(245, 158, 11, 0.1)',
-                        border: '1px solid rgba(245, 158, 11, 0.4)',
-                        color: '#F59E0B'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(245, 158, 11, 0.2)';
-                        e.currentTarget.style.borderColor = '#F59E0B';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(245, 158, 11, 0.1)';
-                        e.currentTarget.style.borderColor = 'rgba(245, 158, 11, 0.4)';
-                      }}
-                      onClick={() => sendMessage(reply.text)}
-                    >
-                      {reply.icon} <span>{reply.text}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Input */}
             <div className={`border-t border-white/10 ${isExpanded ? 'p-4 pt-3' : 'p-3'} flex-shrink-0`}>
