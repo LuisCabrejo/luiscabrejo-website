@@ -268,28 +268,28 @@ export default function HomePage() {
                   <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                     app.creatuactivo.com
                   </div>
-                  <p className="text-gray-400 mt-2 text-sm sm:text-base">Tu centro de comando empresarial</p>
+                  <p className="text-gray-400 mt-2 text-sm sm:text-base">Tecnología 2025 para construir activos</p>
                 </div>
 
                 <div className="space-y-3 sm:space-y-4">
                   <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Dashboard Personal</span>
+                    <span className="text-sm">IA Conversacional (NEXUS)</span>
                     <Check className="w-4 h-4 text-green-400" />
                   </div>
                   <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Herramientas de Marketing</span>
+                    <span className="text-sm">Automatización con Next.js</span>
                     <Check className="w-4 h-4 text-green-400" />
                   </div>
                   <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Academia Digital</span>
+                    <span className="text-sm">Sistema de Tracking Avanzado</span>
                     <Check className="w-4 h-4 text-green-400" />
                   </div>
                   <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Red de Mentores</span>
+                    <span className="text-sm">Red Continental de Socios</span>
                     <Check className="w-4 h-4 text-green-400" />
                   </div>
                   <div className="flex items-center justify-between bg-gray-700/50 rounded-lg p-3">
-                    <span className="text-sm">Soporte IA 24/7</span>
+                    <span className="text-sm">Analytics en Tiempo Real</span>
                     <Check className="w-4 h-4 text-green-400" />
                   </div>
                 </div>
@@ -298,7 +298,7 @@ export default function HomePage() {
                   onClick={() => setContactModalOpen(true)}
                   className="w-full mt-6 bg-gradient-to-r from-blue-500 to-purple-600 py-3 rounded-full font-semibold hover:shadow-lg transition-all text-sm sm:text-base"
                 >
-                  Acceder al Portal
+                  Conocer la Plataforma
                 </button>
               </div>
             </div>
