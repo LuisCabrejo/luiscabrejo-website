@@ -42,15 +42,17 @@ bash scripts/diagnose-nexus.sh
 
 NEXUS is a modular, emotionally intelligent AI system for MLM conversations. **This is the most complex part of the codebase.**
 
-### Modular Structure (1,855 lines in 5 files)
+### Modular Structure (1,040+ lines main route + 5 support modules)
 
 Located in `src/app/api/claude-chat/`:
 
-**1. route.ts (428 lines)** - Main orchestration
+**1. route.ts (1,040+ lines)** - Main orchestration with streaming
 - API endpoint: POST `/api/claude-chat`
+- **Native streaming implementation** using ReadableStream (NO AI SDK dependency)
+- Manual text streaming from Anthropic API events
 - Conversation flow with profile detection
 - Retry logic for Anthropic API (handles 529 overload errors with exponential backoff)
-- Coordinates all modules
+- Returns `text/plain` streaming response
 
 **2. nexus-content.ts (587 lines)** - Strategic content
 - 24 pre-programmed strategic responses for common MLM questions
@@ -73,6 +75,22 @@ Located in `src/app/api/claude-chat/`:
 - Retry logic with exponential backoff
 
 **5. nexus-types.ts (126 lines)** - TypeScript definitions
+
+### Frontend Streaming Integration
+
+**`src/components/useNexusChat.ts` (295 lines)** - Custom React hook
+- Real-time streaming with character-by-character typing effect
+- Progressive message building from streaming chunks
+- Error handling with WhatsApp escalation (+573203415438)
+- Session/fingerprint tracking
+- Integration with `/api/claude-chat` endpoint
+
+**`src/components/NexusChat.tsx` (381 lines)** - UI Component
+- ReactMarkdown rendering for formatted messages
+- Expandable chat interface (desktop/mobile)
+- Real-time typing indicators during streaming
+- Connection status monitoring
+- Profile/package selection UI
 
 ### Critical Identity Rules - NEVER BREAK THESE
 
@@ -97,14 +115,53 @@ NEXUS detects 6 emotional states for MLM contexts:
 5. **Professional/Reserved** - Reputation concerns
 6. **Frustrated/Impatient** - MLM fatigue
 
-### UI Component
+### Streaming Implementation Details
 
-`src/components/NexusChat.tsx` - Expandable chat interface
-- Fixed positioning prevents viewport overflow
-- Mobile-optimized expand/collapse
-- Real-time typing indicators
-- Connection status monitoring
-- Profile/package selection UI
+**Backend (route.ts):**
+```typescript
+// Manual streaming without AI SDK
+const stream = new ReadableStream({
+  async start(controller) {
+    const encoder = new TextEncoder();
+    for await (const event of response) {
+      if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+        const text = event.delta.text;
+        fullCompletion += text;
+        controller.enqueue(encoder.encode(text));
+      }
+    }
+    controller.close();
+  }
+});
+
+return new Response(stream, {
+  headers: {
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Transfer-Encoding': 'chunked',
+  },
+});
+```
+
+**Frontend (useNexusChat.ts):**
+```typescript
+// Character-by-character streaming effect
+const reader = response.body.getReader();
+const decoder = new TextDecoder();
+
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+
+  const text = decoder.decode(value, { stream: true });
+  fullResponse += text;
+
+  setMessages(prev => prev.map(msg =>
+    msg.id === assistantId
+      ? { ...msg, content: fullResponse }
+      : msg
+  ));
+}
+```
 
 ## API Routes
 
@@ -114,20 +171,17 @@ NEXUS chatbot endpoint (30s timeout configured in vercel.json)
 **Request:**
 ```typescript
 {
-  message: string,
-  conversationHistory: Array<{role: string, content: string}>
+  messages: Array<{role: 'user' | 'assistant', content: string}>,
+  fingerprint?: string,
+  sessionId?: string
 }
 ```
 
 **Response:**
-```typescript
-{
-  message: string,
-  emotion?: string,
-  responseType?: 'strategic' | 'natural' | 'fallback',
-  profile?: string
-}
-```
+Streaming `text/plain` response (character-by-character)
+- No JSON wrapper
+- Direct text stream from Claude API
+- Frontend handles progressive rendering
 
 ### `/api/contact` (POST)
 Contact form with dual email delivery (Resend) + Supabase storage
@@ -202,6 +256,9 @@ NEXT_PUBLIC_SHOW_CHATBOT=true
 - `/ecosistema` - CreaTuActivo.com platform
 - `/privacidad` - Privacy policy
 - `/test-api` - API testing
+- `/blog` - Blog section (SEO optimized)
+  - `/blog/testimonio-11-anos-diamante-gano-excel-colombia` - Testimonial (pillar content, priority 0.9)
+  - `/blog/como-ser-distribuidor-gano-excel-colombia-2025` - Distributor guide (priority 0.85)
 
 ## Database
 
@@ -289,6 +346,12 @@ Why creatuactivo.com? Domain is verified in Resend; luiscabrejo.com is not.
 - **Performance critical** - Sub-3s response time required
 - **Modular architecture** - Keep 5-module NEXUS structure clean
 - **Email design** - Always use HTML with inline styles, test on Gmail/Outlook/Apple Mail
+- **Business messaging accuracy:**
+  - First 9 years: LOCAL operations only
+  - Then: Digital transformation with ganocafe.online
+  - Last 3 years: Expansion across América
+  - Team focus: 15 Diamantes goal by 2026 (not just family)
+  - Jieth & Liliana: Emphasize independent work ethic and service
 
 ## Business Context
 
@@ -297,6 +360,12 @@ Why creatuactivo.com? Domain is verified in Resend; luiscabrejo.com is not.
 - **Packages:** $200 (EMPRENDEDOR), $500 (EMPRESARIAL), $1000 (VISIONARIO)
 - **Brand hierarchy:** CreaTuActivo.com (main) → luiscabrejo.com (personal brand) → ganocafe.online (products)
 - **User flow:** luiscabrejo.com → contact form → email with ecosystem CTA → creatuactivo.com
+- **Business Timeline:**
+  - First 9 years: Local operations in Colombia
+  - Post-pandemic: Digital transformation with ganocafe.online launch
+  - Last 3 years: Expansion across América (16 countries)
+  - Key insight: Digital work achieved in 3 years what 9 years local couldn't
+- **Team Goals 2026:** 15 new Diamantes from CreaTuActivo.com founder group
 
 ## Debugging Logs
 
@@ -308,12 +377,90 @@ All critical events logged with Colombia timezone (UTC-5) and emojis:
 
 View in Vercel: Deployments → Click deployment → View Function Logs
 
+## SEO Optimization - Blog Section
+
+### Sitemap Configuration
+All blog URLs included in `src/app/sitemap.ts`:
+- `/blog` - Priority 0.8, updated weekly
+- `/blog/testimonio-11-anos-diamante-gano-excel-colombia` - Priority 0.9 (pillar content)
+- `/blog/como-ser-distribuidor-gano-excel-colombia-2025` - Priority 0.85
+
+View sitemap: https://luiscabrejo.com/sitemap.xml
+
+### Canonical URLs
+Each blog page has proper canonical URL configuration:
+- Blog index: `canonical: 'https://luiscabrejo.com/blog'` (in blog/layout.tsx)
+- Individual posts: Set in each post's metadata
+
+**Critical Fix (Nov 24, 2025):** Blog canonical URL was pointing to home page (`/`) - fixed to point to `/blog`
+
+### OpenGraph Metadata
+Complete OpenGraph setup in blog/layout.tsx:
+```typescript
+openGraph: {
+  title: 'Blog Gano Excel y Network Marketing - Luis Cabrejo',
+  description: '...',
+  url: 'https://luiscabrejo.com/blog',
+  type: 'website',
+  locale: 'es_CO',
+  siteName: 'Luis Cabrejo Blog',
+}
+```
+
+### Google Search Console Readiness
+✅ All optimizations completed (Nov 24, 2025):
+1. Canonical URLs configured
+2. OpenGraph metadata complete
+3. Sitemap includes all blog URLs
+4. robots.txt allows indexing
+5. Ready for URL submission to GSC
+
 ## Recent Important Commits
 
 ```
+[Nov 24, 2025] 🔧 Fix blog canonical URL + Complete SEO optimization
+[Nov 24, 2025] 📝 Update business timeline messaging (9 years local + 3 years digital)
+[Nov 24, 2025] ✨ Implement NEXUS streaming without AI SDK
+[Nov 24, 2025] 📱 Update WhatsApp to +573203415438 across codebase
 ec1f984 🎨 Apply professional HTML email design from CreaTuActivo.com
 be93b15 ✨ Improve auto-response email with CreaTuActivo.com ecosystem link
 eb57502 🔧 Fix contact form: Use verified creatuactivo.com domain
 fbca452 📝 Add Vercel environment variables setup guide
 868ccf6 📧 Update contact email to luiscabrejo@creatuactivo.com
+```
+
+## Known Issues & Fixes
+
+### NEXUS Streaming Not Working
+**Symptom:** Messages appear instantly without typing effect
+
+**Fix Applied (Nov 24, 2025):**
+1. Removed AI SDK dependency (deprecated AnthropicStream/StreamingTextResponse)
+2. Implemented manual streaming with ReadableStream
+3. Updated frontend with useNexusChat hook for progressive rendering
+4. Added ReactMarkdown for message formatting
+
+**Files Modified:**
+- `src/app/api/claude-chat/route.ts` - Native streaming implementation
+- `src/components/useNexusChat.ts` - New hook with streaming logic
+- `src/components/NexusChat.tsx` - Integration with streaming hook
+- `package.json` - Added react-markdown, removed ai package
+
+### Client Component Metadata Error
+**Symptom:** Build error "You are attempting to export metadata from a component marked with 'use client'"
+
+**Fix:** Remove metadata export from client components. Keep metadata only in layout.tsx files.
+
+**Example (historia page):**
+- BEFORE: historia/page.tsx had both `'use client'` and `export const metadata`
+- AFTER: Removed metadata from page.tsx, kept only in historia/layout.tsx
+
+### Blog Canonical URL Pointing to Home
+**Symptom:** `/blog` page canonical URL was `https://luiscabrejo.com/` instead of `/blog`
+
+**Fix:** Added to blog/layout.tsx:
+```typescript
+alternates: {
+  canonical: 'https://luiscabrejo.com/blog',
+}
 ```
