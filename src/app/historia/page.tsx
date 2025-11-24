@@ -7,37 +7,6 @@ import ContactModal from '@/components/ContactModal';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 
-export const metadata = {
-  title: 'Mi Historia: De la Quiebra a 4 Millones | Luis Cabrejo',
-  description: 'La trayectoria de Luis Cabrejo desde 2013: de vivir en estrato cero a construir un ecosistema empresarial en 16 países. Network marketing moderno, tecnología y liderazgo.',
-  keywords: [
-    'luis cabrejo',
-    'luis cabrejo historia',
-    'network marketing colombia',
-    'lider mlm colombia',
-    'creaturactivo',
-    'diamante gano excel',
-    'emprendedor colombia',
-    'ecosistema digital mlm',
-    'network marketing moderno',
-    'liderazgo mlm latinoamerica'
-  ],
-  openGraph: {
-    title: 'Mi Historia: De la Quiebra a 4 Millones | Luis Cabrejo',
-    description: 'La trayectoria de Luis Cabrejo desde 2013: de vivir en estrato cero a construir un ecosistema empresarial en 16 países.',
-    url: 'https://luiscabrejo.com/historia',
-    type: 'profile',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Mi Historia: De la Quiebra a 4 Millones | Luis Cabrejo',
-    description: 'La trayectoria de Luis Cabrejo desde 2013: de vivir en estrato cero a construir un ecosistema empresarial en 16 países.',
-  },
-  alternates: {
-    canonical: 'https://luiscabrejo.com/historia',
-  },
-};
-
 export default function HistoriaPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
 
