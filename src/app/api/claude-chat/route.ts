@@ -4,9 +4,11 @@
 // IDENTIDAD: Copiloto del Arquitecto (atemporal, sin versiones)
 // CORRECCIONES: System prompt sin cache + Clasificación productos/paquetes + Consulta catálogo
 // FIX APLICADO: Instrucciones específicas para interpretación correcta del catálogo
+// FIX 2: Respuestas estratégicas ANTES de llamar Anthropic API (24 Nov 2025)
 
 import { createClient } from '@supabase/supabase-js';
 import Anthropic from '@anthropic-ai/sdk';
+import { findStrategicResponse } from './nexus-utils';
 
 // 1. Configuración de Clientes
 const anthropic = new Anthropic({
@@ -942,6 +944,34 @@ ${prospectData.nombre ? `- Nombre: ${prospectData.nombre}` : ''}
       console.log('Contexto híbrido del prospecto incluido:', prospectData.momento_optimo);
     }
 
+    // 🚀 PASO 1: INTENTAR RESPUESTA ESTRATÉGICA PRIMERO (sin API)
+    console.log('🔍 Buscando respuesta estratégica para:', latestUserMessage.substring(0, 50) + '...');
+    const strategicMatch = findStrategicResponse(latestUserMessage);
+
+    if (strategicMatch) {
+      console.log('✅ RESPUESTA ESTRATÉGICA ENCONTRADA:', strategicMatch.responseType);
+
+      // Retornar respuesta estratégica directamente (sin consumir API)
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(encoder.encode(strategicMatch.response));
+          controller.close();
+        }
+      });
+
+      return new Response(stream, {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'X-Response-Type': strategicMatch.responseType,
+          'X-Strategic-Match': 'true'
+        }
+      });
+    }
+
+    console.log('⚠️ No se encontró respuesta estratégica, usando Anthropic API...');
+
+    // PASO 2: Si no hay respuesta estratégica, usar Anthropic API
     // System prompt híbrido (sin cache)
     const baseSystemPrompt = await getSystemPrompt();
 
