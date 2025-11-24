@@ -378,7 +378,7 @@ export default function TestimonioPage() {
               </div>
 
               <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-purple-400 mb-3">4. Duplicación > Esfuerzo Personal</h3>
+                <h3 className="text-xl font-bold text-purple-400 mb-3">4. Duplicación {'>'} Esfuerzo Personal</h3>
                 <p className="text-gray-300">
                   No importa qué tan trabajador seas. Si tu sistema no es duplicable (simple de seguir para otros), nunca construirás un equipo grande. Por eso creé el <Link href="/ecosistema" className="text-blue-400 hover:underline">Sistema 4M</Link>: para que cualquiera pueda duplicar mi modelo.
                 </p>
