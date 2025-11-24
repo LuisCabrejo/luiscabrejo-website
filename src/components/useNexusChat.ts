@@ -85,7 +85,7 @@ const sendMessage = useCallback(async (content: string) => {
       hasNexusProspect: !!(window as any).nexusProspect
     });
 
-    const response = await fetch('/api/nexus', {
+    const response = await fetch('/api/claude-chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

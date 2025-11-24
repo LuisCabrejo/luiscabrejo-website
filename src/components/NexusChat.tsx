@@ -2,13 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X } from 'lucide-react';
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
+import { useNEXUSChat } from './useNexusChat';
+import ReactMarkdown from 'react-markdown';
 
 interface NexusChatProps {
   context?: string;
@@ -25,9 +20,8 @@ export default function NexusChat({
 }: NexusChatProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const { messages, isLoading, isStreaming, streamingComplete, progressiveReplies, sendMessage, resetChat } = useNEXUSChat();
   const [inputMessage, setInputMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -59,62 +53,12 @@ export default function NexusChat({
     return () => clearTimeout(scrollTimer);
   }, [messages.length]);
 
-  const sendMessage = async (content: string) => {
-    if (!content.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: content.trim(),
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('/api/claude-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: content.trim(),
-          conversationHistory: messages.map(m => ({
-            role: m.role,
-            content: m.content
-          }))
-        })
-      });
-
-      if (!response.ok) throw new Error('Error en la respuesta');
-
-      const data = await response.json();
-
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: data.message || 'Lo siento, no pude procesar tu mensaje.',
-        timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-    } catch (error) {
-      console.error('Error:', error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: 'Disculpa, tuve un problema técnico. ¿Puedes intentar de nuevo?',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    sendMessage(inputMessage);
+    if (inputMessage.trim() && !isLoading) {
+      sendMessage(inputMessage.trim());
+      setInputMessage('');
+    }
   };
 
   const quickReplies = [
@@ -263,18 +207,31 @@ export default function NexusChat({
 
               {/* Mensajes */}
               {messages.map((message) => (
-                <div key={message.id} className="flex">
+                <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div
                     className={`p-3 rounded-lg text-sm ${
                       message.role === 'user'
-                        ? 'text-white max-w-[75%] ml-auto'
-                        : 'bg-slate-800/80 text-slate-200 backdrop-blur-sm flex-1'
+                        ? 'text-white max-w-[75%]'
+                        : 'bg-slate-800/80 text-slate-200 backdrop-blur-sm max-w-[85%]'
                     }`}
                     style={message.role === 'user' ? {
                       background: 'linear-gradient(135deg, #1E40AF 0%, #7C3AED 100%)'
                     } : {}}
                   >
-                    {message.content}
+                    <ReactMarkdown
+                      className="prose prose-sm prose-invert max-w-none"
+                      components={{
+                        p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                        ul: ({ children }) => <ul className="list-disc ml-4 mb-2">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal ml-4 mb-2">{children}</ol>,
+                        li: ({ children }) => <li className="mb-1">{children}</li>,
+                        strong: ({ children }) => <strong className="font-bold text-white">{children}</strong>,
+                        em: ({ children }) => <em className="italic">{children}</em>,
+                        code: ({ children }) => <code className="bg-slate-900/50 px-1 py-0.5 rounded text-xs">{children}</code>,
+                      }}
+                    >
+                      {message.content}
+                    </ReactMarkdown>
                   </div>
                 </div>
               ))}
@@ -367,7 +324,7 @@ export default function NexusChat({
               <div className="flex justify-center gap-4">
                 <button
                   className="text-xs text-slate-500 hover:text-slate-300 px-2 py-1 rounded transition-colors"
-                  onClick={() => setMessages([])}
+                  onClick={resetChat}
                 >
                   🔄 Nueva conversación
                 </button>

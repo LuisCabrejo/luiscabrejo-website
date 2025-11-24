@@ -7,7 +7,6 @@
 
 import { createClient } from '@supabase/supabase-js';
 import Anthropic from '@anthropic-ai/sdk';
-import { AnthropicStream, StreamingTextResponse } from 'ai';
 
 // 1. Configuración de Clientes
 const anthropic = new Anthropic({
@@ -993,24 +992,48 @@ ${context}INSTRUCCIONES ARQUITECTURA HÍBRIDA:
       messages: messages,
     });
 
-    // Stream optimizado para arquitectura híbrida
-    const stream = AnthropicStream(response as any, {
-      onFinal: async (completion) => {
-        const totalTime = Date.now() - startTime;
-        console.log(`NEXUS híbrido completado en ${totalTime}ms - Método: ${searchMethod}`);
+    // Stream manual sin AI SDK (compatible con versión actual)
+    const encoder = new TextEncoder();
+    let fullCompletion = '';
 
-        // Log conversación con método de búsqueda
-        await logConversationHibrida(
-          latestUserMessage,
-          completion,
-          documentsUsed,
-          searchMethod,
-          prospectData
-        );
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const event of response) {
+            if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+              const text = event.delta.text;
+              fullCompletion += text;
+              controller.enqueue(encoder.encode(text));
+            }
+          }
+
+          // Logging al finalizar
+          const totalTime = Date.now() - startTime;
+          console.log(`NEXUS híbrido completado en ${totalTime}ms - Método: ${searchMethod}`);
+
+          // Log conversación con método de búsqueda
+          await logConversationHibrida(
+            latestUserMessage,
+            fullCompletion,
+            documentsUsed,
+            searchMethod,
+            prospectData
+          );
+
+          controller.close();
+        } catch (error) {
+          console.error('Error en streaming:', error);
+          controller.error(error);
+        }
       }
     });
 
-    return new StreamingTextResponse(stream);
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Transfer-Encoding': 'chunked',
+      },
+    });
 
   } catch (error) {
     const totalTime = Date.now() - startTime;
