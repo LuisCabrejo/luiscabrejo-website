@@ -65,7 +65,7 @@ export default function TestimonioPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
 
-      <article className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+      <article className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 pt-20">
         {/* Hero */}
         <div className="relative overflow-hidden border-b border-slate-700/50">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10"></div>
