@@ -112,11 +112,11 @@ export default function HomePage() {
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent block">
                 Tecnología e IA
               </span>
-              Ingresos Residuales Simples
+              Ingresos Residuales Escalables
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              <strong className="text-purple-300">¿Ya conoces la industria del network marketing, pero la dejaste porque era complicado?</strong> Yo creo que desarrollar este modelo empresarial se puede hacer sencillo, por eso creamos <a href="https://creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">CreaTuActivo.com</a>. Desarrolla tu propia empresa de distribución de productos Gano Excel y Gano iTouch con <Link href="/ecosistema" className="text-blue-400 hover:underline">tecnología IA + automatización</Link> que hace fácil lo que antes era difícil. Sistema probado en 16 países para construir ingresos residuales sin complicaciones.
+              <strong className="text-purple-300">¿Ya conoces la industria del network marketing, pero la dejaste porque era complicado?</strong> Yo creo que desarrollar este modelo empresarial se puede hacer sencillo, por eso creamos <a href="https://creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">CreaTuActivo.com</a>. Desarrolla tu propia empresa de distribución de productos Gano Excel y Gano iTouch con <Link href="/ecosistema" className="text-blue-400 hover:underline">tecnología que facilita lo complejo</Link>. Sistema probado en 16 países para construir ingresos residuales escalables.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -320,87 +320,77 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-16">
             <div className="inline-block bg-purple-500/20 rounded-full px-4 py-2 text-sm border border-purple-500/30 mb-6">
-              💡 Para quienes ya conocen el Network Marketing
+              Para quienes ya conocen el Network Marketing
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
               ¿Dejaste el Network Marketing Porque Era Complicado?
             </h2>
             <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Miles de personas conocen esta industria y saben que funciona.
-              Pero sin herramientas, era complicado. <strong className="text-blue-300">Ahora puedes desarrollar tu negocio con tecnología</strong> que hace todo más simple.
+              Pero sin herramientas, era complicado. <strong className="text-blue-300">Ahora puedes desarrollar tu negocio con tecnología que hace sencillo lo complejo</strong>, como Netflix hizo fácil lo que antes requería ir a Blockbuster.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
-            {/* Antes */}
-            <div className="bg-red-900/10 border border-red-500/30 rounded-2xl p-6 sm:p-8">
-              <div className="text-red-400 text-4xl mb-4">❌</div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-4 text-red-300">Antes (Por eso lo dejaste)</h3>
-              <ul className="space-y-3 text-gray-300">
-                <li className="flex items-start gap-3">
-                  <span className="text-red-400 mt-1">•</span>
-                  <span>Seguimiento manual de contactos</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-red-400 mt-1">•</span>
-                  <span>Explicar lo mismo 100 veces</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-red-400 mt-1">•</span>
-                  <span>Sin sistema para escalar</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-red-400 mt-1">•</span>
-                  <span>Demasiado tiempo invertido</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-red-400 mt-1">•</span>
-                  <span>Difícil enseñar a tu equipo</span>
-                </li>
-              </ul>
+          {/* Analogías Antes/Ahora */}
+          <div className="bg-gradient-to-r from-slate-900/50 to-slate-800/50 rounded-3xl p-8 sm:p-12 max-w-6xl mx-auto mb-12 border border-slate-700/30">
+            <h3 className="text-2xl sm:text-3xl font-bold mb-8 text-center text-blue-300">
+              La Tecnología Ya Transformó Tu Vida Cotidiana
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-600/30">
+                <div className="text-sm text-gray-400 mb-2">Antes: Alquilar películas</div>
+                <div className="text-lg font-bold text-white mb-2">Ahora: Netflix</div>
+                <div className="text-sm text-gray-300">Streaming cuando quieras</div>
+              </div>
+
+              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-600/30">
+                <div className="text-sm text-gray-400 mb-2">Antes: Carta postal</div>
+                <div className="text-lg font-bold text-white mb-2">Ahora: WhatsApp</div>
+                <div className="text-sm text-gray-300">Comunicación instantánea</div>
+              </div>
+
+              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-600/30">
+                <div className="text-sm text-gray-400 mb-2">Antes: Comprar CDs</div>
+                <div className="text-lg font-bold text-white mb-2">Ahora: Spotify</div>
+                <div className="text-sm text-gray-300">Música ilimitada</div>
+              </div>
+
+              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-600/30">
+                <div className="text-sm text-gray-400 mb-2">Antes: Filas en el banco</div>
+                <div className="text-lg font-bold text-white mb-2">Ahora: App Bancaria</div>
+                <div className="text-sm text-gray-300">Transacciones en segundos</div>
+              </div>
+
+              <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-600/30">
+                <div className="text-sm text-gray-400 mb-2">Antes: Taxi en la calle</div>
+                <div className="text-lg font-bold text-white mb-2">Ahora: Uber</div>
+                <div className="text-sm text-gray-300">Movilidad inteligente</div>
+              </div>
+
+              <div className="bg-gradient-to-br from-purple-900/50 to-blue-900/50 rounded-xl p-6 border-2 border-purple-500/50">
+                <div className="text-sm text-purple-300 mb-2 font-semibold">Antes: Network Marketing Manual</div>
+                <div className="text-lg font-bold text-white mb-2">Ahora: CreaTuActivo</div>
+                <div className="text-sm text-blue-200">App que hace sencillo lograr tus sueños</div>
+              </div>
             </div>
 
-            {/* Ahora */}
-            <div className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 border border-purple-500/50 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                2025
-              </div>
-              <div className="text-green-400 text-4xl mb-4">✅</div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-4 text-green-300">Ahora (Con Tecnología)</h3>
-              <ul className="space-y-3 text-gray-200">
-                <li className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
-                  <span><strong>IA NEXUS</strong> responde dudas 24/7</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
-                  <span><strong>CRM automatizado</strong> hace seguimiento</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
-                  <span><strong>Sistema replicable</strong> para tu equipo</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
-                  <span><strong>Dashboard en tiempo real</strong></span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-purple-400 mt-1 flex-shrink-0" />
-                  <span><strong>Capacitación automática</strong> integrada</span>
-                </li>
-              </ul>
+            <div className="text-center">
+              <p className="text-lg text-gray-300 mb-6 leading-relaxed max-w-3xl mx-auto">
+                Todas estas apps te hicieron la vida más fácil. <strong className="text-purple-300">CreaTuActivo hace lo mismo con tu negocio de Network Marketing:</strong> tecnología que facilita lo complejo.
+              </p>
             </div>
           </div>
 
           {/* CTA Reactivación */}
           <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/30 rounded-2xl p-8 sm:p-12 text-center max-w-4xl mx-auto">
             <h3 className="text-2xl sm:text-3xl font-bold mb-4">
-              Construye Tu Empresa de Distribución con Tecnología
+              Construye Tu Empresa de Distribución con Tecnología que Hace Sencillo lo Complejo
             </h3>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-              Distribuye productos Gano Excel y Gano iTouch con un sistema profesional.
-              <strong className="text-purple-300"> Tecnología IA + CRM automatizado + NEXUS.</strong>
-              Sistema probado en 16 países de América.
+              Distribuye productos Gano Excel y Gano iTouch con un sistema profesional que facilita cada proceso.
+              <strong className="text-purple-300"> App CreaTuActivo + IA NEXUS + CRM automatizado.</strong>
+              Sistema probado en 16 países para construir ingresos residuales escalables.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
