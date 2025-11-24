@@ -116,7 +116,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              <strong className="text-purple-300">¿Ya conoces Gano Excel pero lo dejaste porque era complicado?</strong> Reactiva tu negocio con <Link href="/ecosistema" className="text-blue-400 hover:underline">tecnología IA + automatización</Link> que hace fácil lo que antes era difícil. Sistema probado en 16 países para construir ingresos residuales sin complicaciones.
+              <strong className="text-purple-300">¿Ya conoces la industria del network marketing, pero la dejaste porque era complicado?</strong> Yo creo que desarrollar este modelo empresarial se puede hacer sencillo, por eso creamos <a href="https://creatuactivo.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">CreaTuActivo.com</a>. Desarrolla tu propia empresa de distribución de productos Gano Excel y Gano iTouch con <Link href="/ecosistema" className="text-blue-400 hover:underline">tecnología IA + automatización</Link> que hace fácil lo que antes era difícil. Sistema probado en 16 países para construir ingresos residuales sin complicaciones.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -320,14 +320,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-16">
             <div className="inline-block bg-purple-500/20 rounded-full px-4 py-2 text-sm border border-purple-500/30 mb-6">
-              💡 Para quienes ya conocen Gano Excel
+              💡 Para quienes ya conocen el Network Marketing
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-              ¿Dejaste Gano Excel Porque Era Complicado?
+              ¿Dejaste el Network Marketing Porque Era Complicado?
             </h2>
             <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Más de <strong className="text-purple-300">550,000 personas en Colombia</strong> conocen Gano Excel y saben que funciona.
-              Pero sin herramientas, era complicado. <strong className="text-blue-300">Ahora puedes volver con tecnología</strong> que hace todo más simple.
+              Miles de personas conocen esta industria y saben que funciona.
+              Pero sin herramientas, era complicado. <strong className="text-blue-300">Ahora puedes desarrollar tu negocio con tecnología</strong> que hace todo más simple.
             </p>
           </div>
 
@@ -395,12 +395,12 @@ export default function HomePage() {
           {/* CTA Reactivación */}
           <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/30 rounded-2xl p-8 sm:p-12 text-center max-w-4xl mx-auto">
             <h3 className="text-2xl sm:text-3xl font-bold mb-4">
-              Regla de los 6 Meses: Puedes Empezar de Nuevo
+              Construye Tu Empresa de Distribución con Tecnología
             </h3>
             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-              Si dejaste de comprar hace más de 6 meses, puedes reactivarte con cualquier líder.
-              <strong className="text-purple-300"> Ahora con tecnología que hace la diferencia.</strong>
-              Sistema probado en 16 países.
+              Distribuye productos Gano Excel y Gano iTouch con un sistema profesional.
+              <strong className="text-purple-300"> Tecnología IA + CRM automatizado + NEXUS.</strong>
+              Sistema probado en 16 países de América.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
