@@ -75,99 +75,293 @@ export async function POST(request: NextRequest) {
 
     debugLog('✅ Validaciones completadas exitosamente');
 
-    // Email para Luis - AMBOS DESTINOS
+    // Email para Luis - AMBOS DESTINOS - HTML profesional
     const emailToLuis = {
       from: 'Luis Cabrejo <contacto@creatuactivo.com>',
       replyTo: email, // El reply va directo al usuario
       to: ['luiscabrejo@creatuactivo.com', 'luiscabrejo7@gmail.com'], // AMBOS EMAILS
       subject: `💼 ${formType || 'Contacto'} desde luiscabrejo.com - ${name}`,
-      text: `
-🎯 NUEVO CONTACTO desde luiscabrejo.com
+      html: `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo Contacto - luiscabrejo.com</title>
+  <style>
+    @media only screen and (max-width: 600px) {
+      .mobile-padding { padding: 16px !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0f172a;">
 
-👤 DATOS DEL CONTACTO:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Nombre: ${name}
-Email: ${email}
-Teléfono: ${phone || 'No proporcionado'}
-País: ${country || 'No proporcionado'}
-Tipo de Interés: ${formType || 'Contacto General'}
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #0f172a;">
+    <tr>
+      <td align="center" style="padding: 20px 10px;">
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; width: 100%;">
 
-💬 MENSAJE:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${message || 'El usuario no incluyó un mensaje específico.'}
+          <!-- HEADER -->
+          <tr>
+            <td style="background-color: #0f172a; padding: 30px 20px; text-align: center;">
+              <h1 style="margin: 0; color: #FFFFFF; font-size: 26px; font-weight: 700;">
+                📬 Nuevo Contacto desde luiscabrejo.com
+              </h1>
+              <p style="margin: 8px 0 0; color: #94a3b8; font-size: 14px;">
+                ${formType || 'Contacto General'}
+              </p>
+            </td>
+          </tr>
 
-📊 INFORMACIÓN ADICIONAL:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Fecha/Hora: ${new Date().toLocaleString('es-CO', {
-  timeZone: 'America/Bogota',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit'
-})}
-Zona Horaria: Colombia (UTC-5)
-Origen: luiscabrejo.com
-ID del mensaje: ${Date.now()}
+          <!-- CONTENIDO -->
+          <tr>
+            <td style="background-color: #1e293b; padding: 30px 20px;">
 
-💡 INSTRUCCIONES PARA RESPONDER:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-• Responder desde: luiscabrejo@creatuactivo.com
-• Email del interesado: ${email}
-• Tiempo de respuesta: Máximo 24 horas
-• Tipo de consulta: ${formType || 'Contacto General'}
+              <!-- Card Púrpura - Datos del Usuario -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+                style="background-color: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; margin-bottom: 20px;">
+                <tr>
+                  <td style="padding: 20px;">
+                    <p style="margin: 0 0 14px; color: #a78bfa; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                      👤 DATOS DEL CONTACTO
+                    </p>
+                    <p style="margin: 0 0 10px; color: #e2e8f0; font-size: 15px;">
+                      <strong style="color: #F59E0B;">Nombre:</strong> ${name}
+                    </p>
+                    <p style="margin: 0 0 10px; color: #e2e8f0; font-size: 15px;">
+                      <strong style="color: #F59E0B;">Email:</strong> <a href="mailto:${email}" style="color: #60a5fa; text-decoration: none;">${email}</a>
+                    </p>
+                    ${phone ? `<p style="margin: 0 0 10px; color: #e2e8f0; font-size: 15px;">
+                      <strong style="color: #F59E0B;">Teléfono:</strong> ${phone}
+                    </p>` : ''}
+                    ${country ? `<p style="margin: 0; color: #e2e8f0; font-size: 15px;">
+                      <strong style="color: #F59E0B;">País:</strong> ${country}
+                    </p>` : ''}
+                  </td>
+                </tr>
+              </table>
 
-Para responder, simplemente responde a este email.
+              <!-- Card Azul - Mensaje del Usuario -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+                style="background-color: rgba(30, 64, 175, 0.1); border: 1px solid rgba(30, 64, 175, 0.2); border-radius: 12px; margin-bottom: 20px;">
+                <tr>
+                  <td style="padding: 20px;">
+                    <p style="margin: 0 0 12px; color: #60a5fa; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                      💬 MENSAJE
+                    </p>
+                    <p style="margin: 0; color: #e2e8f0; font-size: 15px; line-height: 24px; white-space: pre-wrap;">${message || 'El usuario no incluyó un mensaje específico.'}</p>
+                  </td>
+                </tr>
+              </table>
 
----
-Sistema automático de notificaciones
-Arquitecto de Ecosistemas Digitales
+              <!-- Card Dorado - Instrucciones -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+                style="background-color: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px;">
+                <tr>
+                  <td style="padding: 18px 20px;">
+                    <p style="margin: 0 0 12px; color: #fbbf24; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                      💡 INSTRUCCIONES
+                    </p>
+                    <p style="margin: 0 0 8px; color: #e2e8f0; font-size: 14px;">
+                      • <strong>Responder desde:</strong> luiscabrejo@creatuactivo.com
+                    </p>
+                    <p style="margin: 0 0 8px; color: #e2e8f0; font-size: 14px;">
+                      • <strong>Tiempo de respuesta:</strong> Máximo 24 horas
+                    </p>
+                    <p style="margin: 0; color: #94a3b8; font-size: 13px; font-style: italic;">
+                      Para responder, simplemente responde a este email.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background-color: #0f172a; padding: 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
+              <p style="margin: 0 0 6px; color: #94a3b8; font-size: 12px;">
+                ${new Date().toLocaleString('es-CO', {
+                  timeZone: 'America/Bogota',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })} (Colombia, UTC-5)
+              </p>
+              <p style="margin: 0; color: #64748b; font-size: 11px;">
+                Sistema automático de notificaciones | CreaTuActivo.com
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
       `
     };
 
-    // Email para el usuario - Más personal
+    // Email para el usuario - HTML profesional con diseño CreaTuActivo
     const emailToUser = {
       from: 'Luis Cabrejo <contacto@creatuactivo.com>',
       replyTo: 'luiscabrejo@creatuactivo.com',
       to: email,
-      subject: '✅ Mensaje recibido - Te responderé en 24 horas',
-      text: `
-Hola ${name},
+      subject: '✅ Recibí tu mensaje - Te responderé pronto',
+      html: `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensaje Recibido</title>
+  <style>
+    @media only screen and (max-width: 600px) {
+      .mobile-padding { padding: 16px !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0f172a;">
 
-✅ He recibido tu mensaje correctamente y quiero agradecerte por tomarte el tiempo de contactarme.
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #0f172a;">
+    <tr>
+      <td align="center" style="padding: 20px 10px;">
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; width: 100%;">
 
-🕐 TIEMPO DE RESPUESTA:
-Me pondré en contacto contigo personalmente en las próximas 24 horas. Suelo responder más rápido, pero quiero darte un tiempo realista.
+          <!-- HEADER -->
+          <tr>
+            <td style="background-color: #0f172a; padding: 30px 20px; text-align: center;">
+              <h1 style="margin: 0; color: #FFFFFF; font-size: 28px; font-weight: 700;">
+                ¡Gracias, ${name}!
+              </h1>
+            </td>
+          </tr>
 
-🌟 MIENTRAS ESPERAS - Explora el ecosistema completo:
+          <!-- CONTENIDO -->
+          <tr>
+            <td style="background-color: #1e293b; padding: 40px 20px;">
 
-🚀 RECOMENDADO: Conoce CreaTuActivo.com
-https://creatuactivo.com/ecosistema
-→ La plataforma tecnológica completa con IA, automatización, y sistema de referidos
-→ Así funciona el activo empresarial que construimos en 16 países
+              <!-- Card de éxito -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+                style="background-color: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; margin-bottom: 24px;">
+                <tr>
+                  <td style="padding: 28px 20px; text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">✅</div>
+                    <h2 style="margin: 0 0 12px; color: #22c55e; font-size: 22px; font-weight: 600;">
+                      Recibí tu mensaje
+                    </h2>
+                    <p style="margin: 0; color: #94a3b8; font-size: 15px;">
+                      Te responderé personalmente en menos de 24 horas
+                    </p>
+                  </td>
+                </tr>
+              </table>
 
-📖 Mi Historia Completa:
-https://luiscabrejo.com/historia
-→ De la quiebra total a un activo empresarial en América
+              <!-- Párrafos -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 30px;">
+                <tr>
+                  <td style="padding: 0 10px;">
+                    <p style="margin: 0 0 16px; color: #e2e8f0; font-size: 16px; line-height: 26px;">
+                      Hola ${name},
+                    </p>
+                    <p style="margin: 0 0 16px; color: #e2e8f0; font-size: 16px; line-height: 26px;">
+                      Gracias por tomarte el tiempo de contactarme. He recibido tu mensaje y lo revisaré personalmente.
+                    </p>
+                    <p style="margin: 0; color: #e2e8f0; font-size: 16px; line-height: 26px;">
+                      Mientras tanto, te invito a explorar el ecosistema completo:
+                    </p>
+                  </td>
+                </tr>
+              </table>
 
-🎯 La Visión 4 Millones:
-https://luiscabrejo.com/vision
-→ El plan 2025-2032 para transformar 4 millones de vidas
+              <!-- Card Púrpura - RECOMENDADO -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+                style="background-color: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; margin-bottom: 16px;">
+                <tr>
+                  <td style="padding: 20px;">
+                    <p style="margin: 0 0 8px; color: #a78bfa; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                      🚀 RECOMENDADO
+                    </p>
+                    <h3 style="margin: 0 0 8px; color: #FFFFFF; font-size: 18px; font-weight: 600;">
+                      <a href="https://creatuactivo.com/ecosistema" style="color: #FFFFFF; text-decoration: none;">
+                        Conoce CreaTuActivo.com →
+                      </a>
+                    </h3>
+                    <p style="margin: 0; color: #94a3b8; font-size: 14px; line-height: 22px;">
+                      La plataforma tecnológica completa con IA y automatización. Así funciona el activo empresarial que construimos en 16 países.
+                    </p>
+                  </td>
+                </tr>
+              </table>
 
-💡 RECORDATORIO de tu consulta:
-"${message || `Interesado en ${formType || 'conocer más sobre el ecosistema digital'}`}"
+              <!-- Card Azul - Mi Historia -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+                style="background-color: rgba(30, 64, 175, 0.1); border: 1px solid rgba(30, 64, 175, 0.2); border-radius: 12px; margin-bottom: 16px;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <h3 style="margin: 0 0 6px; color: #FFFFFF; font-size: 16px; font-weight: 600;">
+                      <a href="https://luiscabrejo.com/historia" style="color: #FFFFFF; text-decoration: none;">
+                        📖 Mi Historia Completa →
+                      </a>
+                    </h3>
+                    <p style="margin: 0; color: #94a3b8; font-size: 14px;">
+                      De la quiebra total a un activo empresarial en América
+                    </p>
+                  </td>
+                </tr>
+              </table>
 
-Un abrazo desde Villavicencio,
+              <!-- Card Azul - Visión 4 Millones -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+                style="background-color: rgba(30, 64, 175, 0.1); border: 1px solid rgba(30, 64, 175, 0.2); border-radius: 12px;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <h3 style="margin: 0 0 6px; color: #FFFFFF; font-size: 16px; font-weight: 600;">
+                      <a href="https://luiscabrejo.com/vision" style="color: #FFFFFF; text-decoration: none;">
+                        🎯 La Visión 4 Millones →
+                      </a>
+                    </h3>
+                    <p style="margin: 0; color: #94a3b8; font-size: 14px;">
+                      El plan 2025-2032 para transformar 4 millones de vidas
+                    </p>
+                  </td>
+                </tr>
+              </table>
 
-Luis Cabrejo
-Arquitecto de Ecosistemas Digitales
-11 años como Diamante | 16 países | +2,847 vidas transformadas
+            </td>
+          </tr>
 
----
-"No busco protagonismo - busco transformar 4 millones de vidas"
+          <!-- FOOTER -->
+          <tr>
+            <td style="background-color: #0f172a; padding: 24px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
+              <p style="margin: 0 0 8px; color: #94a3b8; font-size: 14px;">
+                Luis Cabrejo
+              </p>
+              <p style="margin: 0 0 4px; color: #64748b; font-size: 12px;">
+                Co-Fundador CreaTuActivo.com
+              </p>
+              <p style="margin: 0 0 16px; color: #64748b; font-size: 12px;">
+                11 años Diamante Gano Excel | 16 países | +2,847 vidas transformadas
+              </p>
+              <p style="margin: 0; color: #64748b; font-size: 11px; line-height: 18px;">
+                © 2025 CreaTuActivo.com<br>
+                El primer ecosistema tecnológico para construcción de activos en América
+              </p>
+            </td>
+          </tr>
 
-📧 luiscabrejo@creatuactivo.com
-🌐 luiscabrejo.com
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
       `
     };
 
