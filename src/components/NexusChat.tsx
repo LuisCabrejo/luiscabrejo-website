@@ -1009,8 +1009,7 @@ Portal: luiscabrejo.com/fundadores`;
       return {
         width: 'w-full max-w-lg',
         height: 'h-[98vh]',
-        maxHeight: 'max-h-[98vh]',
-        messagesHeight: 'calc(98vh - 220px)' // Más espacio para mensajes
+        maxHeight: 'max-h-[98vh]'
       };
     }
 
@@ -1018,8 +1017,7 @@ Portal: luiscabrejo.com/fundadores`;
       return {
         width: 'w-full max-w-4xl',
         height: 'h-[95vh]',
-        maxHeight: 'max-h-[95vh]',
-        messagesHeight: 'calc(95vh - 220px)' // Más espacio para mensajes
+        maxHeight: 'max-h-[95vh]'
       };
     }
 
@@ -1027,8 +1025,7 @@ Portal: luiscabrejo.com/fundadores`;
     return {
       width: 'w-full max-w-xl lg:max-w-2xl',
       height: 'h-[85vh] lg:h-[80vh]',
-      maxHeight: 'max-h-[85vh] lg:max-h-[80vh]',
-      messagesHeight: 'calc(85vh - 220px)' // Más espacio para mensajes
+      maxHeight: 'max-h-[85vh] lg:max-h-[80vh]'
     };
   };
 
@@ -1281,10 +1278,10 @@ Portal: luiscabrejo.com/fundadores`;
             </div>
           </div>
 
-          {/* Contenido del Chat */}
+          {/* Contenido del Chat - Optimizado igual a CreaTuActivo.com */}
           <div
-            className="flex-1 p-4 overflow-y-auto space-y-4"
-            style={{ maxHeight: dimensions.messagesHeight }}
+            className={`flex-1 overflow-y-auto space-y-4 ${isExpanded ? 'p-6' : 'p-4'}`}
+            style={{ scrollbarWidth: 'thin' }}
           >
             {chatPhase !== 'ready' && chatPhase !== 'closed' ? (
               renderChatPhase()
