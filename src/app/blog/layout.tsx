@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: {
@@ -28,10 +27,5 @@ export default function BlogLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      {children}
-      <Footer />
-    </>
-  );
+  return children;
 }

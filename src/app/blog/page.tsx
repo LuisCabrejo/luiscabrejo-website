@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Blog Gano Excel - Artículos y Guías para Distribuidores',
@@ -120,6 +121,8 @@ export default function BlogPage() {
           </Link>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

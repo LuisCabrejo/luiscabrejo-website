@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Testimonio: 11 Años como Diamante Gano Excel en 16 Países - Luis Cabrejo',
@@ -533,6 +534,8 @@ export default function TestimonioPage() {
             </div>
           </div>
         </div>
+
+        <Footer />
       </article>
     </>
   );
