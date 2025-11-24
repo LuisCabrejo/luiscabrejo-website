@@ -139,15 +139,16 @@ Hola ${name},
 🕐 TIEMPO DE RESPUESTA:
 Me pondré en contacto contigo personalmente en las próximas 24 horas. Suelo responder más rápido, pero quiero darte un tiempo realista.
 
-🌟 MIENTRAS ESPERAS, puedes explorar:
+🌟 MIENTRAS ESPERAS - Explora el ecosistema completo:
+
+🚀 RECOMENDADO: Conoce CreaTuActivo.com
+https://creatuactivo.com/ecosistema
+→ La plataforma tecnológica completa con IA, automatización, y sistema de referidos
+→ Así funciona el activo empresarial que construimos en 16 países
 
 📖 Mi Historia Completa:
 https://luiscabrejo.com/historia
-→ Cómo pasé de la quiebra total a construir un activo empresarial en 16 países
-
-🛠️ El Ecosistema Digital:
-https://luiscabrejo.com/ecosistema
-→ Las herramientas tecnológicas que desarrollo con Next.js e IA
+→ De la quiebra total a un activo empresarial en América
 
 🎯 La Visión 4 Millones:
 https://luiscabrejo.com/vision
