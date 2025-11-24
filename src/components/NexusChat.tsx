@@ -1010,7 +1010,7 @@ Portal: luiscabrejo.com/fundadores`;
         width: 'w-full max-w-lg',
         height: 'h-[98vh]',
         maxHeight: 'max-h-[98vh]',
-        messagesHeight: 'calc(98vh - 180px)'
+        messagesHeight: 'calc(98vh - 220px)' // Más espacio para mensajes
       };
     }
 
@@ -1019,7 +1019,7 @@ Portal: luiscabrejo.com/fundadores`;
         width: 'w-full max-w-4xl',
         height: 'h-[95vh]',
         maxHeight: 'max-h-[95vh]',
-        messagesHeight: 'calc(95vh - 180px)'
+        messagesHeight: 'calc(95vh - 220px)' // Más espacio para mensajes
       };
     }
 
@@ -1028,7 +1028,7 @@ Portal: luiscabrejo.com/fundadores`;
       width: 'w-full max-w-xl lg:max-w-2xl',
       height: 'h-[85vh] lg:h-[80vh]',
       maxHeight: 'max-h-[85vh] lg:max-h-[80vh]',
-      messagesHeight: 'calc(85vh - 180px)'
+      messagesHeight: 'calc(85vh - 220px)' // Más espacio para mensajes
     };
   };
 
@@ -1215,10 +1215,14 @@ Portal: luiscabrejo.com/fundadores`;
 
       {/* Ventana del chat - Overlay centrado igual a CreaTuActivo.com */}
       {isChatOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 bg-black/20 backdrop-blur-sm">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 bg-black/20 backdrop-blur-sm"
+          onClick={handleChatToggle}
+        >
           <div
             className={getChatContainerClasses()}
             style={getChatContainerStyles()}
+            onClick={(e) => e.stopPropagation()}
           >
           <ConnectionIndicator />
 
@@ -1265,15 +1269,14 @@ Portal: luiscabrejo.com/fundadores`;
                     )}
                   </button>
                 )}
-                {isMobile && (
-                  <button
-                    onClick={handleChatToggle}
-                    className="text-white hover:text-blue-200 transition-colors p-1"
-                    title="Cerrar chat"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                )}
+                {/* Botón X siempre visible (desktop y mobile) */}
+                <button
+                  onClick={handleChatToggle}
+                  className="text-white hover:text-blue-200 transition-colors p-1"
+                  title="Cerrar chat"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
             </div>
           </div>
