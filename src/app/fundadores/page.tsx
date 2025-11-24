@@ -14,10 +14,10 @@ import {
 import ContactModal from '@/components/ContactModal';
 import NexusChat from '@/components/NexusChat';
 import Footer from '@/components/Footer';
+import Navigation from '@/components/Navigation';
 
 export default function FundadoresPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   // Lógica del Contador
@@ -43,22 +43,6 @@ export default function FundadoresPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Cerrar menú móvil al hacer clic fuera
-  useEffect(() => {
-    const handleClickOutside = () => {
-      if (mobileMenuOpen) {
-        setMobileMenuOpen(false);
-      }
-    };
-
-    if (mobileMenuOpen) {
-      document.addEventListener('click', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [mobileMenuOpen]);
 
   return (
     <div className="bg-slate-900 text-gray-300 overflow-x-hidden min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -69,85 +53,7 @@ export default function FundadoresPage() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-green-600 rounded-full opacity-10 blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      {/* Navegación Completa */}
-      <nav className="fixed top-0 w-full bg-slate-900/50 backdrop-blur-md z-50 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-          <div className="flex justify-between items-center">
-            {/* Logo */}
-            <Link href="/">
-              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent cursor-pointer">
-                Luis Cabrejo
-              </span>
-            </Link>
-
-            {/* Menú Desktop */}
-            <div className="hidden md:flex items-center space-x-8">
-              <Link href="/" className="text-gray-300 hover:text-white transition-colors">
-                Inicio
-              </Link>
-              <Link href="/historia" className="text-gray-300 hover:text-white transition-colors">
-                Historia
-              </Link>
-              <Link href="/ecosistema" className="text-gray-300 hover:text-white transition-colors">
-                Ecosistema
-              </Link>
-              <Link href="/vision" className="text-gray-300 hover:text-white transition-colors">
-                Visión
-              </Link>
-              <span className="text-purple-400 font-medium">
-                Fundadores
-              </span>
-              <button
-                onClick={() => setContactModalOpen(true)}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full hover:shadow-lg transition-all"
-              >
-                Conectar
-              </button>
-            </div>
-
-            {/* Menú Mobile Button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-gray-300 hover:text-white p-2"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Menú Mobile Dropdown */}
-          {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-white/10 pt-4">
-              <div className="flex flex-col space-y-3">
-                <Link href="/" className="text-gray-300 hover:text-white transition-colors py-2">
-                  Inicio
-                </Link>
-                <Link href="/historia" className="text-gray-300 hover:text-white transition-colors py-2">
-                  Historia
-                </Link>
-                <Link href="/ecosistema" className="text-gray-300 hover:text-white transition-colors py-2">
-                  Ecosistema
-                </Link>
-                <Link href="/vision" className="text-gray-300 hover:text-white transition-colors py-2">
-                  Visión
-                </Link>
-                <span className="text-purple-400 font-medium py-2">
-                  Fundadores
-                </span>
-                <button
-                  onClick={() => setContactModalOpen(true)}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 rounded-full hover:shadow-lg transition-all mt-4 text-center"
-                >
-                  Conectar
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <Navigation onContactClick={() => setContactModalOpen(true)} />
 
       <div className="container mx-auto px-4 pt-28 pb-12 md:pt-36 md:pb-20">
         {/* Banner de Contexto */}

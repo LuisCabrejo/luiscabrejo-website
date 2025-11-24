@@ -4,33 +4,14 @@ import React, { useState } from 'react';
 import { ArrowLeft, Calendar, MapPin, Users, Target, Heart, Zap } from 'lucide-react';
 import Link from 'next/link';
 import ContactModal from '@/components/ContactModal';
+import Navigation from '@/components/Navigation';
 
 export default function HistoriaPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/20 backdrop-blur-md z-50 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Luis Cabrejo
-            </Link>
-            <div className="hidden md:flex space-x-8 text-sm">
-              <Link href="/historia" className="text-blue-400">Mi Historia</Link>
-              <Link href="/ecosistema" className="hover:text-blue-400 transition-colors">Ecosistema</Link>
-              <Link href="/vision" className="hover:text-blue-400 transition-colors">Visión 4M</Link>
-            </div>
-            <button
-              onClick={() => setContactModalOpen(true)}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 sm:px-6 py-2 rounded-full hover:shadow-lg transition-all text-sm sm:text-base"
-            >
-              Conectar
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Navigation onContactClick={() => setContactModalOpen(true)} />
 
       {/* Hero */}
       <section className="pt-24 sm:pt-32 pb-16 sm:pb-20">
