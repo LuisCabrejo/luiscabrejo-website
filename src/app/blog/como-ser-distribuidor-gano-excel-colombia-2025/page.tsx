@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import Navigation from '@/components/Navigation';
 
 export const metadata: Metadata = {
   title: 'Cómo Ser Distribuidor Gano Excel Colombia 2025: Guía Completa Paso a Paso',
@@ -89,6 +90,7 @@ export default function ArticlePage() {
 
   return (
     <>
+      <Navigation />
       {/* Schemas */}
       <script
         type="application/ld+json"

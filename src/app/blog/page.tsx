@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import Navigation from '@/components/Navigation';
 
 export const metadata: Metadata = {
   title: 'Blog Gano Excel - Artículos y Guías para Distribuidores',
@@ -40,6 +41,7 @@ const articles: ArticleCard[] = [
 export default function BlogPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+      <Navigation />
       {/* Header */}
       <div className="relative overflow-hidden border-b border-slate-700/50">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10"></div>
