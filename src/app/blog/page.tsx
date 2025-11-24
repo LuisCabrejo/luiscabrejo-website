@@ -41,17 +41,19 @@ const articles: ArticleCard[] = [
 
 export default function BlogPage() {
   return (
-    <div className="min-h-screen bg-slate-900 overflow-x-hidden">
+    <div className="bg-slate-900 text-gray-300 overflow-x-hidden min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
       {/* Fondo decorativo con gradientes */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
         <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-blue-600 rounded-full opacity-20 blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-purple-600 rounded-full opacity-20 blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-green-600 rounded-full opacity-10 blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
       <Navigation />
 
+      <div className="container mx-auto px-4 pt-28 pb-12 md:pt-36 md:pb-20">
       {/* Header */}
-      <div className="relative overflow-hidden border-b border-slate-700/50 pt-24 sm:pt-32">
+      <div className="relative overflow-hidden border-b border-slate-700/50">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="text-center">
@@ -120,6 +122,7 @@ export default function BlogPage() {
             Conoce el Programa Fundadores →
           </Link>
         </div>
+      </div>
       </div>
 
       <Footer />
