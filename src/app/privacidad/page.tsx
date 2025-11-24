@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Navigation from '@/components/Navigation';
 
 export const metadata: Metadata = {
   title: 'Política de Privacidad',
@@ -12,25 +13,7 @@ export const metadata: Metadata = {
 export default function PrivacidadPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-      {/* Header */}
-      <nav className="fixed top-0 w-full bg-black/20 backdrop-blur-md z-50 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-          <div className="flex justify-between items-center">
-            <a
-              className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
-              href="/"
-            >
-              Luis Cabrejo
-            </a>
-            <a
-              href="/"
-              className="text-sm hover:text-blue-400 transition-colors"
-            >
-              Volver al inicio
-            </a>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Main Content */}
       <main className="pt-24 pb-16">
