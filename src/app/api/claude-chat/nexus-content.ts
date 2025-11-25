@@ -573,7 +573,7 @@ export const fallbackResponses = {
 // INFORMACIÓN PARA CONVERSIÓN
 // ========================================
 export const CONVERSION_INFO = {
-  whatsappNumber: '+57 310 2066593',
+  whatsappNumber: '+573203415438',
   cities: [
     'Barranquilla', 'Cúcuta', 'Medellín', 'Pereira',
     'Neiva', 'Cali', 'Bogotá Cedritos', 'Bogotá Santa Isabel',
