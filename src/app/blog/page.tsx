@@ -15,6 +15,14 @@ interface ArticleCard {
 
 const articles: ArticleCard[] = [
   {
+    slug: 'el-fin-del-rechazo',
+    title: 'El Fin del Rechazo: Cómo la IA está Creando Networkers Millonarios',
+    description: 'Descubre el sistema de Network Marketing con IA que automatiza el 80% del trabajo, elimina el rechazo y te permite construir un activo real sin perseguir a nadie.',
+    date: '4 Dic 2025',
+    category: 'Tecnología',
+    readTime: '10 min',
+  },
+  {
     slug: 'como-ser-distribuidor-gano-excel-colombia-2025',
     title: 'Cómo Ser Distribuidor Gano Excel Colombia 2025: Guía Completa',
     description: 'Guía paso a paso para convertirte en distribuidor Gano Excel en Colombia. Requisitos, costos, paquetes y proceso completo explicado por un Diamante de 11 años.',
@@ -67,7 +75,7 @@ export default function BlogPage() {
 
       {/* Articles Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles.map((article) => (
             <Link
               key={article.slug}

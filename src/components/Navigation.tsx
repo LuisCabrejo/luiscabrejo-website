@@ -2,14 +2,30 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 
 interface NavigationProps {
   onContactClick?: () => void;
 }
 
+const blogArticles = [
+  {
+    title: 'El Fin del Rechazo (IA + Network Marketing)',
+    slug: '/blog/el-fin-del-rechazo',
+  },
+  {
+    title: 'Guía: Cómo Ser Distribuidor Gano Excel',
+    slug: '/blog/como-ser-distribuidor-gano-excel-colombia-2025',
+  },
+  {
+    title: 'Testimonio: 11 Años como Diamante',
+    slug: '/blog/testimonio-11-anos-diamante-gano-excel-colombia',
+  },
+];
+
 export default function Navigation({ onContactClick }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [blogDropdownOpen, setBlogDropdownOpen] = useState(false);
 
   const handleContactClick = () => {
     if (onContactClick) {
@@ -26,13 +42,40 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             Luis Cabrejo
           </Link>
 
-          <div className="hidden md:flex space-x-8 text-sm">
+          <div className="hidden md:flex space-x-8 text-sm items-center">
             <Link href="/fundadores" className="text-white hover:text-purple-400 transition-colors font-semibold">
               Programa Fundadores
             </Link>
-            <Link href="/blog" className="text-white hover:text-blue-400 transition-colors">
-              Blog
-            </Link>
+
+            {/* Blog Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setBlogDropdownOpen(true)}
+              onMouseLeave={() => setBlogDropdownOpen(false)}
+            >
+              <Link
+                href="/blog"
+                className="text-white hover:text-blue-400 transition-colors flex items-center gap-1"
+              >
+                Blog
+                <ChevronDown className={`w-4 h-4 transition-transform ${blogDropdownOpen ? 'rotate-180' : ''}`} />
+              </Link>
+
+              {blogDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-72 bg-slate-800/95 backdrop-blur-lg border border-slate-700/50 rounded-lg shadow-xl overflow-hidden">
+                  {blogArticles.map((article) => (
+                    <Link
+                      key={article.slug}
+                      href={article.slug}
+                      className="block px-4 py-3 text-sm text-gray-300 hover:bg-slate-700/50 hover:text-white transition-colors border-b border-slate-700/30 last:border-b-0"
+                    >
+                      {article.title}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Link href="/historia" className="text-white hover:text-blue-400 transition-colors">
               Mi Historia
             </Link>
@@ -72,13 +115,29 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             >
               Programa Fundadores
             </Link>
-            <Link
-              href="/blog"
-              className="block text-lg font-medium text-white hover:text-blue-400 transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Blog
-            </Link>
+
+            {/* Blog Section with Articles */}
+            <div>
+              <Link
+                href="/blog"
+                className="block text-lg font-medium text-white hover:text-blue-400 transition-colors mb-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Blog
+              </Link>
+              <div className="ml-4 space-y-2">
+                {blogArticles.map((article) => (
+                  <Link
+                    key={article.slug}
+                    href={article.slug}
+                    className="block text-sm text-gray-400 hover:text-blue-400 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    • {article.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
             <Link
               href="/historia"
               className="block text-lg font-medium text-white hover:text-blue-400 transition-colors"
