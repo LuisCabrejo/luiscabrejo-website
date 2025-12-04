@@ -1,9 +1,12 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import type { Metadata } from 'next';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import ContactModal from '@/components/ContactModal';
 
-export const metadata: Metadata = {
+const metadata = {
   title: 'Cómo Ser Distribuidor Gano Excel Colombia 2025: Guía Completa Paso a Paso',
   description: 'Guía completa para convertirte en distribuidor Gano Excel en Colombia. Requisitos, inversión desde $200 USD, proceso de registro y todo lo que necesitas saber. Por Luis Cabrejo, Diamante 11 años.',
   keywords: [
@@ -36,6 +39,8 @@ export const metadata: Metadata = {
 };
 
 export default function ArticlePage() {
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+
   // Article Schema
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -108,7 +113,8 @@ export default function ArticlePage() {
           <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-purple-600 rounded-full opacity-20 blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
         </div>
 
-        <Navigation />
+        <Navigation onContactClick={() => setContactModalOpen(true)} />
+        <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
 
         {/* Hero */}
         <div className="relative overflow-hidden border-b border-slate-700/50 pt-24 sm:pt-32">
@@ -121,7 +127,7 @@ export default function ArticlePage() {
               <span className="text-sm text-gray-400">12 min lectura</span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-              Cómo Ser Distribuidor Gano Excel Colombia 2025: Guía Completa Paso a Paso
+              Cómo Ser Distribuidor Gano Excel Colombia 2025: <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Guía Completa Paso a Paso</span>
             </h1>
             <p className="text-lg text-gray-300 mb-6">
               Todo lo que necesitas saber para convertirte en distribuidor Gano Excel en Colombia: requisitos, inversión, proceso y opciones de paquetes.
@@ -218,7 +224,7 @@ export default function ArticlePage() {
 
           {/* Section 3 */}
           <section id="paquetes" className="mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">Paquetes e Inversión Inicial</h2>
+            <h2 className="text-3xl font-bold text-white mb-6"><span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Paquetes e Inversión Inicial</span></h2>
             <p className="text-gray-300 leading-relaxed mb-6">
               Gano Excel ofrece diferentes niveles de entrada según tu presupuesto y objetivos. Aquí están las opciones oficiales:
             </p>
@@ -425,7 +431,7 @@ export default function ArticlePage() {
 
           {/* Section 5 - Comparativa */}
           <section id="comparativa" className="mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">Comparativa: Registro Tradicional vs Programa Fundadores</h2>
+            <h2 className="text-3xl font-bold text-white mb-6">Comparativa: Registro Tradicional vs <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Programa Fundadores</span></h2>
             <p className="text-gray-300 leading-relaxed mb-6">
               Existe una diferencia importante entre el <strong className="text-white">registro tradicional</strong> con Gano Excel y unirte al <strong className="text-purple-400">Programa Fundadores</strong> que yo ofrezco. Aquí está la comparación honesta:
             </p>

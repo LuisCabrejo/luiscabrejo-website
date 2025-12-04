@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import ContactModal from '@/components/ContactModal';
 
 interface ArticleCard {
   slug: string;
@@ -41,6 +43,8 @@ const articles: ArticleCard[] = [
 ];
 
 export default function BlogPage() {
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+
   return (
     <div className="bg-slate-900 text-gray-300 overflow-x-hidden min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
       {/* Fondo decorativo con gradientes */}
@@ -50,7 +54,8 @@ export default function BlogPage() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-green-600 rounded-full opacity-10 blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      <Navigation />
+      <Navigation onContactClick={() => setContactModalOpen(true)} />
+      <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
 
       <div className="container mx-auto px-4 pt-28 pb-12 md:pt-36 md:pb-20">
       {/* Header */}

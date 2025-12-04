@@ -9,12 +9,13 @@
 
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Zap, Cpu, Users, Globe, X, BrainCircuit } from 'lucide-react'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import ContactModal from '@/components/ContactModal'
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
   <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-8">
@@ -39,6 +40,8 @@ const SolutionPoint = ({ icon, text }: { icon: React.ReactNode, text: string }) 
 );
 
 export default function FinDelRechazoPage() {
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -81,7 +84,8 @@ export default function FinDelRechazoPage() {
           <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-purple-600 rounded-full opacity-20 blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
         </div>
 
-        <Navigation />
+        <Navigation onContactClick={() => setContactModalOpen(true)} />
+        <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
 
         {/* Hero Section */}
         <div className="relative overflow-hidden border-b border-slate-700/50 pt-24 sm:pt-32">

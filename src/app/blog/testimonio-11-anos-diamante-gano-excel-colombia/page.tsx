@@ -1,9 +1,12 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import type { Metadata } from 'next';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import ContactModal from '@/components/ContactModal';
 
-export const metadata: Metadata = {
+const metadata = {
   title: 'Testimonio: 11 Años como Diamante Gano Excel en 16 Países - Luis Cabrejo',
   description: 'Mi historia real desde los 40 años hasta construir un negocio Gano Excel en 16 países. Los fracasos, lecciones aprendidas y cómo la tecnología cambió todo. Testimonio honesto de un Diamante.',
   keywords: [
@@ -36,6 +39,8 @@ export const metadata: Metadata = {
 };
 
 export default function TestimonioPage() {
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+
   // Article Schema
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -72,7 +77,8 @@ export default function TestimonioPage() {
           <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-purple-600 rounded-full opacity-20 blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
         </div>
 
-        <Navigation />
+        <Navigation onContactClick={() => setContactModalOpen(true)} />
+        <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
 
         {/* Hero */}
         <div className="relative overflow-hidden border-b border-slate-700/50 pt-24 sm:pt-32">
@@ -88,7 +94,7 @@ export default function TestimonioPage() {
               Testimonio Real
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-              11 Años como Diamante Gano Excel: Quebrado a los 40, Exitoso a los 43
+              11 Años como Diamante Gano Excel: <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Quebrado a los 40, Exitoso a los 43</span>
             </h1>
             <p className="text-lg text-gray-300 mb-6">
               Mi historia real sin filtros. Cómo invertí $1,000 USD con emoción y seguridad, crecí a 30 personas en 3 meses, lloré en el primer año, y alcancé Diamante en 2.5 años.
@@ -283,7 +289,7 @@ export default function TestimonioPage() {
 
           {/* Section 5: El Camino a Diamante */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">2.5 Años Después: Diamante</h2>
+            <h2 className="text-3xl font-bold text-white mb-6">2.5 Años Después: <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Diamante</span></h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               En <strong className="text-white">30 meses</strong> (2.5 años), alcancé el rango de <strong className="text-purple-400">Diamante</strong> en Gano Excel.
             </p>
@@ -313,7 +319,7 @@ export default function TestimonioPage() {
 
           {/* Section 6: La Familia Power Couple */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">Power Couple: Dos Diamantes, Una Visión</h2>
+            <h2 className="text-3xl font-bold text-white mb-6"><span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Power Couple:</span> Dos Diamantes, Una Visión</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               Mi esposa, <strong className="text-white">Liliana Moreno</strong>, no solo me apoyó. Se convirtió en <strong className="text-purple-400">Diamante</strong> también.
             </p>

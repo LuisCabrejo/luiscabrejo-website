@@ -62,16 +62,18 @@ export default function Navigation({ onContactClick }: NavigationProps) {
               </Link>
 
               {blogDropdownOpen && (
-                <div className="absolute top-full left-0 mt-2 w-72 bg-slate-800/95 backdrop-blur-lg border border-slate-700/50 rounded-lg shadow-xl overflow-hidden">
-                  {blogArticles.map((article) => (
-                    <Link
-                      key={article.slug}
-                      href={article.slug}
-                      className="block px-4 py-3 text-sm text-gray-300 hover:bg-slate-700/50 hover:text-white transition-colors border-b border-slate-700/30 last:border-b-0"
-                    >
-                      {article.title}
-                    </Link>
-                  ))}
+                <div className="absolute top-full left-0 pt-2 w-72">
+                  <div className="bg-slate-800/95 backdrop-blur-lg border border-slate-700/50 rounded-lg shadow-xl overflow-hidden">
+                    {blogArticles.map((article) => (
+                      <Link
+                        key={article.slug}
+                        href={article.slug}
+                        className="block px-4 py-3 text-sm text-gray-300 hover:bg-slate-700/50 hover:text-white transition-colors border-b border-slate-700/30 last:border-b-0"
+                      >
+                        {article.title}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
