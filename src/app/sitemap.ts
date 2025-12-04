@@ -96,5 +96,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.85,
     },
+    {
+      url: `${baseUrl}/blog/el-fin-del-rechazo`,
+      lastModified: new Date('2025-12-04'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
   ];
 }
