@@ -347,13 +347,20 @@ ${doc.content}
     // Preparar mensajes para Claude
     const recentMessages = messages.length > 6 ? messages.slice(-6) : messages;
 
+    // Construir array de system blocks (solo incluir context si no está vacío)
+    const systemBlocks: Array<{ type: 'text'; text: string }> = [
+      { type: 'text', text: systemPrompt }
+    ];
+
+    // Solo agregar contexto si tiene contenido
+    if (context && context.trim().length > 0) {
+      systemBlocks.push({ type: 'text', text: context });
+    }
+
     // Llamar a Claude con streaming
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
-      system: [
-        { type: 'text', text: systemPrompt },
-        { type: 'text', text: context }
-      ],
+      system: systemBlocks,
       stream: true,
       max_tokens: 600,
       temperature: 0.3,
