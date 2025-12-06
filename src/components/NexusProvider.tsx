@@ -1,7 +1,7 @@
 'use client';
 
-import NexusChat from './NexusChat';
+import { NEXUSFloatingButton } from './nexus';
 
 export default function NexusProvider() {
-  return <NexusChat context="global" showPrompt={true} />;
+  return <NEXUSFloatingButton />;
 }

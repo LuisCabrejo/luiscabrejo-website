@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**luiscabrejo.com** - Next.js 15 website featuring NEXUS 4.0, an AI chatbot for Gano Excel network marketing distribution. The site serves as the digital brand for Luis Cabrejo and Liliana Moreno's "Sistema 4M" targeting the Colombian market.
+**luiscabrejo.com** - Next.js 16 website featuring NEXUS 4.0, an AI chatbot for Gano Excel network marketing distribution. The site serves as the digital brand for Luis Cabrejo and Liliana Moreno's "Sistema 4M" targeting the Colombian market.
 
-**Key Technologies:** Next.js 15 (App Router), TypeScript (strict), Anthropic Claude API (claude-3-5-sonnet-20241022), Supabase, Resend, Tailwind CSS, Vercel
+**Key Technologies:** Next.js 16 (App Router), TypeScript (strict), Anthropic Claude API (claude-3-5-sonnet-20241022), Supabase, Resend, Tailwind CSS, Vercel
 
 ## Development Commands
 
@@ -259,6 +259,7 @@ NEXT_PUBLIC_SHOW_CHATBOT=true
 - `/blog` - Blog section (SEO optimized)
   - `/blog/testimonio-11-anos-diamante-gano-excel-colombia` - Testimonial (pillar content, priority 0.9)
   - `/blog/como-ser-distribuidor-gano-excel-colombia-2025` - Distributor guide (priority 0.85)
+  - `/blog/el-fin-del-rechazo` - Rejection handling article
 
 ## Database
 
@@ -415,52 +416,22 @@ openGraph: {
 4. robots.txt allows indexing
 5. Ready for URL submission to GSC
 
-## Recent Important Commits
+## Recent Changes
 
-```
-[Nov 24, 2025] 🔧 Fix blog canonical URL + Complete SEO optimization
-[Nov 24, 2025] 📝 Update business timeline messaging (9 years local + 3 years digital)
-[Nov 24, 2025] ✨ Implement NEXUS streaming without AI SDK
-[Nov 24, 2025] 📱 Update WhatsApp to +573203415438 across codebase
-ec1f984 🎨 Apply professional HTML email design from CreaTuActivo.com
-be93b15 ✨ Improve auto-response email with CreaTuActivo.com ecosystem link
-eb57502 🔧 Fix contact form: Use verified creatuactivo.com domain
-fbca452 📝 Add Vercel environment variables setup guide
-868ccf6 📧 Update contact email to luiscabrejo@creatuactivo.com
-```
+Check `git log --oneline -10` for latest commits. Key recent improvements:
+- OpenGraph images for social sharing
+- NEXUS streaming without AI SDK (native ReadableStream)
+- Blog SEO optimizations (canonical URLs, sitemap)
+- Professional HTML email design from CreaTuActivo.com
 
-## Known Issues & Fixes
-
-### NEXUS Streaming Not Working
-**Symptom:** Messages appear instantly without typing effect
-
-**Fix Applied (Nov 24, 2025):**
-1. Removed AI SDK dependency (deprecated AnthropicStream/StreamingTextResponse)
-2. Implemented manual streaming with ReadableStream
-3. Updated frontend with useNexusChat hook for progressive rendering
-4. Added ReactMarkdown for message formatting
-
-**Files Modified:**
-- `src/app/api/claude-chat/route.ts` - Native streaming implementation
-- `src/components/useNexusChat.ts` - New hook with streaming logic
-- `src/components/NexusChat.tsx` - Integration with streaming hook
-- `package.json` - Added react-markdown, removed ai package
+## Build Gotchas
 
 ### Client Component Metadata Error
 **Symptom:** Build error "You are attempting to export metadata from a component marked with 'use client'"
 
 **Fix:** Remove metadata export from client components. Keep metadata only in layout.tsx files.
 
-**Example (historia page):**
-- BEFORE: historia/page.tsx had both `'use client'` and `export const metadata`
-- AFTER: Removed metadata from page.tsx, kept only in historia/layout.tsx
-
-### Blog Canonical URL Pointing to Home
-**Symptom:** `/blog` page canonical URL was `https://luiscabrejo.com/` instead of `/blog`
-
-**Fix:** Added to blog/layout.tsx:
-```typescript
-alternates: {
-  canonical: 'https://luiscabrejo.com/blog',
-}
-```
+### Streaming Implementation
+The project uses native ReadableStream for Claude API streaming (not AI SDK). Key files:
+- `src/app/api/claude-chat/route.ts` - Backend streaming
+- `src/components/useNexusChat.ts` - Frontend streaming hook
