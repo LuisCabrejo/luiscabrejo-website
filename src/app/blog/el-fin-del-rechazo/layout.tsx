@@ -23,13 +23,6 @@ export const metadata: Metadata = {
     description: 'El sistema que está creando la primera generación de networkers millonarios sin perseguir amigos ni familia.',
     url: 'https://luiscabrejo.com/blog/el-fin-del-rechazo',
     siteName: 'LuisCabrejo.com',
-    images: [
-      {
-        url: 'https://luiscabrejo.com/og-image-fin-del-rechazo.png',
-        width: 1200,
-        height: 630,
-      },
-    ],
     locale: 'es_CO',
     type: 'article',
     publishedTime: '2025-12-03T00:00:00.000Z',
@@ -40,7 +33,6 @@ export const metadata: Metadata = {
     title: 'El Fin del Rechazo: Network Marketing con IA | Luis Cabrejo',
     description: 'Automatiza tu prospección y elimina el rechazo para siempre con el sistema que está revolucionando el MLM.',
     creator: '@luiscabrejo',
-    images: ['https://luiscabrejo.com/og-image-fin-del-rechazo.png'],
   },
   alternates: {
     canonical: 'https://luiscabrejo.com/blog/el-fin-del-rechazo',
