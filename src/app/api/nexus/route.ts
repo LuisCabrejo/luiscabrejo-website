@@ -30,7 +30,7 @@ function getSupabaseClient() {
 }
 
 export const runtime = 'edge';
-export const maxDuration = 30;
+export const maxDuration = 60; // ✅ FIX: 30→60s para lista de precios completa
 
 // Cache en memoria
 const searchCache = new Map<string, { data: any; timestamp: number }>();
@@ -357,12 +357,19 @@ ${doc.content}
       systemBlocks.push({ type: 'text', text: context });
     }
 
+    // FIX 2025-12-08: Detectar lista de precios COMPLETA
+    const lastUserMessage = messages[messages.length - 1]?.content?.toLowerCase() || '';
+    const pideListaPrecios = /lista.*precio|todos.*los.*precio|precios.*producto|catálogo.*precio|dame.*los.*precio|cuáles.*son.*los.*precio|22.*producto|lista.*completa/i.test(lastUserMessage);
+
+    const maxTokens = pideListaPrecios ? 1000 : 600;
+    console.log(`🔍 DEBUG PRECIOS: pideListaPrecios=${pideListaPrecios}, max_tokens=${maxTokens}`);
+
     // Llamar a Claude con streaming
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
       system: systemBlocks,
       stream: true,
-      max_tokens: 600,
+      max_tokens: maxTokens,
       temperature: 0.3,
       messages: recentMessages,
     });

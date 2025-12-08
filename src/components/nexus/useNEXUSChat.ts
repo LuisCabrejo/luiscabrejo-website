@@ -84,7 +84,8 @@ Estoy aquí para mostrarte cómo construir tu propio sistema de **Distribución 
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      // ✅ FIX: 30s → 60s para lista de precios completa
+      const timeoutId = setTimeout(() => controller.abort(), 60000);
 
       // Obtener fingerprint si existe
       const fingerprint = typeof window !== 'undefined'
