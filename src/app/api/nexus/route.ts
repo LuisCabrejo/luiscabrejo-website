@@ -50,7 +50,7 @@ async function getDocumentsWithEmbeddings(): Promise<DocumentWithEmbedding[]> {
     const { data, error } = await getSupabaseClient()
       .from('nexus_documents')
       .select('category, title, content, embedding, metadata')
-      .in('category', ['arsenal_inicial', 'arsenal_avanzado', 'catalogo_productos'])
+      .in('category', ['arsenal_inicial', 'arsenal_avanzado', 'catalogo_productos', 'arsenal_compensacion'])
       .not('embedding', 'is', null);
 
     if (error) {
@@ -166,6 +166,69 @@ function clasificarDocumentoHibrido(userMessage: string): string | null {
 
   if (avanzadoPatterns.some(p => p.test(msg))) {
     return 'arsenal_avanzado';
+  }
+
+  // 🔥 NUEVA CLASIFICACIÓN: RETO 12 DÍAS + COMPENSACIÓN
+  const compensacionPatterns = [
+    // Reto de los 12 Días
+    /reto.*12.*dias/,
+    /reto.*doce.*dias/,
+    /12.*dias/,
+    /doce.*dias/,
+    /plan.*12/,
+    /que.*es.*el.*reto/,
+    /como.*funciona.*reto/,
+
+    // Formas de ganar / Bono binario
+    /bono.*binario/,
+    /binario.*10/,
+    /binario.*15/,
+    /binario.*16/,
+    /binario.*17/,
+    /como.*se.*gana.*en.*el.*reto/,
+    /proyeccion.*ganancias/,
+
+    // Inversión Reto / Kit de inicio
+    /kit.*de.*inicio/,
+    /443.*600/,
+    /\$443/,
+    /98.*usd/,
+    /inversion.*minima.*reto/,
+
+    // Vinculación al Reto
+    /como.*participo.*reto/,
+    /como.*me.*vinculo.*reto/,
+    /quiero.*participar.*reto/,
+
+    // Paquetes ESP
+    /esp1/,
+    /esp2/,
+    /esp3/,
+    /constructor.*inicial/,
+    /constructor.*empresarial/,
+    /constructor.*visionario/,
+
+    // Recompra mensual y PV/CV
+    /recompra/,
+    /compra.*mensual/,
+    /50.*pv/,
+    /puntos.*volumen/,
+    /que.*es.*pv/,
+    /productos.*para.*pv/,
+    /cuantos.*pv/,
+    /cuantos.*cv/,
+    /pv.*y.*cv/,
+    /cv.*y.*pv/,
+    /pv.*gano/,
+    /cv.*gano/,
+    /productos.*pv/,
+    /productos.*cv/,
+    /tabla.*pv/
+  ];
+
+  if (compensacionPatterns.some(p => p.test(msg))) {
+    console.log('[Patterns] Clasificación: arsenal_compensacion');
+    return 'arsenal_compensacion';
   }
 
   return null;
