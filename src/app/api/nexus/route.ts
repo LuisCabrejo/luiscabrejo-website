@@ -168,6 +168,34 @@ function clasificarDocumentoHibrido(userMessage: string): string | null {
     return 'arsenal_avanzado';
   }
 
+  // 🔥 Patrones para arsenal_compensacion (Reto 12 Días + CV/PV)
+  const compensacionPatterns = [
+    // Reto 12 días
+    /reto/, /12\s*dias/, /doce\s*dias/,
+    // Inversión mínima
+    /inversion\s*minima/, /kit\s*inicio/, /443/,
+    // Compensación
+    /como\s*(se\s*)?gano?/, /formas\s*ganar/, /plan\s*compensacion/, /plan\s*ganancias/,
+    // Proyecciones
+    /cuanto\s*puedo\s*ganar/, /potencial\s*ganancias/,
+    // Duplicación
+    /2\s*x\s*2/, /duplicacion/,
+    // 🆕 CV/PV (FIX 2025-12-10)
+    /cuantos?\s*cv/, /cuantos?\s*pv/,
+    /cv\s*(tiene|de|del)/, /pv\s*(tiene|de|del)/,
+    /(tiene|aporta|genera)\s*cv/, /(tiene|aporta|genera)\s*pv/,
+    /puntos\s*(tiene|de|del)/, /(valor|volumen)\s*comision/, /(valor|volumen)\s*personal/,
+    /completar\s*pv/, /faltan\s*pv/, /llegar\s*a\s*50\s*pv/,
+    /tengo\s*pv/, /productos\s*para\s*(pv|recompra)/,
+    /luvoco\s*(cv|pv|puntos)/, /maquina\s*(cv|pv|puntos)/,
+    /(cv|pv|puntos)\s*(luvoco|maquina)/
+  ];
+
+  if (compensacionPatterns.some(p => p.test(msg))) {
+    console.log('[Patterns] Clasificación: arsenal_compensacion');
+    return 'arsenal_compensacion';
+  }
+
   return null;
 }
 
