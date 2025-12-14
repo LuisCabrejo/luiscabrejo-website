@@ -6,36 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **luiscabrejo.com** - Next.js 16 website featuring NEXUS 4.0, an AI chatbot for Gano Excel network marketing distribution. The site serves as the digital brand for Luis Cabrejo and Liliana Moreno's "Sistema 4M" targeting the Colombian market.
 
-**Key Technologies:** Next.js 16 (App Router), TypeScript (strict), Anthropic Claude API (claude-3-5-sonnet-20241022), Supabase, Resend, Tailwind CSS, Vercel
+**Tech Stack:** Next.js 16 (App Router), TypeScript (strict), Anthropic Claude API (claude-3-5-sonnet-20241022), Supabase, Resend, Tailwind CSS, Vercel
+
+**Path Alias:** `@/*` → `./src/*`
 
 ## Development Commands
 
 ```bash
-# Development (increased memory allocation for large build)
-npm run dev
-# Runs on http://localhost:3000
-# Main NEXUS entry: /fundadores
+npm run dev        # Development server (http://localhost:3000, main NEXUS entry: /fundadores)
+npm run build      # Production build (4GB memory allocation)
+npm start          # Production server
+npm run lint       # ESLint
 
-# Build (increased memory allocation)
-npm run build
-
-# Production server
-npm start
-
-# Lint
-npm run lint
-
-# Deploy
-bash scripts/deploy.sh
-
-# Critical tests post-deploy
-bash scripts/test-critical.sh
-
-# Health monitoring
-bash scripts/health-check.sh
-
-# Diagnose NEXUS issues
-bash scripts/diagnose-nexus.sh
+# Scripts
+bash scripts/deploy.sh          # Deploy to Vercel
+bash scripts/test-critical.sh   # Critical tests post-deploy
+bash scripts/health-check.sh    # Health monitoring
+bash scripts/diagnose-nexus.sh  # Diagnose NEXUS issues
 ```
 
 ## NEXUS Chatbot - Core Architecture
@@ -115,53 +102,11 @@ NEXUS detects 6 emotional states for MLM contexts:
 5. **Professional/Reserved** - Reputation concerns
 6. **Frustrated/Impatient** - MLM fatigue
 
-### Streaming Implementation Details
+### Streaming Implementation
 
-**Backend (route.ts):**
-```typescript
-// Manual streaming without AI SDK
-const stream = new ReadableStream({
-  async start(controller) {
-    const encoder = new TextEncoder();
-    for await (const event of response) {
-      if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-        const text = event.delta.text;
-        fullCompletion += text;
-        controller.enqueue(encoder.encode(text));
-      }
-    }
-    controller.close();
-  }
-});
-
-return new Response(stream, {
-  headers: {
-    'Content-Type': 'text/plain; charset=utf-8',
-    'Transfer-Encoding': 'chunked',
-  },
-});
-```
-
-**Frontend (useNexusChat.ts):**
-```typescript
-// Character-by-character streaming effect
-const reader = response.body.getReader();
-const decoder = new TextDecoder();
-
-while (true) {
-  const { done, value } = await reader.read();
-  if (done) break;
-
-  const text = decoder.decode(value, { stream: true });
-  fullResponse += text;
-
-  setMessages(prev => prev.map(msg =>
-    msg.id === assistantId
-      ? { ...msg, content: fullResponse }
-      : msg
-  ));
-}
-```
+Uses **native ReadableStream** (NO AI SDK dependency):
+- **Backend** (`route.ts`): Manual text streaming from Anthropic API events → `text/plain` response
+- **Frontend** (`useNexusChat.ts`): Character-by-character rendering via `response.body.getReader()`
 
 ## API Routes
 
@@ -276,12 +221,6 @@ Supabase table: `contacts_luiscabrejo`
 - API routes: 30s timeout (vercel.json)
 - Region: `iad1` (US East - optimal for Colombia latency)
 
-## Path Alias
-
-`@/*` → `./src/*` (tsconfig.json)
-
-Example: `import NexusChat from '@/components/NexusChat'`
-
 ## Performance Requirements
 
 - **Response time:** <2.5s average (NEXUS)
@@ -330,14 +269,6 @@ Usually missing Vercel env vars:
 **Reply-to:** `luiscabrejo@creatuactivo.com`
 
 Why creatuactivo.com? Domain is verified in Resend; luiscabrejo.com is not.
-
-## Footer Component
-
-`src/components/Footer.tsx` - Unified footer across all pages
-- Brand: Luis Cabrejo, Co-Fundador CreaTuActivo.com
-- Ecosystem links: luiscabrejo.com, app.creatuactivo.com, creatuactivo.com, ganocafe.online
-- Contact: luiscabrejo@creatuactivo.com, LinkedIn, Instagram
-- Scope: 11 años Diamante, 16 países, +2,847 vidas transformadas
 
 ## Important Development Notes
 
@@ -416,22 +347,9 @@ openGraph: {
 4. robots.txt allows indexing
 5. Ready for URL submission to GSC
 
-## Recent Changes
-
-Check `git log --oneline -10` for latest commits. Key recent improvements:
-- OpenGraph images for social sharing
-- NEXUS streaming without AI SDK (native ReadableStream)
-- Blog SEO optimizations (canonical URLs, sitemap)
-- Professional HTML email design from CreaTuActivo.com
-
 ## Build Gotchas
 
 ### Client Component Metadata Error
 **Symptom:** Build error "You are attempting to export metadata from a component marked with 'use client'"
 
 **Fix:** Remove metadata export from client components. Keep metadata only in layout.tsx files.
-
-### Streaming Implementation
-The project uses native ReadableStream for Claude API streaming (not AI SDK). Key files:
-- `src/app/api/claude-chat/route.ts` - Backend streaming
-- `src/components/useNexusChat.ts` - Frontend streaming hook
