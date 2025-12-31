@@ -70,8 +70,8 @@ const NEXUSFloatingButton: React.FC = () => {
               : 'opacity-0 translate-y-4 pointer-events-none'
           }`}
         >
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-full shadow-xl flex items-center gap-2">
-            <span className="text-sm font-semibold whitespace-nowrap">💬 Habla con NEXUS</span>
+          <div className="bg-gradient-to-r from-amber-500 to-blue-700 text-white px-4 py-2 rounded-full shadow-xl flex items-center gap-2">
+            <span className="text-sm font-semibold whitespace-nowrap">💬 Habla con Queswa</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
             </svg>
@@ -83,10 +83,10 @@ const NEXUSFloatingButton: React.FC = () => {
       <button
         className="fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-2xl z-40 flex items-center justify-center transition-all duration-300 hover:scale-110 group"
         style={{
-          background: 'linear-gradient(135deg, #1E40AF 0%, #7C3AED 100%)'
+          background: 'linear-gradient(135deg, #D4AF37 0%, #1E40AF 100%)'
         }}
         onClick={handleButtonClick}
-        aria-label="Abrir chat con NEXUS IA"
+        aria-label="Abrir asistente Queswa"
       >
         <div className="relative">
           <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
