@@ -193,7 +193,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        {/* NEXUS: Aquí actúa como "Asistente del Mentor" */}
+        {/* Queswa: Aquí actúa como "Asistente del Mentor" */}
         <NexusProvider />
       </body>
     </html>

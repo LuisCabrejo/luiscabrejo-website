@@ -1,5 +1,5 @@
 // src/components/nexus/useNEXUSChat.ts
-// Hook de chat NEXUS para luiscabrejo.com - Usa API /api/nexus con vectorSearch
+// Hook de chat Queswa para luiscabrejo.com - Usa API /api/nexus con vectorSearch
 'use client';
 import { useState, useCallback } from 'react';
 
@@ -12,24 +12,26 @@ interface Message {
 }
 
 export const useNEXUSChat = () => {
-  // Mensaje inicial de NEXUS - Idéntico a CreaTuActivo.com
+  // Mensaje inicial de Queswa - Léxico de Soberanía
   const getInitialGreeting = (): Message => {
     return {
       id: 'initial-greeting',
       role: 'assistant',
-      content: `¡Hola! 👋 Soy **NEXUS**, tu Socio Digital en el ecosistema de Luis Cabrejo.
+      content: `Soy Queswa 🪢
 
-Estoy aquí para mostrarte cómo construir tu propio sistema de **Distribución Masiva** de productos Gano Excel.
+La mayoría de profesionales pasan 40 años construyendo el activo de otro.
 
-¿Qué te gustaría saber?
+Aquí enseñamos cómo construir tu propia **Infraestructura de Soberanía**.
 
-**A)** ⚙️ Cómo funciona el negocio
+¿Cuál es tu situación?
 
-**B)** 📦 Qué productos distribuimos
+**A)** Quiero construir un activo propio
 
-**C)** 💰 Inversión y ganancias
+**B)** Me siento estancado profesionalmente
 
-**D)** 🎯 Si esto es para ti`,
+**C)** Solo estoy explorando opciones
+
+**D)** Quiero conocer el producto`,
       timestamp: new Date(),
       isStreaming: false
     };

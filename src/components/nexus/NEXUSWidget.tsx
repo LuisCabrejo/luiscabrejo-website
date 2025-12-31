@@ -133,7 +133,7 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-white text-sm">NEXUS</p>
+                <p className="font-bold text-white text-sm">Queswa</p>
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <p className="text-xs text-green-400">En línea</p>
@@ -163,7 +163,7 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
               <button
                 className="text-white hover:text-red-400 p-2 transition-all duration-200 rounded-lg bg-slate-700/50 hover:bg-red-500/20 border border-slate-600/50 hover:border-red-500/50"
                 onClick={onClose}
-                aria-label="Cerrar asistente NEXUS"
+                aria-label="Cerrar asistente Queswa"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
@@ -191,8 +191,8 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-white text-sm">NEXUS</p>
-                <p className="text-[10px] text-slate-300">por CreaTuActivo.com</p>
+                <p className="font-bold text-white text-sm">Queswa</p>
+                <p className="text-[10px] text-slate-300">Tu Socio Digital de Negocio</p>
               </div>
             </div>
 
@@ -267,12 +267,12 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
                         </svg>
                       </div>
                       <div>
-                        <p className="font-bold text-white">NEXUS IA</p>
+                        <p className="font-bold text-white">Queswa 🪢</p>
                         <p className="text-xs text-green-400">🟢 En línea</p>
                       </div>
                     </div>
                     <p className="mb-3 leading-relaxed">
-                      Hola 👋 Soy <strong className="text-amber-400">NEXUS</strong>, tu asistente con IA.
+                      Hola 👋 Soy <strong className="text-amber-400">Queswa</strong>, tu copiloto digital.
                     </p>
                     <p className="mb-3 leading-relaxed">
                       Puedo responder cualquier duda sobre:
@@ -388,7 +388,7 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
                       />
                     ))}
                   </div>
-                  <span className="hidden md:inline text-xs text-slate-400 animate-pulse">NEXUS está analizando...</span>
+                  <span className="hidden md:inline text-xs text-slate-400 animate-pulse">Queswa está procesando...</span>
                 </div>
               )}
 
