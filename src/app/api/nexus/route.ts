@@ -168,27 +168,65 @@ function clasificarDocumentoHibrido(userMessage: string): string | null {
     return 'arsenal_avanzado';
   }
 
-  // 🔥 Patrones para arsenal_compensacion (Reto 12 Días + CV/PV)
+  // 🔥 Patrones para arsenal_compensacion (Reto 12 Días + CV/PV + GEN5 + Binario)
+  // 🆕 SYNC 2026-01-18: Sincronizado con Marketing/Dashboard
   const compensacionPatterns = [
-    // Reto 12 días
-    /reto/, /12\s*dias/, /doce\s*dias/,
-    // Inversión mínima
-    /inversion\s*minima/, /kit\s*inicio/, /443/,
-    // Compensación
-    /como\s*(se\s*)?gano?/, /formas\s*ganar/, /plan\s*compensacion/, /plan\s*ganancias/,
-    // Proyecciones
-    /cuanto\s*puedo\s*ganar/, /potencial\s*ganancias/,
-    // Duplicación
-    /2\s*x\s*2/, /duplicacion/,
-    // 🆕 CV/PV (FIX 2025-12-10)
-    /cuantos?\s*cv/, /cuantos?\s*pv/,
-    /cv\s*(tiene|de|del)/, /pv\s*(tiene|de|del)/,
-    /(tiene|aporta|genera)\s*cv/, /(tiene|aporta|genera)\s*pv/,
-    /puntos\s*(tiene|de|del)/, /(valor|volumen)\s*comision/, /(valor|volumen)\s*personal/,
-    /completar\s*pv/, /faltan\s*pv/, /llegar\s*a\s*50\s*pv/,
-    /tengo\s*pv/, /productos\s*para\s*(pv|recompra)/,
-    /luvoco\s*(cv|pv|puntos)/, /maquina\s*(cv|pv|puntos)/,
-    /(cv|pv|puntos)\s*(luvoco|maquina)/
+    // ===== RETO DE LOS 12 DÍAS =====
+    /reto/i, /12\s*dias/i, /doce\s*dias/i, /reto\s*diciembre/i,
+    /campana\s*diciembre/i, /construir\s*diciembre/i,
+
+    // ===== INVERSIÓN MÍNIMA / KIT DE INICIO =====
+    /inversion\s*minima/i, /minimo\s*para\s*empezar/i,
+    /443/i, /kit\s*inicio/i, /kit\s*inicial/i,
+    /cuanto\s*minimo/i, /menos\s*puedo\s*empezar/i,
+    /mas\s*barato/i, /mas\s*economico/i,
+    /opcion\s*accesible/i, /menor\s*inversion/i,
+
+    // ===== COMPENSACIÓN Y FORMAS DE GANAR =====
+    /como\s*(se\s*)?gano?/i, /formas\s*ganar/i,
+    /como\s*gana\s*uno/i, /como\s*ganas/i,
+    /gana\s*en\s*este\s*plan/i, /ganar\s*en\s*este\s*plan/i,
+    /maneras\s*ganar/i, /cuantas\s*formas\s*ganar/i,
+    /12\s*formas/i, /doce\s*formas/i,
+    /plan\s*compensacion/i, /plan\s*ganancias/i,
+
+    // ===== PROYECCIONES Y GANANCIAS =====
+    /proyeccion\s*ganar/i, /cuanto\s*puedo\s*ganar/i,
+    /potencial\s*ganancias/i, /ganar\s*reto/i,
+    /ganar\s*12\s*dias/i, /ganancias\s*reto/i, /ingresos\s*reto/i,
+
+    // ===== DUPLICACIÓN 2x2 =====
+    /2\s*x\s*2/i, /duplicacion/i, /sistema\s*2\s*2/i, /red\s*8\s*190/i,
+
+    // ===== OPCIONES DE INVERSIÓN =====
+    /opciones\s*inversion/i, /opciones\s*para\s*empezar/i,
+    /con\s*cuanto\s*empiezo/i, /cuanto\s*necesito\s*invertir/i,
+
+    // ===== CV/PV DE PRODUCTOS (FIX 2025-12-10) =====
+    /cuantos?\s*cv/i, /cuantos?\s*pv/i,
+    /cv\s*(tiene|de|del)/i, /pv\s*(tiene|de|del)/i,
+    /(tiene|aporta|genera)\s*cv/i, /(tiene|aporta|genera)\s*pv/i,
+    /puntos\s*(tiene|de|del)/i, /(valor|volumen)\s*comision/i, /(valor|volumen)\s*personal/i,
+    /completar\s*pv/i, /faltan\s*pv/i, /llegar\s*a\s*50\s*pv/i,
+    /tengo\s*pv/i, /productos\s*para\s*(pv|recompra)/i,
+    /luvoco\s*(cv|pv|puntos)/i, /maquina\s*(cv|pv|puntos)/i,
+    /(cv|pv|puntos)\s*(luvoco|maquina)/i,
+
+    // ===== 🆕 GEN5 Y BONOS (SYNC 2026-01-18) =====
+    /bono/i, /gen5/i, /gen\s*5/i, /gen-5/i,
+    /inicio\s*rapido/i, /comision/i,
+    /cuanto\s*gano/i, /porcentaje/i,
+    /que\s*gano\s*cuando/i, /binario/i,
+    /bono\s*semanal/i, /consumo\s*semanal/i,
+    /recompra/i, /techo/i, /gcv/i,
+
+    // ===== 🆕 AUTO ENVÍO (SYNC 2026-01-18) =====
+    /auto\s*envio/i, /autoenvio/i,
+    /que\s*auto\s*envio/i, /como\s*funciona\s*auto\s*envio/i,
+    /beneficios\s*auto\s*envio/i, /programa\s*auto\s*envio/i,
+    /que\s*es\s*auto\s*envio/i, /cuanto\s*auto\s*envio/i,
+    /programa\s*lealtad/i, /producto\s*gratis/i,
+    /producto\s*obsequio/i, /recompensa\s*consumo/i
   ];
 
   if (compensacionPatterns.some(p => p.test(msg))) {
