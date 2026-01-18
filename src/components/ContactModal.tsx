@@ -1,3 +1,12 @@
+/**
+ * Copyright © 2026 LuisCabrejo.com
+ * Contact Modal Component
+ *
+ * THE ARCHITECT'S SUITE - Bimetallic System v3.0
+ * Gold (#C5A059): CTAs, achievements, key highlights
+ * Titanium (#94A3B8): Structural elements, navigation, muted text
+ */
+
 'use client';
 
 import React, { useState } from 'react';
@@ -135,7 +144,7 @@ export default function ContactModal({ isOpen, onClose, formType = 'conectar' }:
       <div
         className="rounded-2xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto"
         style={{
-          background: 'rgba(23, 31, 42, 0.95)',
+          background: '#1A1D23',
           border: '1px solid rgba(255, 255, 255, 0.1)',
           backdropFilter: 'blur(12px)'
         }}

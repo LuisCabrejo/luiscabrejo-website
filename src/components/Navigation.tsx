@@ -1,3 +1,12 @@
+/**
+ * Copyright © 2026 LuisCabrejo.com
+ * Personal Brand Site - Luis Cabrejo
+ *
+ * THE ARCHITECT'S SUITE - Bimetallic System v3.0
+ * Gold (#C5A059): CTAs, achievements, key highlights
+ * Titanium (#94A3B8): Structural elements, navigation, muted text
+ */
+
 'use client';
 
 import React, { useState } from 'react';
@@ -35,15 +44,15 @@ export default function Navigation({ onContactClick }: NavigationProps) {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-black/20 backdrop-blur-md z-50 border-b border-white/10">
+    <nav className="fixed top-0 w-full bg-[#0F1115]/80 backdrop-blur-md z-50 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#C5A059] to-[#D4AF37] bg-clip-text text-transparent">
             Luis Cabrejo
           </Link>
 
           <div className="hidden md:flex space-x-8 text-sm items-center">
-            <Link href="/fundadores" className="text-white hover:text-purple-400 transition-colors font-semibold">
+            <Link href="/fundadores" className="text-[#E5E5E5] hover:text-[#C5A059] transition-colors font-semibold">
               Programa Fundadores
             </Link>
 
@@ -55,7 +64,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             >
               <Link
                 href="/blog"
-                className="text-white hover:text-blue-400 transition-colors flex items-center gap-1"
+                className="text-[#E5E5E5] hover:text-[#C5A059] transition-colors flex items-center gap-1"
               >
                 Blog
                 <ChevronDown className={`w-4 h-4 transition-transform ${blogDropdownOpen ? 'rotate-180' : ''}`} />
@@ -63,12 +72,12 @@ export default function Navigation({ onContactClick }: NavigationProps) {
 
               {blogDropdownOpen && (
                 <div className="absolute top-full left-0 pt-2 w-72">
-                  <div className="bg-slate-800/95 backdrop-blur-lg border border-slate-700/50 rounded-lg shadow-xl overflow-hidden">
+                  <div className="bg-[#1A1D23]/95 backdrop-blur-lg border border-white/10 rounded-lg shadow-xl overflow-hidden">
                     {blogArticles.map((article) => (
                       <Link
                         key={article.slug}
                         href={article.slug}
-                        className="block px-4 py-3 text-sm text-gray-300 hover:bg-slate-700/50 hover:text-white transition-colors border-b border-slate-700/30 last:border-b-0"
+                        className="block px-4 py-3 text-sm text-[#A3A3A3] hover:bg-[#15171C] hover:text-[#C5A059] transition-colors border-b border-white/5 last:border-b-0"
                       >
                         {article.title}
                       </Link>
@@ -78,13 +87,13 @@ export default function Navigation({ onContactClick }: NavigationProps) {
               )}
             </div>
 
-            <Link href="/historia" className="text-white hover:text-blue-400 transition-colors">
+            <Link href="/historia" className="text-[#E5E5E5] hover:text-[#C5A059] transition-colors">
               Mi Historia
             </Link>
-            <Link href="/ecosistema" className="text-white hover:text-blue-400 transition-colors">
+            <Link href="/ecosistema" className="text-[#E5E5E5] hover:text-[#C5A059] transition-colors">
               Ecosistema
             </Link>
-            <Link href="/vision" className="text-white hover:text-blue-400 transition-colors">
+            <Link href="/vision" className="text-[#E5E5E5] hover:text-[#C5A059] transition-colors">
               Vision 4M
             </Link>
           </div>
@@ -92,14 +101,14 @@ export default function Navigation({ onContactClick }: NavigationProps) {
           {onContactClick && (
             <button
               onClick={onContactClick}
-              className="hidden md:block bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full hover:shadow-lg transition-all"
+              className="hidden md:block bg-[#C5A059] text-[#0F1115] px-6 py-2 rounded-full hover:bg-[#D4AF37] hover:shadow-[0_0_20px_-5px_rgba(197,160,89,0.5)] transition-all font-semibold"
             >
               Conectar
             </button>
           )}
 
           <button
-            className="md:hidden p-2 text-white"
+            className="md:hidden p-2 text-[#E5E5E5]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -108,11 +117,11 @@ export default function Navigation({ onContactClick }: NavigationProps) {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden bg-black/90 backdrop-blur-lg border-t border-white/10">
+        <div className="md:hidden bg-[#0F1115]/95 backdrop-blur-lg border-t border-white/10">
           <div className="px-6 py-4 space-y-4">
             <Link
               href="/fundadores"
-              className="block text-lg font-bold text-white hover:text-purple-400 transition-colors"
+              className="block text-lg font-bold text-[#E5E5E5] hover:text-[#C5A059] transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Programa Fundadores
@@ -122,7 +131,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             <div>
               <Link
                 href="/blog"
-                className="block text-lg font-medium text-white hover:text-blue-400 transition-colors mb-2"
+                className="block text-lg font-medium text-[#E5E5E5] hover:text-[#C5A059] transition-colors mb-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Blog
@@ -132,7 +141,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
                   <Link
                     key={article.slug}
                     href={article.slug}
-                    className="block text-sm text-gray-400 hover:text-blue-400 transition-colors"
+                    className="block text-sm text-[#64748B] hover:text-[#C5A059] transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     • {article.title}
@@ -142,21 +151,21 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             </div>
             <Link
               href="/historia"
-              className="block text-lg font-medium text-white hover:text-blue-400 transition-colors"
+              className="block text-lg font-medium text-[#E5E5E5] hover:text-[#C5A059] transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Mi Historia
             </Link>
             <Link
               href="/ecosistema"
-              className="block text-lg font-medium text-white hover:text-blue-400 transition-colors"
+              className="block text-lg font-medium text-[#E5E5E5] hover:text-[#C5A059] transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Ecosistema
             </Link>
             <Link
               href="/vision"
-              className="block text-lg font-medium text-white hover:text-blue-400 transition-colors"
+              className="block text-lg font-medium text-[#E5E5E5] hover:text-[#C5A059] transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Vision 4M
@@ -164,7 +173,7 @@ export default function Navigation({ onContactClick }: NavigationProps) {
             {onContactClick && (
               <button
                 onClick={handleContactClick}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 rounded-full hover:shadow-lg transition-all font-medium mt-4"
+                className="w-full bg-[#C5A059] text-[#0F1115] px-6 py-3 rounded-full hover:bg-[#D4AF37] hover:shadow-[0_0_20px_-5px_rgba(197,160,89,0.5)] transition-all font-semibold mt-4"
               >
                 Conectar
               </button>
