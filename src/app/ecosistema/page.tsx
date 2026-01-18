@@ -12,7 +12,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ArrowLeft, Monitor, Smartphone, Users, BarChart3, Zap, Globe, Code, Brain, PlayCircle, ExternalLink, Check, ArrowRight, Star } from 'lucide-react';
+import { ArrowLeft, Monitor, Smartphone, Users, BarChart3, Zap, Globe, Code, Brain, PlayCircle, ExternalLink, Check, ArrowRight, Star, Building2, Rocket, Wrench } from 'lucide-react';
 import Link from 'next/link';
 import ContactModal from '@/components/ContactModal';
 import Navigation from '@/components/Navigation';
@@ -71,8 +71,9 @@ export default function EcosistemaPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="order-2 lg:order-1">
-              <div className="inline-block bg-gradient-to-r from-[#C5A059]/20 to-[#94A3B8]/20 rounded-full px-3 sm:px-4 py-2 text-sm border border-[#C5A059]/30 mb-6">
-                🏗️ Centro de Comando Empresarial
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#C5A059]/20 to-[#94A3B8]/20 rounded-full px-3 sm:px-4 py-2 text-sm border border-[#C5A059]/30 mb-6">
+                <Building2 className="w-4 h-4 text-[#C5A059]" />
+                Centro de Comando Empresarial
               </div>
 
               <h2 className="text-3xl sm:text-4xl font-bold mb-6">
@@ -410,25 +411,33 @@ export default function EcosistemaPage() {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <div className="bg-[#1A1D23]/50 rounded-2xl p-4 sm:p-6 text-center border border-white/10 hover:border-[#C5A059]/50 transition-all">
-              <div className="text-3xl sm:text-4xl mb-4">⚡</div>
+              <div className="flex justify-center mb-4">
+                <Zap className="w-8 sm:w-10 h-8 sm:h-10 text-[#C5A059]" />
+              </div>
               <h3 className="font-semibold mb-2 text-sm sm:text-base">Next.js 14</h3>
               <p className="text-xs sm:text-sm text-[#64748B]">Framework React de última generación para máximo rendimiento</p>
             </div>
 
             <div className="bg-[#1A1D23]/50 rounded-2xl p-4 sm:p-6 text-center border border-white/10 hover:border-[#94A3B8]/50 transition-all">
-              <div className="text-3xl sm:text-4xl mb-4">🚀</div>
+              <div className="flex justify-center mb-4">
+                <Rocket className="w-8 sm:w-10 h-8 sm:h-10 text-[#94A3B8]" />
+              </div>
               <h3 className="font-semibold mb-2 text-sm sm:text-base">Vercel</h3>
               <p className="text-xs sm:text-sm text-[#64748B]">Despliegue global instantáneo y optimización automática</p>
             </div>
 
             <div className="bg-[#1A1D23]/50 rounded-2xl p-4 sm:p-6 text-center border border-white/10 hover:border-emerald-500/50 transition-all">
-              <div className="text-3xl sm:text-4xl mb-4">🧠</div>
+              <div className="flex justify-center mb-4">
+                <Brain className="w-8 sm:w-10 h-8 sm:h-10 text-emerald-400" />
+              </div>
               <h3 className="font-semibold mb-2 text-sm sm:text-base">IA Integrada</h3>
               <p className="text-xs sm:text-sm text-[#64748B]">Inteligencia artificial para personalización y soporte</p>
             </div>
 
             <div className="bg-[#1A1D23]/50 rounded-2xl p-4 sm:p-6 text-center border border-white/10 hover:border-orange-500/50 transition-all">
-              <div className="text-3xl sm:text-4xl mb-4">🔧</div>
+              <div className="flex justify-center mb-4">
+                <Wrench className="w-8 sm:w-10 h-8 sm:h-10 text-orange-400" />
+              </div>
               <h3 className="font-semibold mb-2 text-sm sm:text-base">Automatización</h3>
               <p className="text-xs sm:text-sm text-[#64748B]">Procesos automatizados que escalan sin fricción</p>
             </div>

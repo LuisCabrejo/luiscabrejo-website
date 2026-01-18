@@ -21,7 +21,11 @@ import {
   TrendingUp,
   Calendar,
   Award,
-  ArrowRight
+  ArrowRight,
+  Film,
+  Car,
+  Building,
+  Briefcase
 } from 'lucide-react';
 import ContactModal from '@/components/ContactModal';
 import Footer from '@/components/Footer';
@@ -235,7 +239,9 @@ export default function FundadoresPage() {
             <div className="grid md:grid-cols-2 gap-6 mb-12">
               <div className="rounded-xl p-8" style={cardStyle}>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="text-[#94A3B8] text-4xl">📼</div>
+                  <div className="p-3 bg-[#94A3B8]/20 rounded-full">
+                    <Film className="w-8 h-8 text-[#94A3B8]" />
+                  </div>
                   <div>
                     <p className="text-sm text-[#64748B] line-through">Blockbuster cerró en 2010</p>
                     <p className="text-lg font-bold text-[#E5E5E5]">Netflix vale $150 billones</p>
@@ -246,7 +252,9 @@ export default function FundadoresPage() {
 
               <div className="rounded-xl p-8" style={cardStyle}>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="text-emerald-500 text-4xl">🚕</div>
+                  <div className="p-3 bg-emerald-500/20 rounded-full">
+                    <Car className="w-8 h-8 text-emerald-500" />
+                  </div>
                   <div>
                     <p className="text-sm text-[#64748B] line-through">Taxis dominaron por 100 años</p>
                     <p className="text-lg font-bold text-[#E5E5E5]">Uber transformó la movilidad</p>
@@ -257,7 +265,9 @@ export default function FundadoresPage() {
 
               <div className="rounded-xl p-8" style={cardStyle}>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="text-[#94A3B8] text-4xl">🏨</div>
+                  <div className="p-3 bg-[#94A3B8]/20 rounded-full">
+                    <Building className="w-8 h-8 text-[#94A3B8]" />
+                  </div>
                   <div>
                     <p className="text-sm text-[#64748B] line-through">Hoteles eran la única opción</p>
                     <p className="text-lg font-bold text-[#E5E5E5]">Airbnb creó un nuevo mercado</p>
@@ -268,7 +278,9 @@ export default function FundadoresPage() {
 
               <div className="rounded-xl p-8" style={cardStyle}>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="text-[#C5A059] text-4xl">💼</div>
+                  <div className="p-3 bg-[#C5A059]/20 rounded-full">
+                    <Briefcase className="w-8 h-8 text-[#C5A059]" />
+                  </div>
                   <div>
                     <p className="text-sm text-[#64748B] line-through">Network tradicional limitado</p>
                     <p className="text-lg font-bold text-[#E5E5E5]">CreaTuActivo potencia Gano Excel</p>
