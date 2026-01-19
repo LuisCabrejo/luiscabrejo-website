@@ -456,7 +456,8 @@ ${doc.content}
     const lastUserMessage = messages[messages.length - 1]?.content?.toLowerCase() || '';
     const pideListaPrecios = /lista.*precio|todos.*los.*precio|precios.*producto|catálogo.*precio|dame.*los.*precio|cuáles.*son.*los.*precio|22.*producto|lista.*completa/i.test(lastUserMessage);
 
-    const maxTokens = pideListaPrecios ? 1000 : 600;
+    // ⚡ v17.5.0: Tokens aumentados para respuestas más cálidas
+    const maxTokens = pideListaPrecios ? 1000 : 700;
     console.log(`🔍 DEBUG PRECIOS: pideListaPrecios=${pideListaPrecios}, max_tokens=${maxTokens}`);
 
     // Llamar a Claude con streaming
@@ -465,7 +466,7 @@ ${doc.content}
       system: systemBlocks,
       stream: true,
       max_tokens: maxTokens,
-      temperature: 0.3,
+      temperature: 0.65,  // ⚡ v17.5.0: más natural y empático (antes: 0.3)
       messages: recentMessages,
     });
 

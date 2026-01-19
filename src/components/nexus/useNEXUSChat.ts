@@ -12,26 +12,26 @@ interface Message {
 }
 
 export const useNEXUSChat = () => {
-  // Mensaje inicial de Queswa - Léxico de Soberanía
+  // Mensaje inicial - Ataque al Villano "Plan por Defecto" + Calidez v17.5.0
   const getInitialGreeting = (): Message => {
     return {
       id: 'initial-greeting',
       role: 'assistant',
-      content: `Soy Queswa 🪢
+      content: `Hola, soy Queswa 🪢
 
-La mayoría de profesionales pasan 40 años construyendo el activo de otro.
+La mayoría de personas son rehenes del "Plan por Defecto": trabajar, pagar cuentas, repetir.
 
-Aquí enseñamos cómo construir tu propia **Infraestructura de Soberanía**.
+Aquí diseñamos la salida: tu propia **Infraestructura de Soberanía**.
 
-¿Cuál es tu situación?
+¿Cuál es tu situación actual?
 
-**A)** Quiero construir un activo propio
+**A)** 🏗️ Quiero construir algo propio
 
-**B)** Me siento estancado profesionalmente
+**B)** 💭 Me siento estancado y busco un cambio
 
-**C)** Solo estoy explorando opciones
+**C)** 🔍 Solo estoy explorando, sin compromiso
 
-**D)** Quiero conocer el producto`,
+**D)** 🧠 Quiero entender el Modelo de Negocio`,
       timestamp: new Date(),
       isStreaming: false
     };
