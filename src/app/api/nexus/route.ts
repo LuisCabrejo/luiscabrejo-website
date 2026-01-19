@@ -50,7 +50,7 @@ async function getDocumentsWithEmbeddings(): Promise<DocumentWithEmbedding[]> {
     const { data, error } = await getSupabaseClient()
       .from('nexus_documents')
       .select('category, title, content, embedding, metadata')
-      .in('category', ['arsenal_inicial', 'arsenal_avanzado', 'catalogo_productos'])
+      .in('category', ['arsenal_inicial', 'arsenal_avanzado', 'arsenal_compensacion', 'catalogo_productos', 'arsenal_reto'])
       .not('embedding', 'is', null);
 
     if (error) {
@@ -168,11 +168,40 @@ function clasificarDocumentoHibrido(userMessage: string): string | null {
     return 'arsenal_avanzado';
   }
 
+  // 🎯 Patrones para arsenal_reto (Reto de 5 Días - Lead Magnet)
+  // 🆕 SYNC 2026-01-19: Challenge Funnel
+  const retoPatterns = [
+    /reto\s*(de\s*)?(5|cinco)\s*d[ií]as?/i,    // "reto de 5 días"
+    /reto\s*5/i,                                // "reto 5"
+    /cinco\s*d[ií]as/i,                         // "cinco días"
+    /5\s*d[ií]as/i,                             // "5 días"
+    /bootcamp/i,                                // "bootcamp"
+    /challenge/i,                               // "challenge"
+    /c[oó]mo\s*(me\s*)?registro/i,              // "cómo me registro"
+    /c[oó]mo\s*(me\s*)?inscribo/i,              // "cómo me inscribo"
+    /qu[eé]\s*es\s*el\s*reto/i,                 // "qué es el reto"
+    /de\s*qu[eé]\s*trata\s*el\s*reto/i,         // "de qué trata el reto"
+    /temario/i,                                 // "temario"
+    /qu[eé]\s*voy\s*a\s*aprender/i,             // "qué voy a aprender"
+    /es\s*gratis\s*el\s*reto/i,                 // "es gratis el reto"
+    /cuesta\s*el\s*reto/i,                      // "cuesta el reto"
+    /es\s*en\s*vivo/i,                          // "es en vivo"
+    /es\s*grabado/i,                            // "es grabado"
+    /requisitos?\s*(para\s*)?(el\s*)?reto/i,    // "requisitos para el reto"
+    /test\s*drive/i,                            // "test drive"
+    /prueba\s*de\s*manejo/i,                    // "prueba de manejo"
+  ];
+
+  if (retoPatterns.some(p => p.test(msg))) {
+    console.log('[Patterns] Clasificación: arsenal_reto');
+    return 'arsenal_reto';
+  }
+
   // 🔥 Patrones para arsenal_compensacion (Reto 12 Días + CV/PV + GEN5 + Binario)
   // 🆕 SYNC 2026-01-18: Sincronizado con Marketing/Dashboard
   const compensacionPatterns = [
-    // ===== RETO DE LOS 12 DÍAS =====
-    /reto/i, /12\s*dias/i, /doce\s*dias/i, /reto\s*diciembre/i,
+    // ===== RETO DE LOS 12 DÍAS (específico, no captura "reto 5") =====
+    /reto\s*(de\s*)?(12|doce)/i, /12\s*dias/i, /doce\s*dias/i, /reto\s*diciembre/i,
     /campana\s*diciembre/i, /construir\s*diciembre/i,
 
     // ===== INVERSIÓN MÍNIMA / KIT DE INICIO =====

@@ -215,7 +215,7 @@ Balance ideal entre inversión y potencial de comisiones. Inventario sólido par
 **💎 Visionario - $1000 USD**
 Máximo potencial desde el primer día. Inventario premium para construcción acelerada.
 
-**💰 Único costo recurrente:** 50 PV mensual (aprox $80 USD) por los cuales recibes productos Gano Excel de igual valor.
+**💰 Único costo recurrente:** 50 PV mensual (~$100 USD / ~$450K COP) por los cuales recibes productos Gano Excel de igual valor.
 
 Luis siempre dice: "El mejor paquete es el que te permite dormir tranquilo por la noche mientras construyes tu activo empresarial."
 
@@ -545,7 +545,7 @@ Desde amas de casa hasta ejecutivos con deseo de superación que entienden que r
 
 ## PAQUETES FUNDADORES
 **Emprendedor $200 | Empresarial $500 | Visionario $1000**
-Inversión única + 50 PV mensual ($80 USD) recibiendo producto igual valor
+Inversión única + 50 PV mensual (~$100 USD / ~$450K COP) recibiendo producto igual valor
 
 ## CONTEXTO COLOMBIA PRE-LANZAMIENTO
 1 agosto 2025, 3,000 lista privada, objetivo 100-150 fundadores núcleo antes septiembre público, luiscabrejo.com/fundadores
