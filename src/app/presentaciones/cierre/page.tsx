@@ -68,7 +68,14 @@ interface ChartSlide extends SlideBase {
   color?: 'gold' | 'white';
 }
 
-type Slide = TitleSlide | IconTextSlide | SplitSlide | ImageTextSlide | ChartSlide;
+interface MirrorSlide extends SlideBase {
+  type: 'mirror';
+  topText: string;
+  bottomText: string;
+  image: string;
+}
+
+type Slide = TitleSlide | IconTextSlide | SplitSlide | ImageTextSlide | ChartSlide | MirrorSlide;
 
 // --- DATA DE DIAPOSITIVAS (EL GUIÓN) ---
 const SLIDES: Slide[] = [
@@ -219,10 +226,10 @@ const SLIDES: Slide[] = [
   // BLOQUE 5: EL CIERRE (ESPEJO)
   {
     id: 17,
-    type: 'big-text',
-    content: 'LOS ÚLTIMOS 5 AÑOS',
-    sub: '¿QUIERES REPETIRLOS?',
-    color: 'white',
+    type: 'mirror',
+    topText: 'LOS ÚLTIMOS 5 AÑOS',
+    bottomText: '¿QUIERES REPETIRLOS?',
+    image: '/images/retrovisor.png',
     note: 'El espejo del tiempo'
   },
   {
@@ -414,6 +421,32 @@ export default function PresentacionCierre() {
             </h1>
             <p className="text-xl md:text-2xl text-[#94A3B8] mt-4 uppercase tracking-[0.3em]">
               {s.sub}
+            </p>
+          </div>
+        );
+      }
+
+      case 'mirror': {
+        const s = slide as MirrorSlide;
+        return (
+          <div className="flex flex-col items-center justify-center h-full text-center px-8 space-y-8">
+            {/* Texto superior */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tighter">
+              {s.topText}
+            </h1>
+
+            {/* Imagen del retrovisor */}
+            <div className="relative w-64 h-40 md:w-80 md:h-48 lg:w-96 lg:h-56">
+              <img
+                src={s.image}
+                alt="Retrovisor"
+                className="w-full h-full object-contain drop-shadow-2xl"
+              />
+            </div>
+
+            {/* Texto inferior */}
+            <p className="text-2xl md:text-3xl lg:text-4xl font-light text-[#94A3B8] tracking-[0.15em]">
+              {s.bottomText}
             </p>
           </div>
         );
