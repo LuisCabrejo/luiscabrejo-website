@@ -3,11 +3,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Zap,
-  Droplets,
-  Clock,
+  Cog,
+  Hourglass,
   Shovel,
-  Cpu,
   Home,
   TreeDeciduous,
   TrendingUp,
@@ -59,6 +57,8 @@ interface ImageTextSlide extends SlideBase {
   sub: string;
   image: string;
   overlay?: boolean;
+  grayscale?: boolean;
+  titleColor?: 'gold' | 'danger' | 'white';
 }
 
 interface ChartSlide extends SlideBase {
@@ -92,10 +92,13 @@ const SLIDES: Slide[] = [
   },
   {
     id: 3,
-    type: 'big-text',
-    content: 'DEPENDENCIA',
+    type: 'image-text',
+    title: 'DEPENDENCIA',
     sub: 'LA TRAMPA DEL INGRESO LINEAL',
-    color: 'danger'
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&q=80',
+    overlay: true,
+    grayscale: true,
+    titleColor: 'danger'
   },
 
   // BLOQUE 3: LA RESONANCIA (OSCILACIONES)
@@ -111,14 +114,16 @@ const SLIDES: Slide[] = [
   {
     id: 5,
     type: 'split',
-    left: { icon: Zap, text: 'MOTOR', color: 'muted' },
+    left: { icon: Cog, text: 'MOTOR', color: 'muted' },
     right: { text: 'Si tú paras, el dinero para', color: 'muted' }
   },
   {
     id: 6,
-    type: 'split',
-    left: { icon: Droplets, text: 'DUEÑO', color: 'gold' },
-    right: { text: 'El agua fluye mientras duermes', color: 'white' },
+    type: 'image-text',
+    title: 'DUEÑO',
+    sub: 'El agua fluye mientras duermes',
+    image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=1920&q=80',
+    overlay: true,
     note: 'Analogía Acueducto'
   },
 
@@ -126,7 +131,7 @@ const SLIDES: Slide[] = [
   {
     id: 7,
     type: 'icon-text',
-    icon: Clock,
+    icon: Hourglass,
     title: 'POBREZA DE TIEMPO',
     text: 'No tener agenda propia',
     color: 'muted'
@@ -151,11 +156,11 @@ const SLIDES: Slide[] = [
   },
   {
     id: 10,
-    type: 'icon-text',
-    icon: Cpu,
+    type: 'image-text',
     title: 'APALANCAMIENTO',
-    text: 'Excavadora Industrial (Sistemas + IA)',
-    color: 'gold',
+    sub: 'Excavadora Industrial (Sistemas + IA)',
+    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1920&q=80',
+    overlay: true,
     note: 'Tecnología Queswa'
   },
 
@@ -345,7 +350,7 @@ export default function PresentacionCierre() {
 
       case 'split': {
         const s = slide as SplitSlide;
-        const LeftIcon = s.left?.icon || Zap;
+        const LeftIcon = s.left?.icon || Cog;
         return (
           <div className="flex flex-col md:flex-row h-full w-full">
             <div className="flex-1 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-white/10 p-10">
@@ -369,11 +374,12 @@ export default function PresentacionCierre() {
 
       case 'image-text': {
         const s = slide as ImageTextSlide;
+        const titleColorClass = s.titleColor === 'danger' ? THEME.danger : THEME.gold;
         return (
           <div className="relative w-full h-full flex items-center justify-center">
             {/* Imagen de fondo */}
             <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              className={`absolute inset-0 bg-cover bg-center bg-no-repeat ${s.grayscale ? 'grayscale' : ''}`}
               style={{ backgroundImage: `url(${s.image})` }}
             />
 
@@ -387,7 +393,7 @@ export default function PresentacionCierre() {
 
             {/* Contenido de texto */}
             <div className="relative z-20 text-center p-10">
-              <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-4 ${THEME.gold} drop-shadow-2xl`}>
+              <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-4 ${titleColorClass} drop-shadow-2xl`}>
                 {s.title}
               </h1>
               <p className="text-xl md:text-2xl text-white tracking-[0.2em] uppercase drop-shadow-lg">
