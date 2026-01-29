@@ -136,7 +136,7 @@ const SLIDES: Slide[] = [
     type: 'image-text',
     title: 'DUEÑO',
     sub: 'El agua fluye mientras duermes',
-    image: '/images/dueño.jpg',
+    image: '/images/dueno.jpg',
     overlay: true,
     note: 'Analogía Acueducto'
   },
