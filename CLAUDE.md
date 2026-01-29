@@ -6,7 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **luiscabrejo.com** - Next.js 16 website featuring NEXUS 4.0, an AI chatbot for Gano Excel network marketing distribution. The site serves as the digital brand for Luis Cabrejo and Liliana Moreno's "Sistema 4M" targeting the Colombian market.
 
-**Tech Stack:** Next.js 16 (App Router), TypeScript (strict), Anthropic Claude API (claude-3-5-sonnet-20241022), Supabase, Resend, Tailwind CSS, Vercel
+**Tech Stack:** Next.js 16 (App Router), TypeScript (strict), Anthropic Claude API, Supabase, Resend, Tailwind CSS, Framer Motion, Vercel
+
+**Claude Models:**
+- `/api/claude-chat`: claude-3-5-sonnet-20241022 (main NEXUS)
+- `/api/nexus`: claude-sonnet-4-20250514 (vector search variant)
 
 **Path Alias:** `@/*` → `./src/*`
 
@@ -23,17 +27,20 @@ bash scripts/deploy.sh          # Deploy to Vercel
 bash scripts/test-critical.sh   # Critical tests post-deploy
 bash scripts/health-check.sh    # Health monitoring
 bash scripts/diagnose-nexus.sh  # Diagnose NEXUS issues
+bash scripts/monitor.sh         # Launch day monitoring
+bash scripts/backup.sh          # Backup automation
+bash scripts/verify-logos.sh    # Verify logo assets
 ```
 
 ## NEXUS Chatbot - Core Architecture
 
 NEXUS is a modular, emotionally intelligent AI system for MLM conversations. **This is the most complex part of the codebase.**
 
-### Modular Structure (1,040+ lines main route + 5 support modules)
+### Modular Structure (1,176 lines main route + 4 support modules)
 
 Located in `src/app/api/claude-chat/`:
 
-**1. route.ts (1,040+ lines)** - Main orchestration with streaming
+**1. route.ts (1,176 lines)** - Main orchestration with streaming
 - API endpoint: POST `/api/claude-chat`
 - **Native streaming implementation** using ReadableStream (NO AI SDK dependency)
 - Manual text streaming from Anthropic API events
@@ -65,19 +72,25 @@ Located in `src/app/api/claude-chat/`:
 
 ### Frontend Streaming Integration
 
-**`src/components/useNexusChat.ts` (295 lines)** - Custom React hook
+**`src/components/useNexusChat.ts` (294 lines)** - Custom React hook
 - Real-time streaming with character-by-character typing effect
 - Progressive message building from streaming chunks
 - Error handling with WhatsApp escalation (+573203415438)
 - Session/fingerprint tracking
 - Integration with `/api/claude-chat` endpoint
 
-**`src/components/NexusChat.tsx` (381 lines)** - UI Component
+**`src/components/NexusChat.tsx` (289 lines)** - UI Component
 - ReactMarkdown rendering for formatted messages
 - Expandable chat interface (desktop/mobile)
 - Real-time typing indicators during streaming
 - Connection status monitoring
 - Profile/package selection UI
+
+**`src/lib/vectorSearch.ts` (260 lines)** - Vector search utility
+- Voyage AI embedding generation
+- Cosine similarity computation
+- Document search with configurable threshold
+- Used by `/api/nexus` for semantic search
 
 ### Critical Identity Rules - NEVER BREAK THESE
 
@@ -147,6 +160,26 @@ Contact form with dual email delivery (Resend) + Supabase storage
 - luiscabrejo@creatuactivo.com + luiscabrejo7@gmail.com
 - Auto-response HTML email to user with CreaTuActivo.com ecosystem CTA
 
+### `/api/nexus` (POST)
+Alternative NEXUS endpoint with vector search + Supabase hybrid architecture (Edge runtime, 60s timeout)
+
+**Features:**
+- Uses `claude-sonnet-4-20250514` model
+- Voyage AI embeddings for semantic document search
+- Supabase `nexus_documents` table for arsenal content
+- Supabase `system_prompts` table for dynamic system prompt management
+- Hybrid classification: vector search → pattern matching fallback
+- In-memory caching (5 min TTL)
+
+**Document Categories:**
+- `arsenal_inicial` - Getting started, packages, how it works
+- `arsenal_avanzado` - Objection handling (pyramid, scam, etc.)
+- `arsenal_compensacion` - Compensation plan, CV/PV, bonuses, Gen5
+- `arsenal_reto` - 5-day challenge lead magnet
+- `catalogo_productos` - Product catalog and pricing
+
+**Additional Env Var Required:** `VOYAGE_API_KEY` for vector embeddings
+
 ## Email System - Professional HTML Design
 
 All emails use **CreaTuActivo.com HTML design**:
@@ -188,6 +221,9 @@ NEXUS_ESCALATION_PHONE=+573203415438
 NEXT_PUBLIC_CHATBOT_ENABLED=true
 NEXT_PUBLIC_CHATBOT_MAX_MESSAGES=100
 NEXT_PUBLIC_SHOW_CHATBOT=true
+
+# Vector search (optional, for /api/nexus)
+VOYAGE_API_KEY=...
 ```
 
 **Important:** After adding variables to Vercel, always redeploy.
@@ -208,10 +244,20 @@ NEXT_PUBLIC_SHOW_CHATBOT=true
 
 ## Database
 
-Supabase table: `contacts_luiscabrejo`
+**Supabase table: `contacts_luiscabrejo`**
 - Stores: name, email, phone, country, message, form_type, source
 - Tracks: email_sent_to_luis, email_sent_to_user (Resend IDs)
 - Schema: `supabase-contact-table.sql`
+
+**Supabase table: `nexus_documents`** (for /api/nexus)
+- Arsenal content with Voyage AI embeddings
+- Columns: category, title, content, embedding, metadata
+- Categories: arsenal_inicial, arsenal_avanzado, arsenal_compensacion, arsenal_reto, catalogo_productos
+
+**Supabase table: `system_prompts`** (for /api/nexus)
+- Dynamic system prompt management
+- Columns: name, prompt, version
+- Key row: `nexus_main`
 
 ## Build Configuration
 
