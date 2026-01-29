@@ -226,10 +226,11 @@ const SLIDES: Slide[] = [
   // BLOQUE 5: EL CIERRE (ESPEJO)
   {
     id: 17,
-    type: 'mirror',
-    topText: 'LOS ÚLTIMOS 5 AÑOS',
-    bottomText: '¿QUIERES REPETIRLOS?',
+    type: 'image-text',
+    title: 'LOS ÚLTIMOS 5 AÑOS',
+    sub: '¿QUIERES REPETIRLOS?',
     image: '/images/retrovisor.png',
+    overlay: true,
     note: 'El espejo del tiempo'
   },
   {
