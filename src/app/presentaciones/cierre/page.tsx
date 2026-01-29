@@ -95,7 +95,7 @@ const SLIDES: Slide[] = [
     type: 'image-text',
     title: 'DEPENDENCIA',
     sub: 'LA TRAMPA DEL INGRESO LINEAL',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&q=80',
+    image: '/images/dependencia.jpg',
     overlay: true,
     grayscale: true,
     titleColor: 'danger'
@@ -122,7 +122,7 @@ const SLIDES: Slide[] = [
     type: 'image-text',
     title: 'DUEÑO',
     sub: 'El agua fluye mientras duermes',
-    image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=1920&q=80',
+    image: '/images/dueño.jpg',
     overlay: true,
     note: 'Analogía Acueducto'
   },
@@ -159,7 +159,7 @@ const SLIDES: Slide[] = [
     type: 'image-text',
     title: 'APALANCAMIENTO',
     sub: 'Excavadora Industrial (Sistemas + IA)',
-    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1920&q=80',
+    image: '/images/apalancamiento.jpg',
     overlay: true,
     note: 'Tecnología Queswa'
   },
