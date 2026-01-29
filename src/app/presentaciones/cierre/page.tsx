@@ -75,7 +75,14 @@ interface MirrorSlide extends SlideBase {
   image: string;
 }
 
-type Slide = TitleSlide | IconTextSlide | SplitSlide | ImageTextSlide | ChartSlide | MirrorSlide;
+interface CollageSlide extends SlideBase {
+  type: 'collage';
+  title: string;
+  sub: string;
+  images: string[];
+}
+
+type Slide = TitleSlide | IconTextSlide | SplitSlide | ImageTextSlide | ChartSlide | MirrorSlide | CollageSlide;
 
 // --- DATA DE DIAPOSITIVAS (EL GUIÓN) ---
 const SLIDES: Slide[] = [
@@ -148,7 +155,7 @@ const SLIDES: Slide[] = [
     type: 'image-text',
     title: 'AUTONOMÍA',
     sub: 'No pedir permiso para vivir',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80',
+    image: '/images/autonomia.jpg',
     overlay: true
   },
 
@@ -208,11 +215,15 @@ const SLIDES: Slide[] = [
   },
   {
     id: 15,
-    type: 'image-text',
+    type: 'collage',
     title: 'EL VEHÍCULO',
     sub: 'Resultados duplicables',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=80',
-    overlay: true
+    images: [
+      '/images/reconocimiento-1.jpg',
+      '/images/reconocimiento-2.jpg',
+      '/images/reconocimiento-3.jpg',
+      '/images/reconocimiento-4.jpg'
+    ]
   },
   {
     id: 16,
@@ -449,6 +460,42 @@ export default function PresentacionCierre() {
             <p className="text-2xl md:text-3xl lg:text-4xl font-light text-[#94A3B8] tracking-[0.15em]">
               {s.bottomText}
             </p>
+          </div>
+        );
+      }
+
+      case 'collage': {
+        const s = slide as CollageSlide;
+        return (
+          <div className="relative w-full h-full flex flex-col">
+            {/* Grid de imágenes como fondo */}
+            <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
+              {s.images.map((img, idx) => (
+                <div
+                  key={idx}
+                  className="relative overflow-hidden"
+                >
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${img})` }}
+                  />
+                  <div className="absolute inset-0 bg-black/40" />
+                </div>
+              ))}
+            </div>
+
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60 z-10" />
+
+            {/* Contenido de texto */}
+            <div className="relative z-20 flex flex-col items-center justify-center h-full text-center p-10">
+              <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-4 ${THEME.gold} drop-shadow-2xl`}>
+                {s.title}
+              </h1>
+              <p className="text-xl md:text-2xl text-white tracking-[0.2em] uppercase drop-shadow-lg">
+                {s.sub}
+              </p>
+            </div>
           </div>
         );
       }
