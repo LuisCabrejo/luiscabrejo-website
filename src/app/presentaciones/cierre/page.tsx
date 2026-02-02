@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic';
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileCheck } from 'lucide-react';
+import Image from 'next/image';
 
 // --- CONFIGURACIÓN DE ESTILO ---
 const THEME = {
@@ -331,6 +332,12 @@ export default function PresentacionCierre() {
               <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.4)' }}
+              <Image
+                src={s.image}
+                alt={`Fondo para ${s.title}`}
+                layout="fill"
+                objectFit="cover"
+                className="brightness-[0.4]"
               />
             )}
             <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-8 px-8">
@@ -351,6 +358,12 @@ export default function PresentacionCierre() {
               <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.6)' }}
+              <Image
+                src={s.image}
+                alt={`Fondo para ${s.title}`}
+                layout="fill"
+                objectFit="cover"
+                className="brightness-[0.6]"
               />
             )}
             <div className="relative z-10 text-center px-8">
@@ -402,6 +415,13 @@ export default function PresentacionCierre() {
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.5)' }}
               />
+                <Image
+                  src={s.image}
+                  alt={`Fondo para ${s.title}`}
+                  layout="fill"
+                  objectFit="cover"
+                  className="brightness-[0.5]"
+                />
             )}
             <div className="relative z-10 flex flex-col items-center justify-center h-full px-8">
               {/* Icono técnico */}
@@ -431,6 +451,13 @@ export default function PresentacionCierre() {
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: `url(${img})` }}
                   />
+                   <Image
+                    src={img}
+                    alt={`Imagen de collage ${idx + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="absolute inset-0"
+                   />
                   <div className="absolute inset-0 bg-black/40" />
                 </div>
               ))}
@@ -456,6 +483,12 @@ export default function PresentacionCierre() {
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url(${s.image})` }}
+            <Image
+              src={s.image}
+              alt={`Fondo para ${s.title}`}
+              layout="fill"
+              objectFit="cover"
+              className="absolute inset-0"
             />
             {s.overlay && <div className="absolute inset-0 bg-black/60 z-10" />}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10" />
