@@ -329,15 +329,13 @@ export default function PresentacionCierre() {
         return (
           <div className="relative w-full h-full flex items-center justify-center">
             {s.image && (
-              <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.4)' }}
               <Image
                 src={s.image}
                 alt={`Fondo para ${s.title}`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: 'cover' }}
                 className="brightness-[0.4]"
+                priority={true}
               />
             )}
             <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-8 px-8">
@@ -355,15 +353,13 @@ export default function PresentacionCierre() {
         return (
           <div className="relative w-full h-full flex items-center justify-center">
             {s.image && (
-              <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.6)' }}
               <Image
                 src={s.image}
                 alt={`Fondo para ${s.title}`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: 'cover' }}
                 className="brightness-[0.6]"
+                priority={true}
               />
             )}
             <div className="relative z-10 text-center px-8">
@@ -411,15 +407,11 @@ export default function PresentacionCierre() {
           <div className="relative w-full h-full flex items-center justify-center">
              {/* Fondo de imagen para Chart (Gantt) */}
              {s.image && (
-              <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.5)' }}
-              />
                 <Image
                   src={s.image}
                   alt={`Fondo para ${s.title}`}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: 'cover' }}
                   className="brightness-[0.5]"
                 />
             )}
@@ -447,15 +439,11 @@ export default function PresentacionCierre() {
             <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
               {s.images.map((img, idx) => (
                 <div key={idx} className="relative overflow-hidden">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${img})` }}
-                  />
                    <Image
                     src={img}
                     alt={`Imagen de collage ${idx + 1}`}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{ objectFit: 'cover' }}
                     className="absolute inset-0"
                    />
                   <div className="absolute inset-0 bg-black/40" />
@@ -480,14 +468,11 @@ export default function PresentacionCierre() {
         const s = slide as ImageTextSlide;
         return (
           <div className="relative w-full h-full flex items-center justify-center">
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${s.image})` }}
             <Image
               src={s.image}
               alt={`Fondo para ${s.title}`}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: 'cover' }}
               className="absolute inset-0"
             />
             {s.overlay && <div className="absolute inset-0 bg-black/60 z-10" />}
