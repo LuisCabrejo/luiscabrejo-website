@@ -1,12 +1,8 @@
 'use client';
 
-// Forzar renderizado dinámico para evitar caché de contenido viejo
-export const dynamic = 'force-dynamic';
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileCheck } from 'lucide-react';
-import Image from 'next/image';
 
 // --- CONFIGURACIÓN DE ESTILO ---
 const THEME = {
@@ -329,13 +325,9 @@ export default function PresentacionCierre() {
         return (
           <div className="relative w-full h-full flex items-center justify-center">
             {s.image && (
-              <Image
-                src={s.image}
-                alt={`Fondo para ${s.title}`}
-                fill
-                style={{ objectFit: 'cover' }}
-                className="brightness-[0.4]"
-                priority={true}
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.4)' }}
               />
             )}
             <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-8 px-8">
@@ -353,13 +345,9 @@ export default function PresentacionCierre() {
         return (
           <div className="relative w-full h-full flex items-center justify-center">
             {s.image && (
-              <Image
-                src={s.image}
-                alt={`Fondo para ${s.title}`}
-                fill
-                style={{ objectFit: 'cover' }}
-                className="brightness-[0.6]"
-                priority={true}
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.6)' }}
               />
             )}
             <div className="relative z-10 text-center px-8">
@@ -407,13 +395,10 @@ export default function PresentacionCierre() {
           <div className="relative w-full h-full flex items-center justify-center">
              {/* Fondo de imagen para Chart (Gantt) */}
              {s.image && (
-                <Image
-                  src={s.image}
-                  alt={`Fondo para ${s.title}`}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  className="brightness-[0.5]"
-                />
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.5)' }}
+              />
             )}
             <div className="relative z-10 flex flex-col items-center justify-center h-full px-8">
               {/* Icono técnico */}
@@ -439,13 +424,10 @@ export default function PresentacionCierre() {
             <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
               {s.images.map((img, idx) => (
                 <div key={idx} className="relative overflow-hidden">
-                   <Image
-                    src={img}
-                    alt={`Imagen de collage ${idx + 1}`}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    className="absolute inset-0"
-                   />
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${img})` }}
+                  />
                   <div className="absolute inset-0 bg-black/40" />
                 </div>
               ))}
@@ -468,12 +450,9 @@ export default function PresentacionCierre() {
         const s = slide as ImageTextSlide;
         return (
           <div className="relative w-full h-full flex items-center justify-center">
-            <Image
-              src={s.image}
-              alt={`Fondo para ${s.title}`}
-              fill
-              style={{ objectFit: 'cover' }}
-              className="absolute inset-0"
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${s.image})` }}
             />
             {s.overlay && <div className="absolute inset-0 bg-black/60 z-10" />}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10" />
