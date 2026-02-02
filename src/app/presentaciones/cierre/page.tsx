@@ -1,27 +1,23 @@
 'use client';
 
+// Forzar renderizado dinámico para evitar caché de contenido viejo
+export const dynamic = 'force-dynamic';
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Cog,
-  Hourglass,
-  Shovel,
-  Home,
-  TreeDeciduous,
-  TrendingUp,
-  Repeat,
-  AlertTriangle,
-  LucideIcon
-} from 'lucide-react';
+import { FileCheck } from 'lucide-react';
 
 // --- CONFIGURACIÓN DE ESTILO ---
 const THEME = {
   bg: 'bg-black',
   textMain: 'text-white',
   textMuted: 'text-[#94A3B8]',
-  gold: 'text-[#C5A059]',
-  danger: 'text-[#EF4444]',
+  gold: 'text-[#FFD700]',
+  titanium: 'text-[#94A3B8]',
 };
+
+// --- BASE PATH PARA IMÁGENES ---
+const IMG_PATH = '/images/presentaciones/cierre';
 
 // --- TIPOS ---
 interface SlideBase {
@@ -30,49 +26,37 @@ interface SlideBase {
   note?: string;
 }
 
+interface BlackSlide extends SlideBase {
+  type: 'black';
+}
+
+interface SpinnerSlide extends SlideBase {
+  type: 'spinner';
+  title: string;
+  image?: string;
+}
+
+interface HeroSlide extends SlideBase {
+  type: 'hero';
+  title: string;
+  sub?: string;
+  image?: string;
+  color: 'gold' | 'titanium' | 'white';
+}
+
 interface TitleSlide extends SlideBase {
   type: 'title' | 'big-text' | 'final';
   content: string;
   sub?: string;
-  color?: 'gold' | 'danger' | 'white' | 'muted';
-}
-
-interface IconTextSlide extends SlideBase {
-  type: 'icon-text';
-  icon: LucideIcon;
-  title: string;
-  text: string;
-  color?: 'gold' | 'muted';
-}
-
-interface SplitSlide extends SlideBase {
-  type: 'split';
-  left: { icon: LucideIcon; text: string; color: 'gold' | 'muted' };
-  right: { text: string; color: 'gold' | 'white' | 'muted' };
-}
-
-interface ImageTextSlide extends SlideBase {
-  type: 'image-text';
-  title: string;
-  sub: string;
-  image: string;
-  overlay?: boolean;
-  grayscale?: boolean;
-  titleColor?: 'gold' | 'danger' | 'white';
+  color?: 'gold' | 'white' | 'muted';
 }
 
 interface ChartSlide extends SlideBase {
   type: 'chart';
   title: string;
   sub: string;
+  image?: string;
   color?: 'gold' | 'white';
-}
-
-interface MirrorSlide extends SlideBase {
-  type: 'mirror';
-  topText: string;
-  bottomText: string;
-  image: string;
 }
 
 interface CollageSlide extends SlideBase {
@@ -82,173 +66,176 @@ interface CollageSlide extends SlideBase {
   images: string[];
 }
 
-type Slide = TitleSlide | IconTextSlide | SplitSlide | ImageTextSlide | ChartSlide | MirrorSlide | CollageSlide;
+interface ImageTextSlide extends SlideBase {
+  type: 'image-text';
+  title: string;
+  sub: string;
+  image: string;
+  overlay?: boolean;
+}
 
-// --- DATA DE DIAPOSITIVAS (EL GUIÓN) ---
+type Slide = BlackSlide | SpinnerSlide | HeroSlide | TitleSlide | ChartSlide | CollageSlide | ImageTextSlide;
+
+// --- DATA DE DIAPOSITIVAS (REINGENIERÍA INDUSTRIAL) ---
 const SLIDES: Slide[] = [
-  // BLOQUE 1: LA CONEXIÓN
+  // ========================================
+  // BLOQUE 1: EL SILENCIO Y EL VILLANO (0-2)
+  // ========================================
+  {
+    id: 0,
+    type: 'black',
+    note: 'Inicio en silencio - Gancho emocional'
+  },
   {
     id: 1,
-    type: 'title',
-    content: 'PROMESAS',
-    sub: '14 AÑOS DESPUÉS...',
-    note: 'Historia Buena Vista'
+    type: 'spinner',
+    title: 'PLAN POR DEFECTO',
+    image: `${IMG_PATH}/plan-por-defecto.jpg`,
+    note: 'El ciclo infinito'
   },
-
-  // BLOQUE 2: EL VILLANO
   {
     id: 2,
-    type: 'icon-text',
-    icon: Repeat,
-    title: 'PLAN POR DEFECTO',
-    text: 'Trabajar → Pagar → Ceros → Repetir',
-    color: 'muted'
+    type: 'hero',
+    title: 'DEPENDENCIA',
+    image: `${IMG_PATH}/dependencia-2.jpg`,
+    color: 'white',
+    note: 'La trampa del ingreso lineal'
   },
+
+  // ========================================
+  // BLOQUE 2: LA INFRAESTRUCTURA (3)
+  // ========================================
   {
     id: 3,
-    type: 'image-text',
-    title: 'DEPENDENCIA',
-    sub: 'LA TRAMPA DEL INGRESO LINEAL',
-    image: '/images/dependencia.jpg',
-    overlay: true,
-    grayscale: true,
-    titleColor: 'danger'
+    type: 'hero',
+    title: 'INFRAESTRUCTURA',
+    sub: 'De Apalancamiento',
+    image: `${IMG_PATH}/mecanismo.jpg`,
+    color: 'white',
+    note: 'El sistema que trabaja por ti'
   },
 
-  // BLOQUE 3: LA RESONANCIA (OSCILACIONES)
+  // ========================================
+  // BLOQUE 3: LAS OSCILACIONES (4-9)
+  // ========================================
+
+  // TIEMPO
   {
     id: 4,
-    type: 'title',
-    content: 'SOBERANÍA',
-    color: 'gold',
-    note: 'El destino'
+    type: 'hero',
+    title: 'INGRESO MANUAL',
+    image: `${IMG_PATH}/el-problema.jpg`,
+    color: 'titanium',
   },
-
-  // Oscilación 1: Dinero
   {
     id: 5,
-    type: 'split',
-    left: { icon: Cog, text: 'MOTOR', color: 'muted' },
-    right: { text: 'Si tú paras, el dinero para', color: 'muted' }
+    type: 'hero',
+    title: 'FLUJO PERPETUO',
+    image: `${IMG_PATH}/la-solucion.jpg`,
+    color: 'gold',
   },
+
+  // ESFUERZO
   {
     id: 6,
-    type: 'image-text',
-    title: 'DUEÑO',
-    sub: 'El agua fluye mientras duermes',
-    image: '/images/dueno.jpg',
-    overlay: true,
-    note: 'Analogía Acueducto'
+    type: 'hero',
+    title: 'DESGASTE TÉRMICO',
+    image: `${IMG_PATH}/esfuerzo.jpg`,
+    color: 'titanium',
   },
-
-  // Oscilación 2: Tiempo
   {
     id: 7,
-    type: 'icon-text',
-    icon: Hourglass,
-    title: 'POBREZA DE TIEMPO',
-    text: 'No tener agenda propia',
-    color: 'muted'
+    type: 'hero',
+    title: 'CONTROL HIDRÁULICO',
+    image: `${IMG_PATH}/el-valor-fluye.jpg`,
+    color: 'gold',
   },
+
+  // SEGURIDAD
   {
     id: 8,
-    type: 'image-text',
-    title: 'AUTONOMÍA',
-    sub: 'No pedir permiso para vivir',
-    image: '/images/autonomia.jpg',
-    overlay: true
+    type: 'hero',
+    title: 'FALLA FRÁGIL',
+    image: `${IMG_PATH}/jaula-de-cristal.jpg`,
+    color: 'titanium',
   },
-
-  // Oscilación 3: Método
   {
     id: 9,
-    type: 'icon-text',
-    icon: Shovel,
-    title: 'ESFUERZO',
-    text: 'Cavar con cuchara (Perseguir)',
-    color: 'muted'
+    type: 'hero',
+    title: 'RED ANTIFRÁGIL',
+    image: `${IMG_PATH}/a-prueba-de-golpes.jpg`,
+    color: 'gold',
   },
+
+  // ========================================
+  // BLOQUE 4: LA LÓGICA (10-11)
+  // ========================================
+
+  // Slide 10: Transición Silenciosa
   {
     id: 10,
-    type: 'image-text',
-    title: 'APALANCAMIENTO',
-    sub: 'Excavadora Industrial (Sistemas + IA)',
-    image: '/images/apalancamiento.jpg',
-    overlay: true,
-    note: 'Tecnología Queswa'
-  },
-
-  // Oscilación 4: Legado
-  {
-    id: 11,
-    type: 'icon-text',
-    icon: Home,
-    title: 'ALQUILER',
-    text: 'Tu empleo no es heredable',
-    color: 'muted'
-  },
-  {
-    id: 12,
-    type: 'icon-text',
-    icon: TreeDeciduous,
-    title: 'LEGADO',
-    text: 'Propiedad Privada Heredable',
-    color: 'gold',
-    note: 'Activo transferible'
-  },
-
-  // BLOQUE 4: LA VERDAD (LÓGICA)
-  {
-    id: 13,
     type: 'big-text',
     content: 'CERTEZA',
     sub: 'NO MIEDO. LÓGICA.',
     color: 'white',
-    note: 'Costo operativo cero'
-  },
-  {
-    id: 14,
-    type: 'chart',
-    title: '2.5 AÑOS',
-    sub: 'Obediencia al Sistema',
-    color: 'gold'
-  },
-  {
-    id: 15,
-    type: 'collage',
-    title: 'EL VEHÍCULO',
-    sub: 'Resultados duplicables',
-    images: [
-      '/images/reconocimiento-1.jpg',
-      '/images/reconocimiento-2.jpg',
-      '/images/reconocimiento-3.jpg',
-      '/images/reconocimiento-4.jpg'
-    ]
-  },
-  {
-    id: 16,
-    type: 'image-text',
-    title: 'TU VISTA',
-    sub: 'Disponible para el conductor',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80',
-    overlay: false
+    note: 'Protocolo Phillips - Limpieza mental'
   },
 
-  // BLOQUE 5: EL CIERRE (ESPEJO)
+  // Slide 11: El Cronograma (Gantt)
   {
-    id: 17,
-    type: 'image-text',
-    title: 'LOS ÚLTIMOS 5 AÑOS',
-    sub: '¿QUIERES REPETIRLOS?',
-    image: '/images/retrovisor.png',
-    overlay: true,
-    note: 'El espejo del tiempo'
+    id: 11,
+    type: 'chart',
+    title: '2.5 AÑOS',
+    sub: 'EL MÉTODO',
+    image: `${IMG_PATH}/gantt-chart.jpg`,
+    color: 'gold'
   },
+
+  // ========================================
+  // BLOQUE 5: LA EVIDENCIA (12-13)
+  // ========================================
+
+  // Slide 12: La Visión (Render Final)
   {
-    id: 18,
+    id: 12,
+    type: 'image-text',
+    title: 'LA VISIÓN',
+    sub: 'REALIDAD MATERIALIZADA',
+    image: `${IMG_PATH}/tu-vista.jpg`,
+    overlay: true
+  },
+
+  // Slide 13: Los Planos
+  {
+    id: 13,
+    type: 'image-text',
+    title: 'LOS PLANOS',
+    sub: 'EXPANSIÓN CONTINENTAL',
+    image: `${IMG_PATH}/blueprints.jpg`,
+    overlay: true
+  },
+
+  // ========================================
+  // BLOQUE 6: EL CIERRE (14-15)
+  // ========================================
+
+  // Slide 14: Auditoría
+  {
+    id: 14,
+    type: 'image-text',
+    title: 'AUDITORÍA',
+    sub: '¿REPETIR O RECONSTRUIR?',
+    image: `${IMG_PATH}/calendar-audit.jpg`,
+    overlay: true,
+    note: 'El costo de no actuar'
+  },
+
+  // Slide 15: Decisión Final
+  {
+    id: 15,
     type: 'final',
     content: 'DECIDE',
-    sub: 'Soberanía o Dependencia',
+    sub: 'SOBERANÍA O DEPENDENCIA',
     color: 'gold'
   }
 ];
@@ -256,7 +243,6 @@ const SLIDES: Slide[] = [
 // --- COMPONENTE PRINCIPAL ---
 export default function PresentacionCierre() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Navegación con Teclado
   const handleNavigation = useCallback((direction: 'next' | 'prev') => {
@@ -294,10 +280,8 @@ export default function PresentacionCierre() {
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
-      setIsFullscreen(true);
     } else {
       document.exitFullscreen();
-      setIsFullscreen(false);
     }
   };
 
@@ -305,7 +289,7 @@ export default function PresentacionCierre() {
   const handleClick = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
-    const isLeftSide = x < rect.width / 3;
+    const isLeftSide = x < rect.width / 2;
 
     if (isLeftSide) {
       handleNavigation('prev');
@@ -316,30 +300,91 @@ export default function PresentacionCierre() {
 
   const slide = SLIDES[currentSlide];
 
-  // Obtener color de texto según configuración
+  // Helpers de estilo
   const getTextColor = (color?: string) => {
     switch (color) {
-      case 'gold': return THEME.gold;
-      case 'danger': return THEME.danger;
-      case 'muted': return THEME.textMuted;
-      default: return THEME.textMain;
+      case 'gold': return 'text-[#FFD700]';
+      case 'titanium': return 'text-[#94A3B8]';
+      case 'muted': return 'text-[#94A3B8]';
+      default: return 'text-white';
     }
   };
 
-  // Renders según tipo de slide
+  const getTextShadow = (color?: string) => {
+    if (color === 'gold') {
+      return { textShadow: '0 0 20px rgba(255, 215, 0, 0.5)' };
+    }
+    return {};
+  };
+
+  // RENDERIZADO DE CONTENIDO
   const renderContent = () => {
     switch (slide.type) {
+      case 'black':
+        return <div className="w-full h-full bg-black" />;
+
+      case 'spinner': {
+        const s = slide as SpinnerSlide;
+        return (
+          <div className="relative w-full h-full flex items-center justify-center">
+            {s.image && (
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.4)' }}
+              />
+            )}
+            <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-8 px-8">
+              <div className="w-32 h-32 border-8 border-gray-600 rounded-full border-t-transparent animate-spin" />
+              <h1 className="text-6xl md:text-8xl font-black text-gray-500 uppercase tracking-tighter">
+                {s.title}
+              </h1>
+            </div>
+          </div>
+        );
+      }
+
+      case 'hero': {
+        const s = slide as HeroSlide;
+        return (
+          <div className="relative w-full h-full flex items-center justify-center">
+            {s.image && (
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.6)' }}
+              />
+            )}
+            <div className="relative z-10 text-center px-8">
+              <h1
+                className={`text-5xl md:text-8xl font-black uppercase tracking-tighter ${getTextColor(s.color)}`}
+                style={getTextShadow(s.color)}
+              >
+                {s.title}
+              </h1>
+              {s.sub && (
+                <p className="text-xl md:text-3xl font-bold tracking-widest mt-4 uppercase text-[#FFD700]"
+                   style={{ textShadow: '0 0 20px rgba(255, 215, 0, 0.5)' }}>
+                  {s.sub}
+                </p>
+              )}
+            </div>
+          </div>
+        );
+      }
+
       case 'title':
       case 'big-text':
       case 'final': {
         const s = slide as TitleSlide;
         return (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-6 px-8">
-            <h1 className={`text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter ${getTextColor(s.color)}`}>
+            <h1
+              className={`text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter ${getTextColor(s.color)}`}
+              style={getTextShadow(s.color)}
+            >
               {s.content}
             </h1>
             {s.sub && (
-              <p className={`text-xl md:text-2xl lg:text-3xl font-light tracking-[0.2em] ${THEME.textMuted}`}>
+              <p className="text-xl md:text-2xl lg:text-3xl font-light tracking-[0.2em] text-[#94A3B8]">
                 {s.sub}
               </p>
             )}
@@ -347,72 +392,53 @@ export default function PresentacionCierre() {
         );
       }
 
-      case 'icon-text': {
-        const s = slide as IconTextSlide;
-        const Icon = s.icon || AlertTriangle;
-        return (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-8 px-8">
-            <Icon
-              size={120}
-              className={s.color === 'gold' ? 'text-[#C5A059]' : 'text-[#475569]'}
-              strokeWidth={1}
-            />
-            <h2 className={`text-4xl md:text-6xl lg:text-7xl font-bold ${getTextColor(s.color)}`}>
-              {s.title}
-            </h2>
-            <p className="text-xl md:text-2xl lg:text-3xl text-white font-light">
-              {s.text}
-            </p>
-          </div>
-        );
-      }
-
-      case 'split': {
-        const s = slide as SplitSlide;
-        const LeftIcon = s.left?.icon || Cog;
-        return (
-          <div className="flex flex-col md:flex-row h-full w-full">
-            <div className="flex-1 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-white/10 p-10">
-              <LeftIcon
-                size={80}
-                className={s.left.color === 'gold' ? 'text-[#C5A059]' : 'text-[#475569]'}
-                strokeWidth={1}
-              />
-              <h2 className={`text-3xl md:text-4xl mt-6 font-bold ${getTextColor(s.left.color)}`}>
-                {s.left.text}
-              </h2>
-            </div>
-            <div className="flex-1 flex items-center justify-center p-10">
-              <h2 className={`text-3xl md:text-4xl lg:text-5xl font-serif leading-tight ${getTextColor(s.right.color)}`}>
-                {s.right.text}
-              </h2>
-            </div>
-          </div>
-        );
-      }
-
-      case 'image-text': {
-        const s = slide as ImageTextSlide;
-        const titleColorClass = s.titleColor === 'danger' ? THEME.danger : THEME.gold;
+      case 'chart': {
+        const s = slide as ChartSlide;
         return (
           <div className="relative w-full h-full flex items-center justify-center">
-            {/* Imagen de fondo */}
-            <div
-              className={`absolute inset-0 bg-cover bg-center bg-no-repeat ${s.grayscale ? 'grayscale' : ''}`}
-              style={{ backgroundImage: `url(${s.image})` }}
-            />
-
-            {/* Overlay oscuro si está habilitado */}
-            {s.overlay && (
-              <div className="absolute inset-0 bg-black/60 z-10" />
+             {/* Fondo de imagen para Chart (Gantt) */}
+             {s.image && (
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${s.image})`, filter: 'brightness(0.5)' }}
+              />
             )}
+            <div className="relative z-10 flex flex-col items-center justify-center h-full px-8">
+              {/* Icono técnico */}
+              <FileCheck size={120} className="text-[#FFD700] mb-6" strokeWidth={1} />
+              <h1
+                className="text-7xl md:text-8xl lg:text-9xl font-bold text-white"
+                style={{ textShadow: '0 0 30px rgba(255, 215, 0, 0.3)' }}
+              >
+                {s.title}
+              </h1>
+              <p className="text-xl md:text-3xl text-[#94A3B8] mt-6 uppercase tracking-[0.3em] font-light">
+                {s.sub}
+              </p>
+            </div>
+          </div>
+        );
+      }
 
-            {/* Gradient overlay para legibilidad del texto */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10" />
-
-            {/* Contenido de texto */}
-            <div className="relative z-20 text-center p-10">
-              <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-4 ${titleColorClass} drop-shadow-2xl`}>
+      case 'collage': {
+        const s = slide as CollageSlide;
+        return (
+          <div className="relative w-full h-full flex flex-col">
+            <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
+              {s.images.map((img, idx) => (
+                <div key={idx} className="relative overflow-hidden">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${img})` }}
+                  />
+                  <div className="absolute inset-0 bg-black/40" />
+                </div>
+              ))}
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60 z-10" />
+            <div className="relative z-20 flex flex-col items-center justify-center h-full text-center p-10">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-[#FFD700] drop-shadow-2xl"
+                  style={{ textShadow: '0 0 20px rgba(255, 215, 0, 0.5)' }}>
                 {s.title}
               </h1>
               <p className="text-xl md:text-2xl text-white tracking-[0.2em] uppercase drop-shadow-lg">
@@ -423,73 +449,19 @@ export default function PresentacionCierre() {
         );
       }
 
-      case 'chart': {
-        const s = slide as ChartSlide;
+      case 'image-text': {
+        const s = slide as ImageTextSlide;
         return (
-          <div className="flex flex-col items-center justify-center h-full px-8">
-            <TrendingUp size={150} className={THEME.gold} strokeWidth={1.5} />
-            <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold text-white mt-8">
-              {s.title}
-            </h1>
-            <p className="text-xl md:text-2xl text-[#94A3B8] mt-4 uppercase tracking-[0.3em]">
-              {s.sub}
-            </p>
-          </div>
-        );
-      }
-
-      case 'mirror': {
-        const s = slide as MirrorSlide;
-        return (
-          <div className="flex flex-col items-center justify-center h-full text-center px-8 space-y-8">
-            {/* Texto superior */}
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tighter">
-              {s.topText}
-            </h1>
-
-            {/* Imagen del retrovisor */}
-            <div className="relative w-64 h-40 md:w-80 md:h-48 lg:w-96 lg:h-56">
-              <img
-                src={s.image}
-                alt="Retrovisor"
-                className="w-full h-full object-contain drop-shadow-2xl"
-              />
-            </div>
-
-            {/* Texto inferior */}
-            <p className="text-2xl md:text-3xl lg:text-4xl font-light text-[#94A3B8] tracking-[0.15em]">
-              {s.bottomText}
-            </p>
-          </div>
-        );
-      }
-
-      case 'collage': {
-        const s = slide as CollageSlide;
-        return (
-          <div className="relative w-full h-full flex flex-col">
-            {/* Grid de imágenes como fondo */}
-            <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
-              {s.images.map((img, idx) => (
-                <div
-                  key={idx}
-                  className="relative overflow-hidden"
-                >
-                  <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${img})` }}
-                  />
-                  <div className="absolute inset-0 bg-black/40" />
-                </div>
-              ))}
-            </div>
-
-            {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60 z-10" />
-
-            {/* Contenido de texto */}
-            <div className="relative z-20 flex flex-col items-center justify-center h-full text-center p-10">
-              <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-4 ${THEME.gold} drop-shadow-2xl`}>
+          <div className="relative w-full h-full flex items-center justify-center">
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${s.image})` }}
+            />
+            {s.overlay && <div className="absolute inset-0 bg-black/60 z-10" />}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10" />
+            <div className="relative z-20 text-center p-10">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-[#FFD700] drop-shadow-2xl"
+                  style={{ textShadow: '0 0 20px rgba(255, 215, 0, 0.5)' }}>
                 {s.title}
               </h1>
               <p className="text-xl md:text-2xl text-white tracking-[0.2em] uppercase drop-shadow-lg">
@@ -511,48 +483,29 @@ export default function PresentacionCierre() {
       onClick={handleClick}
       style={{ cursor: 'none' }}
     >
-      {/* Contenido de la diapositiva */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
-          initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
           className="w-full h-full flex items-center justify-center"
         >
           {renderContent()}
         </motion.div>
       </AnimatePresence>
 
-      {/* Progress Bar Minimalista */}
       <motion.div
-        className="absolute bottom-0 left-0 h-1 bg-[#C5A059]"
+        className="absolute bottom-0 left-0 h-1 bg-[#FFD700]"
         initial={{ width: 0 }}
         animate={{ width: `${((currentSlide + 1) / SLIDES.length) * 100}%` }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.5 }}
       />
 
-      {/* Indicador Discreto */}
-      <div className="absolute bottom-4 right-6 text-[#333] text-xs font-mono">
-        {currentSlide + 1} / {SLIDES.length}
+      <div className="absolute bottom-4 right-6 text-gray-700 text-xs font-mono">
+        {currentSlide} / {SLIDES.length - 1}
       </div>
-
-      {/* Controles táctiles invisibles para móvil */}
-      <div className="absolute inset-y-0 left-0 w-1/4 z-30" />
-      <div className="absolute inset-y-0 right-0 w-3/4 z-30" />
-
-      {/* Ayuda de navegación (visible solo al inicio) */}
-      {currentSlide === 0 && (
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[#444] text-xs tracking-widest"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          ← → NAVEGAR &nbsp;|&nbsp; F FULLSCREEN &nbsp;|&nbsp; CLICK AVANZAR
-        </motion.div>
-      )}
     </div>
   );
 }
