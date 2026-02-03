@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
   keywords: [
     'soberanía financiera',
+    'plan servilleta gano excel',
     'dependencia económica',
     'infraestructura de apalancamiento',
     'ingreso manual',

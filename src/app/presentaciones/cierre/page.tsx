@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileCheck } from 'lucide-react';
 
@@ -71,12 +72,16 @@ interface ImageTextSlide extends SlideBase {
   overlay?: boolean;
 }
 
-type Slide = BlackSlide | SpinnerSlide | HeroSlide | TitleSlide | ChartSlide | CollageSlide | ImageTextSlide;
+interface LogoSlide extends SlideBase {
+  type: 'logo';
+}
 
-// --- DATA DE DIAPOSITIVAS (REINGENIERÍA INDUSTRIAL) ---
+type Slide = BlackSlide | SpinnerSlide | HeroSlide | TitleSlide | ChartSlide | CollageSlide | ImageTextSlide | LogoSlide;
+
+// --- DATA DE DIAPOSITIVAS (SECUENCIA NARRATIVA CORREGIDA v10.1) ---
 const SLIDES: Slide[] = [
   // ========================================
-  // BLOQUE 1: EL SILENCIO Y EL VILLANO (0-2)
+  // BLOQUE 1: EL VILLANO & LA DEPENDENCIA (0-2)
   // ========================================
   {
     id: 0,
@@ -88,7 +93,7 @@ const SLIDES: Slide[] = [
     type: 'spinner',
     title: 'PLAN POR DEFECTO',
     image: `${IMG_PATH}/plan-por-defecto.jpg`,
-    note: 'El ciclo infinito'
+    note: 'El ciclo infinito: Trabajar > Pagar > Repetir'
   },
   {
     id: 2,
@@ -96,24 +101,24 @@ const SLIDES: Slide[] = [
     title: 'DEPENDENCIA',
     image: `${IMG_PATH}/dependencia-2.jpg`,
     color: 'white',
-    note: 'La trampa del ingreso lineal'
+    note: 'Falla Frágil: Si paras, ganas cero.'
   },
 
   // ========================================
-  // BLOQUE 2: LA INFRAESTRUCTURA (3)
+  // BLOQUE 2: EL CONTEXTO - La Transición (3)
   // ========================================
   {
     id: 3,
-    type: 'hero',
-    title: 'INFRAESTRUCTURA',
-    sub: 'De Apalancamiento',
-    image: `${IMG_PATH}/mecanismo.jpg`,
-    color: 'white',
-    note: 'El sistema que trabaja por ti'
+    type: 'image-text',
+    title: 'CAMBIO DE ERA',
+    sub: 'EL MAPA HA CAMBIADO',
+    image: `${IMG_PATH}/fracture.jpg`,
+    overlay: true,
+    note: 'Contexto: La vieja estabilidad se rompió.'
   },
 
   // ========================================
-  // BLOQUE 3: LAS OSCILACIONES (4-9)
+  // BLOQUE 3: LAS OSCILACIONES - El Dolor (4-9)
   // ========================================
 
   // TIEMPO
@@ -165,22 +170,31 @@ const SLIDES: Slide[] = [
   },
 
   // ========================================
-  // BLOQUE 4: LA LÓGICA (10-11)
+  // BLOQUE 4: LA REVELACIÓN - El Clímax (10)
   // ========================================
-
-  // Slide 10: Transición Silenciosa
+  // SLIDE 10: LA TRÍADA DE CONVERGENCIA
   {
     id: 10,
+    type: 'image-text',
+    title: 'CONVERGENCIA',
+    sub: 'CAPITAL + LOGÍSTICA + SISTEMA',
+    image: `${IMG_PATH}/hybrid-core.jpg`,
+    overlay: true,
+    note: 'El Momento iPhone: Capital, Logística y Sistema Educativo'
+  },
+
+  // ========================================
+  // BLOQUE 5: LA CERTEZA - Lógica (11-12)
+  // ========================================
+  {
+    id: 11,
     type: 'big-text',
     content: 'CERTEZA',
     sub: 'NO MIEDO. LÓGICA.',
-    color: 'white',
-    note: 'Protocolo Phillips - Limpieza mental'
+    color: 'white'
   },
-
-  // Slide 11: El Cronograma (Gantt)
   {
-    id: 11,
+    id: 12,
     type: 'chart',
     title: '2.5 AÑOS',
     sub: 'EL MÉTODO',
@@ -189,22 +203,18 @@ const SLIDES: Slide[] = [
   },
 
   // ========================================
-  // BLOQUE 5: LA EVIDENCIA (12-13)
+  // BLOQUE 6: LA EVIDENCIA (13-14)
   // ========================================
-
-  // Slide 12: La Visión (Render Final)
   {
-    id: 12,
+    id: 13,
     type: 'image-text',
     title: 'LA VISIÓN',
     sub: 'REALIDAD MATERIALIZADA',
     image: `${IMG_PATH}/tu-vista.jpg`,
     overlay: true
   },
-
-  // Slide 13: Los Planos
   {
-    id: 13,
+    id: 14,
     type: 'image-text',
     title: 'LOS PLANOS',
     sub: 'EXPANSIÓN CONTINENTAL',
@@ -213,12 +223,10 @@ const SLIDES: Slide[] = [
   },
 
   // ========================================
-  // BLOQUE 6: EL CIERRE (14-15)
+  // BLOQUE 7: EL CIERRE (15-16)
   // ========================================
-
-  // Slide 14: Auditoría
   {
-    id: 14,
+    id: 15,
     type: 'image-text',
     title: 'AUDITORÍA',
     sub: '¿REPETIR O RECONSTRUIR?',
@@ -226,14 +234,21 @@ const SLIDES: Slide[] = [
     overlay: true,
     note: 'El costo de no actuar'
   },
-
-  // Slide 15: Decisión Final
   {
-    id: 15,
+    id: 16,
     type: 'final',
     content: 'DECIDE',
     sub: 'SOBERANÍA O DEPENDENCIA',
     color: 'gold'
+  },
+
+  // ========================================
+  // SLIDE FINAL: MONOGRAMA LC (17)
+  // ========================================
+  {
+    id: 17,
+    type: 'logo',
+    note: 'Sello de Garantía - Última impresión retiniana'
   }
 ];
 
@@ -332,9 +347,21 @@ export default function PresentacionCierre() {
             )}
             <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-8 px-8">
               <div className="w-32 h-32 border-8 border-gray-600 rounded-full border-t-transparent animate-spin" />
-              <h1 className="text-6xl md:text-8xl font-black text-gray-500 uppercase tracking-tighter">
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-gray-500 uppercase tracking-tighter">
                 {s.title}
               </h1>
+            </div>
+            {/* Logo en slide 1 (PLAN POR DEFECTO) */}
+            <div className="absolute bottom-8 right-8 w-20 h-20 md:w-24 md:h-24 opacity-70">
+              <Image
+                src="/logos/logo-luiscabrejo-profile.png"
+                alt="LC"
+                fill
+                className="object-contain"
+                style={{
+                  filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))'
+                }}
+              />
             </div>
           </div>
         );
@@ -352,13 +379,13 @@ export default function PresentacionCierre() {
             )}
             <div className="relative z-10 text-center px-8">
               <h1
-                className={`text-5xl md:text-8xl font-black uppercase tracking-tighter ${getTextColor(s.color)}`}
+                className={`text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter ${getTextColor(s.color)}`}
                 style={getTextShadow(s.color)}
               >
                 {s.title}
               </h1>
               {s.sub && (
-                <p className="text-xl md:text-3xl font-bold tracking-widest mt-4 uppercase text-[#FFD700]"
+                <p className="text-xl md:text-3xl font-bold tracking-widest mt-6 uppercase text-[#FFD700]"
                    style={{ textShadow: '0 0 20px rgba(255, 215, 0, 0.5)' }}>
                   {s.sub}
                 </p>
@@ -373,9 +400,9 @@ export default function PresentacionCierre() {
       case 'final': {
         const s = slide as TitleSlide;
         return (
-          <div className="flex flex-col items-center justify-center h-full text-center space-y-6 px-8">
+          <div className="relative w-full flex flex-col items-center justify-center h-full text-center space-y-6 px-8">
             <h1
-              className={`text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter ${getTextColor(s.color)}`}
+              className={`text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter ${getTextColor(s.color)}`}
               style={getTextShadow(s.color)}
             >
               {s.content}
@@ -384,6 +411,20 @@ export default function PresentacionCierre() {
               <p className="text-xl md:text-2xl lg:text-3xl font-light tracking-[0.2em] text-[#94A3B8]">
                 {s.sub}
               </p>
+            )}
+            {/* Logo en slide 16 (DECIDE) */}
+            {slide.id === 16 && (
+              <div className="absolute bottom-8 right-8 w-20 h-20 md:w-24 md:h-24 opacity-70">
+                <Image
+                  src="/logos/logo-luiscabrejo-profile.png"
+                  alt="LC"
+                  fill
+                  className="object-contain"
+                  style={{
+                    filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))'
+                  }}
+                />
+              </div>
             )}
           </div>
         );
@@ -402,9 +443,9 @@ export default function PresentacionCierre() {
             )}
             <div className="relative z-10 flex flex-col items-center justify-center h-full px-8">
               {/* Icono técnico */}
-              <FileCheck size={120} className="text-[#FFD700] mb-6" strokeWidth={1} />
+              <FileCheck size={100} className="text-[#FFD700] mb-6 md:mb-10" strokeWidth={1} />
               <h1
-                className="text-7xl md:text-8xl lg:text-9xl font-bold text-white"
+                className="text-6xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter"
                 style={{ textShadow: '0 0 30px rgba(255, 215, 0, 0.3)' }}
               >
                 {s.title}
@@ -434,11 +475,11 @@ export default function PresentacionCierre() {
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60 z-10" />
             <div className="relative z-20 flex flex-col items-center justify-center h-full text-center p-10">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-[#FFD700] drop-shadow-2xl"
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-6 text-[#FFD700] drop-shadow-2xl uppercase tracking-tighter"
                   style={{ textShadow: '0 0 20px rgba(255, 215, 0, 0.5)' }}>
                 {s.title}
               </h1>
-              <p className="text-xl md:text-2xl text-white tracking-[0.2em] uppercase drop-shadow-lg">
+              <p className="text-xl md:text-3xl text-white tracking-[0.2em] uppercase drop-shadow-lg">
                 {s.sub}
               </p>
             </div>
@@ -457,13 +498,33 @@ export default function PresentacionCierre() {
             {s.overlay && <div className="absolute inset-0 bg-black/60 z-10" />}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10" />
             <div className="relative z-20 text-center p-10">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-[#FFD700] drop-shadow-2xl"
+              {/* TIPOGRAFÍA UNIFICADA CON HERO Y TITLE */}
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-6 text-[#FFD700] drop-shadow-2xl uppercase tracking-tighter"
                   style={{ textShadow: '0 0 20px rgba(255, 215, 0, 0.5)' }}>
                 {s.title}
               </h1>
-              <p className="text-xl md:text-2xl text-white tracking-[0.2em] uppercase drop-shadow-lg">
+              <p className="text-xl md:text-3xl text-white tracking-[0.2em] uppercase drop-shadow-lg font-bold">
                 {s.sub}
               </p>
+            </div>
+          </div>
+        );
+      }
+
+      case 'logo': {
+        return (
+          <div className="relative w-full h-full bg-black flex items-center justify-center">
+            {/* Monograma LC - Sello de Garantía */}
+            <div className="relative w-64 h-64 md:w-96 md:h-96 lg:w-[32rem] lg:h-[32rem]">
+              <Image
+                src="/logos/logo-luiscabrejo-profile.png"
+                alt="Luis Cabrejo"
+                fill
+                className="object-contain"
+                style={{
+                  filter: 'drop-shadow(0 0 60px rgba(197, 160, 89, 0.3))'
+                }}
+              />
             </div>
           </div>
         );

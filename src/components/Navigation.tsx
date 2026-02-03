@@ -11,6 +11,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 interface NavigationProps {
@@ -47,8 +48,19 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     <nav className="fixed top-0 w-full bg-[#0F1115]/80 backdrop-blur-md z-50 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#C5A059] to-[#D4AF37] bg-clip-text text-transparent">
-            Luis Cabrejo
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16">
+              <Image
+                src="/logos/logo-luiscabrejo-profile.png"
+                alt="Luis Cabrejo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#C5A059] to-[#D4AF37] bg-clip-text text-transparent group-hover:from-[#D4AF37] group-hover:to-[#C5A059] transition-all">
+              Luis Cabrejo
+            </span>
           </Link>
 
           <div className="hidden md:flex space-x-8 text-sm items-center">

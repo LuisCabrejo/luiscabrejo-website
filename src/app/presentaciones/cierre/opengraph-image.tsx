@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
 
-export const alt = 'Presentación Cierre - Luis Cabrejo | Soberanía o Dependencia'
+export const alt = 'Infraestructura de Apalancamiento - Luis Cabrejo | DECIDE: Soberanía o Dependencia'
 export const size = {
   width: 1200,
   height: 630,
@@ -33,7 +33,7 @@ export default async function Image() {
             left: 0,
             right: 0,
             height: '4px',
-            background: 'linear-gradient(90deg, transparent 0%, #C5A059 50%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, #FFD700 50%, transparent 100%)',
           }}
         />
 
@@ -54,15 +54,15 @@ export default async function Image() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              background: 'rgba(197, 160, 89, 0.15)',
-              border: '1px solid rgba(197, 160, 89, 0.4)',
+              background: 'rgba(255, 215, 0, 0.15)',
+              border: '1px solid rgba(255, 215, 0, 0.4)',
               borderRadius: '999px',
               padding: '8px 24px',
               marginBottom: '40px',
             }}
           >
-            <span style={{ color: '#C5A059', fontSize: '18px', fontWeight: 600, letterSpacing: '0.2em' }}>
-              PRESENTACIÓN EJECUTIVA
+            <span style={{ color: '#FFD700', fontSize: '18px', fontWeight: 600, letterSpacing: '0.2em' }}>
+              INFRAESTRUCTURA DE APALANCAMIENTO
             </span>
           </div>
 
@@ -71,7 +71,7 @@ export default async function Image() {
             style={{
               fontSize: '72px',
               fontWeight: 800,
-              color: '#C5A059',
+              color: '#FFD700',
               lineHeight: 1.1,
               marginBottom: '24px',
               letterSpacing: '-0.02em',
@@ -93,34 +93,38 @@ export default async function Image() {
             SOBERANÍA O DEPENDENCIA
           </p>
 
-          {/* Key concepts */}
+          {/* Key concepts - Industrial Engineering Oscillations */}
           <div
             style={{
               display: 'flex',
-              gap: '40px',
+              gap: '32px',
               marginTop: '10px',
             }}
           >
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: '#475569', fontSize: '32px' }}>💧</span>
-              <span style={{ color: '#64748b', fontSize: '16px', letterSpacing: '0.1em' }}>ACTIVOS</span>
+              <span style={{ color: '#FFD700', fontSize: '28px' }}>⚡</span>
+              <span style={{ color: '#FFD700', fontSize: '14px', letterSpacing: '0.1em', fontWeight: 600 }}>FLUJO</span>
+              <span style={{ color: '#64748b', fontSize: '11px', letterSpacing: '0.05em' }}>PERPETUO</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: '#475569', fontSize: '32px' }}>⏰</span>
-              <span style={{ color: '#64748b', fontSize: '16px', letterSpacing: '0.1em' }}>AUTONOMÍA</span>
+              <span style={{ color: '#FFD700', fontSize: '28px' }}>⚙️</span>
+              <span style={{ color: '#FFD700', fontSize: '14px', letterSpacing: '0.1em', fontWeight: 600 }}>CONTROL</span>
+              <span style={{ color: '#64748b', fontSize: '11px', letterSpacing: '0.05em' }}>HIDRÁULICO</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: '#475569', fontSize: '32px' }}>🌳</span>
-              <span style={{ color: '#64748b', fontSize: '16px', letterSpacing: '0.1em' }}>LEGADO</span>
+              <span style={{ color: '#FFD700', fontSize: '28px' }}>🔗</span>
+              <span style={{ color: '#FFD700', fontSize: '14px', letterSpacing: '0.1em', fontWeight: 600 }}>RED</span>
+              <span style={{ color: '#64748b', fontSize: '11px', letterSpacing: '0.05em' }}>ANTIFRÁGIL</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-              <span style={{ color: '#475569', fontSize: '32px' }}>🤖</span>
-              <span style={{ color: '#64748b', fontSize: '16px', letterSpacing: '0.1em' }}>SISTEMAS</span>
+              <span style={{ color: '#FFD700', fontSize: '28px' }}>📐</span>
+              <span style={{ color: '#FFD700', fontSize: '14px', letterSpacing: '0.1em', fontWeight: 600 }}>CERTEZA</span>
+              <span style={{ color: '#64748b', fontSize: '11px', letterSpacing: '0.05em' }}>2.5 AÑOS</span>
             </div>
           </div>
         </div>
 
-        {/* Footer */}
+        {/* Footer with actual logo */}
         <div
           style={{
             position: 'absolute',
@@ -141,26 +145,19 @@ export default async function Image() {
               border: '1px solid rgba(255, 255, 255, 0.1)',
             }}
           >
-            <div
+            <img
+              src="https://luiscabrejo.com/logos/logo-luiscabrejo-profile.png"
+              alt="LC"
+              width="50"
+              height="50"
               style={{
-                width: '40px',
-                height: '40px',
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, #C5A059 0%, #8B7355 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'black',
-                fontSize: '18px',
-                fontWeight: 700,
               }}
-            >
-              LC
-            </div>
+            />
             <span style={{ color: '#ffffff', fontSize: '20px', fontWeight: 600 }}>
               Luis Cabrejo
             </span>
-            <span style={{ color: '#C5A059', fontSize: '18px' }}>
+            <span style={{ color: '#FFD700', fontSize: '18px' }}>
               | Diamante 11 Años
             </span>
           </div>
@@ -174,7 +171,7 @@ export default async function Image() {
             left: 0,
             width: '100%',
             height: '4px',
-            background: '#C5A059',
+            background: '#FFD700',
           }}
         />
       </div>
