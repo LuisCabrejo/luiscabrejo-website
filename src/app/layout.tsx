@@ -179,6 +179,14 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        {/* PWA Manifest & Icons */}
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+        <meta name="theme-color" content="#0a0a0f" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Luis Cabrejo" />
+
         {/* JSON-LD Inyectado */}
         <script
           type="application/ld+json"
@@ -187,6 +195,25 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+        />
+
+        {/* Service Worker Registration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                      console.log('[SW] Registered:', registration.scope);
+                    })
+                    .catch(function(error) {
+                      console.log('[SW] Registration failed:', error);
+                    });
+                });
+              }
+            `
+          }}
         />
       </head>
       <body
