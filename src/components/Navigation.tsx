@@ -48,8 +48,9 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     <nav className="fixed top-0 w-full bg-[#0F1115]/80 backdrop-blur-md z-50 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16">
+          <Link href="/" className="flex items-center gap-4 group">
+            {/* Monograma - 25% más grande para presidir la barra */}
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20">
               <Image
                 src="/logos/logo-luiscabrejo-profile.png"
                 alt="Luis Cabrejo"
@@ -58,7 +59,8 @@ export default function Navigation({ onContactClick }: NavigationProps) {
                 priority
               />
             </div>
-            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#C5A059] to-[#D4AF37] bg-clip-text text-transparent group-hover:from-[#D4AF37] group-hover:to-[#C5A059] transition-all">
+            {/* Nombre en Serif (Playfair Display) - Quiet Luxury */}
+            <span className="font-[family-name:var(--font-playfair)] text-xl sm:text-2xl font-medium text-white tracking-wide group-hover:text-[#C5A059] transition-colors">
               Luis Cabrejo
             </span>
           </Link>
