@@ -48,9 +48,9 @@ export default function Navigation({ onContactClick }: NavigationProps) {
     <nav className="fixed top-0 w-full bg-[#0F1115]/80 backdrop-blur-md z-50 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-1 group">
-            {/* Monograma */}
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-0.5 group">
+            {/* Monograma - más grande y ajustado verticalmente */}
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 translate-y-1">
               <Image
                 src="/logos/logo-luiscabrejo-profile.png"
                 alt="Luis Cabrejo"
