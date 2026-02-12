@@ -956,6 +956,7 @@ interface Prospect {
 
 function SlideLey4() {
   const [mode, setMode] = useState<'push' | 'pull'>('push');
+  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const prospectsRef = useRef<Prospect[]>([]);
   const heroRef = useRef({ x: 50, y: 50 });
@@ -978,10 +979,12 @@ function SlideLey4() {
       const modeNow = mode;
       const hero = heroRef.current;
 
-      if (modeNow === 'push') {
-        hero.x += (mouseRef.current.x - hero.x) * 0.08;
-        hero.y += (mouseRef.current.y - hero.y) * 0.08;
-      } else {
+      if (modeNow === 'push' && isDragging) {
+        // Move hero to follow mouse/touch position
+        hero.x += (mouseRef.current.x - hero.x) * 0.2;
+        hero.y += (mouseRef.current.y - hero.y) * 0.2;
+      } else if (modeNow === 'pull') {
+        // Return to center in pull mode
         hero.x += (50 - hero.x) * 0.05;
         hero.y += (50 - hero.y) * 0.05;
       }
@@ -1054,16 +1057,50 @@ function SlideLey4() {
 
     rafRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafRef.current);
+  }, [mode, isDragging]);
+
+  // Update position on mouse/touch move
+  const updatePosition = useCallback((clientX: number, clientY: number) => {
+    if (!containerRef.current || mode !== 'push') return;
+    const rect = containerRef.current.getBoundingClientRect();
+    mouseRef.current = {
+      x: ((clientX - rect.left) / rect.width) * 100,
+      y: ((clientY - rect.top) / rect.height) * 100,
+    };
   }, [mode]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (mode !== 'push') return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    mouseRef.current = {
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    };
-  };
+  // Mouse handlers
+  const handleMouseDown = useCallback(() => {
+    if (mode === 'push') setIsDragging(true);
+  }, [mode]);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      updatePosition(e.clientX, e.clientY);
+    }
+  }, [isDragging, updatePosition]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  // Touch handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    if (mode === 'push') {
+      setIsDragging(true);
+      updatePosition(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, [mode, updatePosition]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      updatePosition(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, [isDragging, updatePosition]);
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   return (
     <SlideContainer>
@@ -1089,15 +1126,15 @@ function SlideLey4() {
         {/* Simulation */}
         <div
           ref={containerRef}
-          className="relative w-full max-w-3xl rounded-lg overflow-hidden"
+          className="relative w-full max-w-3xl rounded-lg overflow-hidden select-none"
           data-interactive="true"
           style={{
             height: 'clamp(340px, 40vh, 500px)',
             background: C.panel,
             border: `1px solid ${mode === 'push' ? C.orange : C.gold}30`,
-            cursor: mode === 'push' ? 'crosshair' : 'default',
+            cursor: mode === 'push' ? (isDragging ? 'grabbing' : 'grab') : 'default',
+            touchAction: 'none',
           }}
-          onMouseMove={handleMouseMove}
         >
           {/* Pulse waves (pull mode) */}
           {mode === 'pull' && (
@@ -1117,7 +1154,16 @@ function SlideLey4() {
               fontFamily: 'var(--font-rajdhani)',
               color: C.bg,
               zIndex: 10,
+              cursor: mode === 'push' ? (isDragging ? 'grabbing' : 'grab') : 'default',
+              touchAction: 'none',
             }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             {mode === 'push' ? 'TÚ' : '★'}
           </div>
