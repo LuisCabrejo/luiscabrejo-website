@@ -37,6 +37,15 @@ export default function ApalancamientoPage() {
   const next = useCallback(() => goTo(currentSlide + 1), [currentSlide, goTo]);
   const prev = useCallback(() => goTo(currentSlide - 1), [currentSlide, goTo]);
 
+  // Toggle Fullscreen
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }, []);
+
   // Keyboard navigation
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -48,10 +57,13 @@ export default function ApalancamientoPage() {
         e.preventDefault();
         prev();
       }
+      if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [next, prev]);
+  }, [next, prev, toggleFullscreen]);
 
   return (
     <div
@@ -59,7 +71,7 @@ export default function ApalancamientoPage() {
       style={{ background: C.bg, fontFamily: 'var(--font-roboto-mono), monospace' }}
     >
       {/* ── Progress bar ── */}
-      <div className="fixed top-0 left-0 w-full h-1.5 z-50" style={{ background: C.panel }}>
+      <div className="absolute top-0 left-0 w-full h-1 z-50" style={{ background: C.panel }}>
         <div
           className="h-full transition-all duration-500 ease-out"
           style={{
@@ -68,14 +80,6 @@ export default function ApalancamientoPage() {
             boxShadow: `0 0 12px ${C.cyan}80`,
           }}
         />
-      </div>
-
-      {/* ── Slide indicator ── */}
-      <div
-        className="fixed top-4 right-6 z-50 text-xs tracking-widest"
-        style={{ color: C.darkGray, fontFamily: 'var(--font-roboto-mono)' }}
-      >
-        [{String(currentSlide + 1).padStart(2, '0')}/{String(TOTAL_SLIDES).padStart(2, '0')}]
       </div>
 
       {/* ── Slides ── */}
@@ -90,39 +94,18 @@ export default function ApalancamientoPage() {
         {currentSlide === 7 && <SlideDeploy />}
       </div>
 
-      {/* ── Navigation buttons ── */}
-      <div className="fixed bottom-6 left-0 right-0 flex justify-center gap-4 z-50">
-        {currentSlide > 0 && (
-          <button onClick={prev} className="nav-btn" style={navBtnStyle}>
-            [ ◀ ANTERIOR ]
-          </button>
-        )}
-        {currentSlide < TOTAL_SLIDES - 1 && (
-          <button onClick={next} className="nav-btn" style={navBtnStyle}>
-            [ SIGUIENTE ▶ ]
-          </button>
-        )}
+      {/* ── Slide counter (bottom-right) ── */}
+      <div
+        className="absolute bottom-4 right-6 z-50 text-xs lg:text-sm font-mono"
+        style={{ color: `${C.darkGray}80` }}
+      >
+        {currentSlide + 1} / {TOTAL_SLIDES}
       </div>
 
       <style>{globalCSS}</style>
     </div>
   );
 }
-
-/* ── Nav button style ── */
-const navBtnStyle: React.CSSProperties = {
-  padding: '10px 24px',
-  background: 'rgba(36, 52, 66, 0.9)',
-  border: `1px solid ${C.cyan}40`,
-  color: C.cyan,
-  fontFamily: 'var(--font-rajdhani)',
-  fontWeight: 700,
-  fontSize: '0.85rem',
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase' as const,
-  cursor: 'pointer',
-  transition: 'all 0.3s',
-};
 
 /* ═══════════════════════════════════════════════════════════
    SLIDE 1: DIAGNÓSTICO
@@ -148,7 +131,7 @@ function SlideDiagnostico({ onNext }: { onNext: () => void }) {
 
         {/* Title */}
         <h1
-          className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase tracking-tight"
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tight"
           style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
           SISTEMA OPERATIVO ACTUAL:
@@ -158,7 +141,7 @@ function SlideDiagnostico({ onNext }: { onNext: () => void }) {
 
         {/* Error blink */}
         <div
-          className="text-2xl sm:text-4xl md:text-5xl font-bold uppercase tracking-wider transition-opacity duration-200"
+          className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider transition-opacity duration-200"
           style={{
             fontFamily: 'var(--font-rajdhani)',
             color: C.orange,
@@ -171,7 +154,7 @@ function SlideDiagnostico({ onNext }: { onNext: () => void }) {
 
         {/* Terminal output */}
         <div
-          className="text-left text-xs sm:text-sm max-w-lg w-full px-4 py-3 rounded"
+          className="text-left text-sm sm:text-base lg:text-lg max-w-2xl w-full px-5 py-4 rounded"
           style={{
             background: `${C.panel}cc`,
             color: C.gray,
@@ -234,17 +217,17 @@ function SlideOscilaciones({ onNext }: { onNext: () => void }) {
     <SlideContainer>
       <div className="flex flex-col items-center justify-center h-full gap-6 sm:gap-8 text-center px-4">
         <h2
-          className="text-2xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight"
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight"
           style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
           OSCILACIONES: <span style={{ color: C.cyan }}>MITO VS REALIDAD</span>
         </h2>
 
-        <p className="text-sm max-w-md" style={{ color: C.darkGray }}>
+        <p className="text-base lg:text-lg max-w-md" style={{ color: C.darkGray }}>
           Activa todos los interruptores para desbloquear el siguiente módulo.
         </p>
 
-        <div className="flex flex-col gap-4 sm:gap-6 w-full max-w-xl">
+        <div className="flex flex-col gap-4 sm:gap-6 w-full max-w-2xl">
           {TOGGLES.map((t, i) => (
             <div
               key={i}
@@ -258,7 +241,7 @@ function SlideOscilaciones({ onNext }: { onNext: () => void }) {
             >
               {/* Mito */}
               <span
-                className="text-xs sm:text-sm font-bold uppercase tracking-wider flex-1 text-left transition-all"
+                className="text-sm sm:text-base lg:text-lg font-bold uppercase tracking-wider flex-1 text-left transition-all"
                 style={{
                   fontFamily: 'var(--font-rajdhani)',
                   color: states[i] ? `${C.orange}40` : C.orange,
@@ -287,7 +270,7 @@ function SlideOscilaciones({ onNext }: { onNext: () => void }) {
 
               {/* Realidad */}
               <span
-                className="text-xs sm:text-sm font-bold uppercase tracking-wider flex-1 text-right transition-all"
+                className="text-sm sm:text-base lg:text-lg font-bold uppercase tracking-wider flex-1 text-right transition-all"
                 style={{
                   fontFamily: 'var(--font-rajdhani)',
                   color: states[i] ? C.cyan : `${C.cyan}40`,
@@ -360,7 +343,7 @@ function SlideKernel({ onNext }: { onNext: () => void }) {
     <SlideContainer>
       <div className="flex flex-col items-center justify-center h-full gap-6 px-4">
         <h2
-          className="text-2xl sm:text-4xl font-bold uppercase tracking-tight"
+          className="text-3xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight"
           style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
           INSTALANDO <span style={{ color: C.gold }}>KERNEL</span>
@@ -385,7 +368,7 @@ function SlideKernel({ onNext }: { onNext: () => void }) {
           </div>
 
           {/* Terminal body */}
-          <div className="p-4 text-xs sm:text-sm min-h-[250px]" style={{ fontFamily: 'var(--font-roboto-mono)' }}>
+          <div className="p-4 sm:p-6 text-sm sm:text-base lg:text-lg min-h-[280px]" style={{ fontFamily: 'var(--font-roboto-mono)' }}>
             {lines.map((line, i) => (
               <div
                 key={i}
@@ -499,8 +482,15 @@ function SlideLey1() {
             }
           }
         } else if (p.state === 'stuck') {
-          p.x = USER_X - 2 + (Math.random() - 0.5) * 3;
-          p.y += (Math.random() - 0.5) * 2;
+          if (modeNow === 'router') {
+            // Release stuck particles toward the system
+            p.state = 'routed';
+            p.speed = 0.6 + Math.random() * 0.3;
+            flowCountRef.current++;
+          } else {
+            p.x = USER_X - 2 + (Math.random() - 0.5) * 3;
+            p.y += (Math.random() - 0.5) * 2;
+          }
         } else if (p.state === 'routed') {
           p.x += p.speed;
           const targetY = 50;
@@ -511,7 +501,7 @@ function SlideLey1() {
       // Remove off-screen
       particlesRef.current = particlesRef.current.filter((p) => p.x < 100);
 
-      // Calculate load
+      // Calculate load — drops in router mode
       const stuck = particlesRef.current.filter((p) => p.state === 'stuck').length;
       setLoad(Math.min(stuck * 8, 100));
       setFlow(flowCountRef.current);
@@ -564,7 +554,7 @@ function SlideLey1() {
           ref={containerRef}
           className="relative w-full max-w-3xl rounded-lg overflow-hidden"
           style={{
-            height: '320px',
+            height: 'clamp(320px, 40vh, 500px)',
             background: `${C.panel}`,
             border: `1px solid ${mode === 'manual' ? C.orange : C.cyan}30`,
             backgroundImage: `
@@ -576,15 +566,15 @@ function SlideLey1() {
         >
           {/* User node */}
           <div
-            className="absolute flex items-center justify-center rounded-full text-xs font-bold uppercase transition-all duration-300"
+            className={`absolute flex items-center justify-center rounded-full text-xs font-bold uppercase transition-all duration-300${load > 80 && mode === 'manual' ? ' animate-pulse' : ''}`}
             style={{
               width: '60px',
               height: '60px',
               left: `${USER_X}%`,
               top: '50%',
               transform: 'translate(-50%, -50%)',
-              background: mode === 'manual' ? C.red : C.green,
-              boxShadow: `0 0 ${load > 80 ? 40 : 15}px ${mode === 'manual' ? C.red : C.green}80`,
+              background: mode === 'manual' ? (load > 80 ? C.red : load > 40 ? C.orange : C.green) : C.green,
+              boxShadow: `0 0 ${load > 80 ? 40 : 15}px ${mode === 'manual' ? (load > 80 ? C.red : load > 40 ? C.orange : C.green) : C.green}80`,
               fontFamily: 'var(--font-rajdhani)',
               color: C.bg,
             }}
@@ -612,7 +602,7 @@ function SlideLey1() {
         </div>
 
         {/* Metrics */}
-        <div className="flex gap-6 text-xs" style={{ fontFamily: 'var(--font-roboto-mono)', color: C.gray }}>
+        <div className="flex gap-6 text-xs sm:text-sm lg:text-base" style={{ fontFamily: 'var(--font-roboto-mono)', color: C.gray }}>
           <span>
             CARGA COGNITIVA:{' '}
             <span style={{ color: load > 60 ? C.red : C.green }}>{load}%</span>
@@ -622,7 +612,7 @@ function SlideLey1() {
           </span>
         </div>
 
-        <p className="text-xs text-center max-w-md mt-1" style={{ color: C.darkGray }}>
+        <p className="text-xs sm:text-sm lg:text-base text-center max-w-md mt-1" style={{ color: C.darkGray }}>
           No seas el destino, sé el puente. Desvía el tráfico hacia la infraestructura del Sistema.
         </p>
       </div>
@@ -646,7 +636,6 @@ function SlideLey2() {
     { id: 0, x: 50, y: 50, parentId: null, color: C.white },
   ]);
   const idRef = useRef(1);
-  const W = 100; // percentage-based
 
   const addLinear = () => {
     const angle = Math.random() * Math.PI * 2;
@@ -701,7 +690,7 @@ function SlideLey2() {
         <div
           className="relative w-full max-w-3xl rounded-lg overflow-hidden"
           style={{
-            height: '340px',
+            height: 'clamp(340px, 40vh, 500px)',
             background: C.panel,
             border: `1px solid ${C.cyan}20`,
           }}
@@ -746,7 +735,7 @@ function SlideLey2() {
         </div>
 
         {/* Counter */}
-        <div className="flex gap-6 text-xs" style={{ fontFamily: 'var(--font-roboto-mono)', color: C.gray }}>
+        <div className="flex gap-6 text-xs sm:text-sm lg:text-base" style={{ fontFamily: 'var(--font-roboto-mono)', color: C.gray }}>
           <span>
             NODOS: <span style={{ color: C.cyan }}>{nodes.length}</span>
           </span>
@@ -755,7 +744,7 @@ function SlideLey2() {
           </span>
         </div>
 
-        <p className="text-xs text-center max-w-md mt-1" style={{ color: C.darkGray }}>
+        <p className="text-xs sm:text-sm lg:text-base text-center max-w-md mt-1" style={{ color: C.darkGray }}>
           Si solo &quot;Enseñas&quot;, sumas. Si &quot;Enseñas a Enseñar&quot;, multiplicas exponencialmente.
         </p>
       </div>
@@ -803,22 +792,23 @@ function SlideLey3() {
         <button
           onClick={startBuild}
           disabled={building}
-          className="px-6 py-3 font-bold uppercase tracking-widest text-sm transition-all"
+          className="px-8 py-4 font-bold uppercase tracking-widest text-sm lg:text-base transition-all rounded-lg select-none"
           style={{
             fontFamily: 'var(--font-rajdhani)',
             background: building ? `${C.green}20` : C.panel,
             color: building ? C.green : C.cyan,
-            border: `1px solid ${building ? C.green : C.cyan}40`,
+            border: `2px solid ${building ? C.green : C.cyan}60`,
             cursor: building ? 'default' : 'pointer',
+            boxShadow: building ? 'none' : `0 0 20px ${C.cyan}15`,
           }}
         >
-          {building ? '✓ CONSTRUYENDO...' : '[ INICIAR SECUENCIA DE CONSTRUCCIÓN ]'}
+          {building ? '✓ CONSTRUYENDO...' : 'INICIAR SECUENCIA DE CONSTRUCCIÓN'}
         </button>
 
         {/* Tower */}
         <div
           className="relative w-full max-w-md flex flex-col-reverse items-center gap-1"
-          style={{ minHeight: '340px', justifyContent: 'flex-start' }}
+          style={{ minHeight: 'clamp(340px, 40vh, 500px)', justifyContent: 'flex-start' }}
         >
           {/* Ground line */}
           <div
@@ -843,7 +833,7 @@ function SlideLey3() {
               }}
             >
               <span
-                className="font-bold text-xs sm:text-sm tracking-wider uppercase"
+                className="font-bold text-xs sm:text-sm lg:text-base tracking-wider uppercase"
                 style={{
                   fontFamily: 'var(--font-rajdhani)',
                   color: block.textDark ? C.bg : C.white,
@@ -871,7 +861,7 @@ function SlideLey3() {
           ))}
         </div>
 
-        <p className="text-xs text-center max-w-md" style={{ color: C.darkGray }}>
+        <p className="text-xs sm:text-sm lg:text-base text-center max-w-md" style={{ color: C.darkGray }}>
           La Edificación no es &quot;halagar&quot;, es construir una estructura de confianza. Sin valores, la torre se cae.
         </p>
       </div>
@@ -1026,7 +1016,7 @@ function SlideLey4() {
           ref={containerRef}
           className="relative w-full max-w-3xl rounded-lg overflow-hidden"
           style={{
-            height: '340px',
+            height: 'clamp(340px, 40vh, 500px)',
             background: C.panel,
             border: `1px solid ${mode === 'push' ? C.orange : C.gold}30`,
             cursor: mode === 'push' ? 'crosshair' : 'default',
@@ -1072,7 +1062,7 @@ function SlideLey4() {
           ))}
         </div>
 
-        <p className="text-xs text-center max-w-md" style={{ color: C.darkGray }}>
+        <p className="text-xs sm:text-sm lg:text-base text-center max-w-md" style={{ color: C.darkGray }}>
           {mode === 'push'
             ? 'Mueve el cursor para perseguir. Observa cómo huyen.'
             : 'No persigas. Crea un campo de atracción (Community-Led Growth).'}
@@ -1086,11 +1076,44 @@ function SlideLey4() {
    SLIDE 8: DEPLOY — CIERRE
    ═══════════════════════════════════════════════════════════ */
 const LAWS_SUMMARY = [
-  { num: 1, title: 'DESVIAR HABILIDADES', icon: '⚡', color: C.cyan },
-  { num: 2, title: 'ENSEÑAR A ENSEÑAR', icon: '🔗', color: C.purple },
-  { num: 3, title: 'EDIFICACIÓN + VALORES', icon: '🏗️', color: C.green },
-  { num: 4, title: 'PROMOVER VS INVITAR', icon: '🧲', color: C.gold },
+  { num: 1, title: 'DESVIAR HABILIDADES', color: C.cyan },
+  { num: 2, title: 'ENSEÑAR A ENSEÑAR', color: C.purple },
+  { num: 3, title: 'EDIFICACIÓN + VALORES', color: C.green },
+  { num: 4, title: 'PROMOVER VS INVITAR', color: C.gold },
 ];
+
+function LawIcon({ num, color, size = 24 }: { num: number; color: string; size?: number }) {
+  const props = { width: size, height: size, fill: 'none', stroke: color, strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
+  switch (num) {
+    case 1: // Router / redirect arrows
+      return (
+        <svg {...props} viewBox="0 0 24 24">
+          <path d="M13 5l7 7-7 7" /><path d="M6 5l7 7-7 7" />
+        </svg>
+      );
+    case 2: // Network / fractal nodes
+      return (
+        <svg {...props} viewBox="0 0 24 24">
+          <circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="19" r="2.5" /><circle cx="19" cy="19" r="2.5" />
+          <path d="M12 7.5v4M10.5 13l-4 4M13.5 13l4 4" />
+        </svg>
+      );
+    case 3: // Building / structure
+      return (
+        <svg {...props} viewBox="0 0 24 24">
+          <rect x="4" y="14" width="16" height="7" rx="1" /><rect x="6" y="8" width="12" height="6" rx="1" /><rect x="8" y="3" width="8" height="5" rx="1" />
+        </svg>
+      );
+    case 4: // Magnet / attraction
+      return (
+        <svg {...props} viewBox="0 0 24 24">
+          <path d="M6 3v6a6 6 0 0 0 12 0V3" /><path d="M6 3h3v6" /><path d="M15 3h3v6" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
 
 function SlideDeploy() {
   return (
@@ -1104,7 +1127,7 @@ function SlideDeploy() {
         </div>
 
         <h2
-          className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase tracking-tight"
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight"
           style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
           SISTEMA LISTO PARA
@@ -1113,23 +1136,23 @@ function SlideDeploy() {
         </h2>
 
         {/* Laws grid */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-xl">
           {LAWS_SUMMARY.map((law) => (
             <div
               key={law.num}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg"
+              className="flex items-center gap-3 px-4 py-3 lg:px-5 lg:py-4 rounded-lg"
               style={{
                 background: `${C.panel}`,
                 border: `1px solid ${law.color}30`,
               }}
             >
-              <span className="text-2xl">{law.icon}</span>
+              <LawIcon num={law.num} color={law.color} size={28} />
               <div className="text-left">
-                <div className="text-[10px] tracking-wider" style={{ color: law.color, fontFamily: 'var(--font-roboto-mono)' }}>
+                <div className="text-[10px] lg:text-xs tracking-wider" style={{ color: law.color, fontFamily: 'var(--font-roboto-mono)' }}>
                   LEY {law.num}
                 </div>
                 <div
-                  className="text-xs sm:text-sm font-bold uppercase"
+                  className="text-xs sm:text-sm lg:text-base font-bold uppercase"
                   style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
                 >
                   {law.title}
@@ -1150,13 +1173,12 @@ function SlideDeploy() {
             cursor: 'pointer',
             boxShadow: `0 0 40px ${C.gold}40`,
           }}
-          onClick={() => window.open('https://luiscabrejo.com/fundadores', '_blank')}
         >
-          [ INICIAR MIGRACIÓN A MODO EMPRESARIO ]
+          INICIAR MIGRACIÓN A MODO EMPRESARIO
         </button>
 
         {/* Footer */}
-        <div className="mt-6 text-xs tracking-widest" style={{ color: C.darkGray }}>
+        <div className="mt-6 text-xs lg:text-sm tracking-widest" style={{ color: C.darkGray }}>
           ARQUITECTURA POR{' '}
           <span style={{ color: C.gold }}>LUIS CABREJO</span>
           {' '}// DIAMANTE 11 AÑOS
@@ -1180,11 +1202,11 @@ function SlideContainer({ children }: { children: React.ReactNode }) {
 function LawTitle({ number, title, subtitle }: { number: number; title: string; subtitle: string }) {
   return (
     <div className="text-center">
-      <div className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: C.cyan, fontFamily: 'var(--font-roboto-mono)' }}>
+      <div className="text-sm lg:text-base tracking-[0.3em] uppercase mb-2" style={{ color: C.cyan, fontFamily: 'var(--font-roboto-mono)' }}>
         // LEY_{number}.exe — {subtitle}
       </div>
       <h2
-        className="text-2xl sm:text-4xl font-bold uppercase tracking-tight"
+        className="text-3xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight"
         style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
       >
         LEY {number}: <span style={{ color: C.gold }}>{title}</span>
@@ -1207,7 +1229,7 @@ function ModeButton({
   return (
     <button
       onClick={onClick}
-      className="px-3 sm:px-5 py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all"
+      className="px-4 sm:px-6 py-2.5 text-xs sm:text-sm lg:text-base font-bold uppercase tracking-wider transition-all"
       style={{
         fontFamily: 'var(--font-rajdhani)',
         background: active ? `${color}20` : 'transparent',

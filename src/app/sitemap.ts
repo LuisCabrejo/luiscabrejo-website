@@ -102,5 +102,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
+
+    // ========================================
+    // PRESENTACIONES
+    // ========================================
+    {
+      url: `${baseUrl}/presentaciones/apalancamiento`,
+      lastModified: new Date('2026-02-12'),
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
   ];
 }
