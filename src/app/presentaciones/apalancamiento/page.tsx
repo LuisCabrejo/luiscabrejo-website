@@ -26,6 +26,8 @@ const TOTAL_SLIDES = 8;
    ═══════════════════════════════════════════════════════════ */
 export default function ApalancamientoPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const goTo = useCallback(
     (n: number) => {
@@ -65,10 +67,63 @@ export default function ApalancamientoPage() {
     return () => window.removeEventListener('keydown', handler);
   }, [next, prev, toggleFullscreen]);
 
+  // Mobile touch navigation (tap)
+  const handleScreenClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    // Ignore clicks on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a') || target.closest('[data-interactive]')) {
+      return;
+    }
+
+    const screenWidth = window.innerWidth;
+    const clickX = e.clientX;
+
+    // Divide screen in thirds: left 1/3, center 1/3, right 1/3
+    // Only left and right thirds are clickable for navigation
+    if (clickX < screenWidth / 3) {
+      prev();
+    } else if (clickX > (screenWidth * 2) / 3) {
+      next();
+    }
+  }, [next, prev]);
+
+  // Touch swipe navigation
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('[data-interactive]')) {
+      return;
+    }
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('[data-interactive]')) {
+      return;
+    }
+    touchEndX.current = e.changedTouches[0].clientX;
+
+    const swipeDistance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50; // Minimum swipe distance in pixels
+
+    if (Math.abs(swipeDistance) > minSwipeDistance) {
+      if (swipeDistance > 0) {
+        // Swipe left → next slide
+        next();
+      } else {
+        // Swipe right → previous slide
+        prev();
+      }
+    }
+  }, [next, prev]);
+
   return (
     <div
       className="relative w-screen h-screen overflow-hidden"
       style={{ background: C.bg, fontFamily: 'var(--font-roboto-mono), monospace' }}
+      onClick={handleScreenClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* ── Progress bar ── */}
       <div className="absolute top-0 left-0 w-full h-1 z-50" style={{ background: C.panel }}>
@@ -93,6 +148,23 @@ export default function ApalancamientoPage() {
         {currentSlide === 6 && <SlideLey4 />}
         {currentSlide === 7 && <SlideDeploy />}
       </div>
+
+      {/* ── Fullscreen button (mobile) ── */}
+      <button
+        onClick={toggleFullscreen}
+        className="absolute top-4 right-4 z-50 md:hidden px-3 py-2 rounded-lg transition-all"
+        style={{
+          background: `${C.panel}80`,
+          border: `1px solid ${C.cyan}40`,
+          color: C.cyan,
+          backdropFilter: 'blur(8px)',
+        }}
+        aria-label="Toggle fullscreen"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+        </svg>
+      </button>
 
       {/* ── Slide counter (bottom-right) ── */}
       <div
@@ -553,6 +625,7 @@ function SlideLey1() {
         <div
           ref={containerRef}
           className="relative w-full max-w-3xl rounded-lg overflow-hidden"
+          data-interactive="true"
           style={{
             height: 'clamp(320px, 40vh, 500px)',
             background: `${C.panel}`,
@@ -689,6 +762,7 @@ function SlideLey2() {
         {/* Network area */}
         <div
           className="relative w-full max-w-3xl rounded-lg overflow-hidden"
+          data-interactive="true"
           style={{
             height: 'clamp(340px, 40vh, 500px)',
             background: C.panel,
@@ -808,6 +882,7 @@ function SlideLey3() {
         {/* Tower */}
         <div
           className="relative w-full max-w-md flex flex-col-reverse items-center gap-1"
+          data-interactive="true"
           style={{ minHeight: 'clamp(340px, 40vh, 500px)', justifyContent: 'flex-start' }}
         >
           {/* Ground line */}
@@ -1015,6 +1090,7 @@ function SlideLey4() {
         <div
           ref={containerRef}
           className="relative w-full max-w-3xl rounded-lg overflow-hidden"
+          data-interactive="true"
           style={{
             height: 'clamp(340px, 40vh, 500px)',
             background: C.panel,
