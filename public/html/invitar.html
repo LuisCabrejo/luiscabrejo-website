@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ley 4: El Imán | Luis Cabrejo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a252f;
+            --prospect-color: #bdc3c7;
+            --push-color: #e74c3c; /* Rojo para el esfuerzo de invitar */
+            --pull-color: #f1c40f; /* Dorado para el valor de promover */
+        }
+        body {
+            background-color: var(--bg-color);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+        }
+        .hud-top { position: absolute; top: 20px; text-align: center; width: 100%; z-index: 10; }
+        .hud-title { font-size: 2.5rem; text-transform: uppercase; margin: 0; text-shadow: 0 0 20px rgba(241, 196, 15, 0.3); }
+
+        #canvas-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3);
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        .entity {
+            position: absolute;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: background 0.3s;
+        }
+
+        /* EL ORADOR (TÚ) */
+        #hero {
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 2;
+            pointer-events: none; /* Deja pasar clicks al container */
+        }
+
+        .prospect {
+            width: 10px;
+            height: 10px;
+            background: var(--prospect-color);
+            opacity: 0.8;
+        }
+
+        .controls { margin-top: 30px; display: flex; gap: 20px; }
+        .btn {
+            background: transparent; border: 2px solid #555; color: #777;
+            padding: 15px 30px; font-family: 'Roboto Mono', monospace; font-size: 1rem;
+            cursor: pointer; text-transform: uppercase; transition: all 0.3s;
+        }
+        .btn-push.active { border-color: var(--push-color); color: var(--push-color); box-shadow: 0 0 15px rgba(231, 76, 60, 0.4); }
+        .btn-pull.active { border-color: var(--pull-color); color: var(--pull-color); box-shadow: 0 0 15px rgba(241, 196, 15, 0.4); }
+
+        /* Efecto de Onda Magnética */
+        .wave {
+            position: absolute;
+            border: 2px solid var(--pull-color);
+            border-radius: 50%;
+            opacity: 0;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        @keyframes ripple {
+            0% { width: 60px; height: 60px; opacity: 0.8; border-width: 4px; }
+            100% { width: 600px; height: 600px; opacity: 0; border-width: 0px; }
+        }
+        .pulsing .wave { animation: ripple 2s infinite ease-out; }
+
+    </style>
+</head>
+<body>
+
+    <div class="hud-top">
+        <h1 class="hud-title">LEY 4: PROMOVER VS. INVITAR</h1>
+        <div style="color: #95a5a6; font-family: 'Roboto Mono';">DINÁMICA DE ATRACCIÓN</div>
+    </div>
+
+    <div id="canvas-container">
+        <div id="hero" class="entity">YO</div>
+        <div class="wave"></div><div class="wave" style="animation-delay: 0.6s"></div>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-push" onclick="setMode('push')">MODO INVITAR (PERSEGUIR)</button>
+        <button class="btn btn-pull" onclick="setMode('pull')">MODO PROMOVER (ATRAER)</button>
+    </div>
+
+    <script>
+        const container = document.getElementById('canvas-container');
+        const hero = document.getElementById('hero');
+        const width = 800, height = 500;
+        let mode = 'push'; // push, pull
+        let prospects = [];
+        let mouseX = width / 2;
+        let mouseY = height / 2;
+
+        // Inicializar prospectos
+        for (let i = 0; i < 40; i++) {
+            const el = document.createElement('div');
+            el.classList.add('entity', 'prospect');
+            container.appendChild(el);
+            prospects.push({
+                el: el,
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2
+            });
+        }
+
+        // Seguir al mouse solo en el contenedor
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+
+        function setMode(m) {
+            mode = m;
+            document.querySelector('.btn-push').classList.toggle('active', mode === 'push');
+            document.querySelector('.btn-pull').classList.toggle('active', mode === 'pull');
+
+            if (mode === 'push') {
+                hero.style.borderColor = "var(--push-color)";
+                hero.style.color = "var(--push-color)";
+                hero.innerText = "YO";
+                hero.parentElement.classList.remove('pulsing');
+            } else {
+                hero.style.borderColor = "var(--pull-color)";
+                hero.style.color = "var(--pull-color)";
+                hero.innerText = "EVENTO";
+                // Centrar el héroe en modo Pull
+                mouseX = width / 2;
+                mouseY = height / 2;
+                hero.parentElement.classList.add('pulsing');
+            }
+        }
+
+        function update() {
+            // Mover héroe
+            if (mode === 'push') {
+                // En push, el héroe sigue al mouse (tú persigues)
+                hero.style.left = mouseX + 'px';
+                hero.style.top = mouseY + 'px';
+            } else {
+                // En pull, el héroe se queda al centro (Estabilidad)
+                hero.style.left = (width / 2) + 'px';
+                hero.style.top = (height / 2) + 'px';
+            }
+
+            const heroX = parseFloat(hero.style.left);
+            const heroY = parseFloat(hero.style.top);
+
+            prospects.forEach(p => {
+                const dx = p.x - heroX;
+                const dy = p.y - heroY;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+
+                if (mode === 'push') {
+                    // Lógica de Repulsión (Miedo/Presión)
+                    if (dist < 150) {
+                        const force = (150 - dist) / 150;
+                        p.vx += (dx / dist) * force * 1.5; // Huir
+                        p.vy += (dy / dist) * force * 1.5;
+                        p.el.style.backgroundColor = "var(--push-color)";
+                    } else {
+                        p.el.style.backgroundColor = "var(--prospect-color)";
+                    }
+                } else {
+                    // Lógica de Atracción (Gravedad/Valor)
+                    const force = 50 / (dist * dist + 100); // Gravedad
+                    p.vx -= (dx / dist) * force * 200; // Atraer
+                    p.vy -= (dy / dist) * force * 200;
+
+                    // Fricción para que orbiten
+                    p.vx *= 0.96;
+                    p.vy *= 0.96;
+
+                    p.el.style.backgroundColor = "var(--pull-color)";
+                }
+
+                // Límites
+                if (p.x < 0 || p.x > width) p.vx *= -1;
+                if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                p.el.style.left = p.x + 'px';
+                p.el.style.top = p.y + 'px';
+            });
+
+            requestAnimationFrame(update);
+        }
+
+        // Iniciar
+        setMode('push');
+        update();
+    </script>
+</body>
+</html>

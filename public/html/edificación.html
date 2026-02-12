@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ley 3: Arquitectura de Valores | Luis Cabrejo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a252f; /* Gunmetal */
+            --concrete: #bdc3c7;
+            --steel: #7f8c8d;
+            --gold: #f1c40f; /* Para el liderazgo final */
+            --cyan: #009FDF; /* Líneas técnicas */
+            --orange: #E57200; /* Acción */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            /* Fondo de papel milimetrado técnico */
+            background-image:
+                linear-gradient(rgba(0, 159, 223, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 159, 223, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* --- INTERFAZ HUD (Heads Up Display) --- */
+        .hud-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Roboto Mono', monospace;
+            color: var(--cyan);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .hud-title {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(0, 159, 223, 0.3);
+        }
+
+        .hud-subtitle {
+            color: #95a5a6;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        /* --- EL ÁREA DE CONSTRUCCIÓN --- */
+        .construction-site {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            display: flex;
+            flex-direction: column-reverse; /* Construimos de abajo hacia arriba */
+            align-items: center;
+            border-bottom: 4px solid var(--concrete); /* El Suelo */
+            padding-bottom: 0;
+        }
+
+        /* LÍNEAS GUÍA (BLUEPRINT) */
+        .guide-line {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background: var(--cyan);
+            opacity: 0.2;
+            top: 0;
+        }
+        .guide-left { left: 50px; }
+        .guide-right { right: 50px; }
+
+        /* --- LOS BLOQUES (VALORES) --- */
+        .block {
+            width: 300px;
+            height: 60px;
+            margin-bottom: 5px;
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            border: 1px solid var(--cyan);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+
+            /* Estado inicial: Invisible y desplazado */
+            opacity: 0;
+            transform: translateY(-100px) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Estilos específicos por nivel */
+        .block.base {
+            background: linear-gradient(145deg, #27ae60, #2ecc71); /* Integridad = Verde/Sólido */
+            border-color: #2ecc71;
+            width: 340px; /* Base más ancha */
+        }
+
+        .block.core {
+            border-left: 4px solid var(--cyan);
+            border-right: 4px solid var(--cyan);
+        }
+
+        .block.top {
+            background: linear-gradient(145deg, #f39c12, #f1c40f); /* Liderazgo = Dorado */
+            color: #1a252f;
+            border-color: #f1c40f;
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.4);
+            z-index: 10;
+        }
+
+        /* CLASE PARA ACTIVAR ANIMACIÓN */
+        .block.placed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* ETIQUETAS TÉCNICAS AL LADO */
+        .tech-label {
+            position: absolute;
+            right: -120px;
+            font-size: 0.7rem;
+            color: var(--cyan);
+            font-family: 'Roboto Mono', monospace;
+            opacity: 0;
+            transition: opacity 0.5s 0.3s;
+        }
+        .block.placed .tech-label { opacity: 1; }
+
+        /* --- BOTÓN DE ACCIÓN --- */
+        .control-panel {
+            margin-top: 40px;
+        }
+
+        button {
+            background: transparent;
+            color: var(--orange);
+            border: 2px solid var(--orange);
+            padding: 15px 30px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: var(--orange);
+            color: white;
+            box-shadow: 0 0 20px rgba(229, 114, 0, 0.6);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="hud-header">
+        SISTEMA: GANO EXCEL ENTERPRISE<br>
+        MÓDULO: LEY DE EDIFICACIÓN v2.0
+    </div>
+
+    <div style="text-align: center;">
+        <h1 class="hud-title">LA EDIFICACIÓN</h1>
+        <div class="hud-subtitle">"No es adulación. Es Ingeniería de Confianza."</div>
+    </div>
+
+    <div class="construction-site" id="site">
+        <div class="guide-line guide-left"></div>
+        <div class="guide-line guide-right"></div>
+
+        <div class="block top" id="b7">
+            LIDERAZGO
+            <span class="tech-label">RESULTADO FINAL</span>
+        </div>
+
+        <div class="block core" id="b6">
+            INNOVACIÓN
+            <span class="tech-label">ADAPTABILIDAD</span>
+        </div>
+        <div class="block core" id="b5">
+            COMPROMISO
+            <span class="tech-label">RESILIENCIA</span>
+        </div>
+        <div class="block core" id="b4">
+            EXCELENCIA
+            <span class="tech-label">ESTÁNDAR GLOBAL</span>
+        </div>
+        <div class="block core" id="b3">
+            CALIDAD
+            <span class="tech-label">PRODUCTO/SISTEMA</span>
+        </div>
+        <div class="block core" id="b2">
+            UNIDAD
+            <span class="tech-label">COHESIÓN DE EQUIPO</span>
+        </div>
+
+        <div class="block base" id="b1">
+            INTEGRIDAD
+            <span class="tech-label">CIMENTACIÓN CRÍTICA</span>
+        </div>
+
+    </div>
+
+    <div class="control-panel">
+        <button onclick="startConstruction()">[ INICIAR SECUENCIA DE CONSTRUCCIÓN ]</button>
+    </div>
+
+    <script>
+        function startConstruction() {
+            // Secuencia de tiempos (en milisegundos)
+            const delays = [0, 800, 1600, 2400, 3200, 4000, 5000];
+            const ids = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7'];
+
+            ids.forEach((id, index) => {
+                setTimeout(() => {
+                    document.getElementById(id).classList.add('placed');
+
+                    // Efecto de sonido mental (GOLPE SECO)
+                    // Aquí podrías agregar un audio real si quisieras
+                    console.log("Bloque colocado: " + id);
+                }, delays[index]);
+            });
+
+            // Desactivar botón para no repetir
+            document.querySelector('button').style.opacity = '0.5';
+            document.querySelector('button').innerText = "CONSTRUCCIÓN EN PROCESO...";
+            document.querySelector('button').disabled = true;
+
+            setTimeout(() => {
+                document.querySelector('button').innerText = "ESTRUCTURA COMPLETADA";
+                document.querySelector('button').style.borderColor = "#2ecc71";
+                document.querySelector('button').style.color = "#2ecc71";
+            }, 6000);
+        }
+    </script>
+</body>
+</html>

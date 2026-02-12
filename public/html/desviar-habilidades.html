@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ley 1: El Enrutador | Luis Cabrejo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a252f;
+            --operator-color: #e74c3c; /* Rojo para saturación */
+            --router-color: #2ecc71;   /* Verde para flujo */
+            --system-color: #009FDF;   /* Azul para el Sistema Gano Excel */
+            --particle-color: #ecf0f1;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Rejilla técnica de fondo */
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- HUD --- */
+        .hud-top {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+        }
+        .hud-title {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 0 20px rgba(0, 159, 223, 0.5);
+        }
+        .hud-subtitle {
+            font-family: 'Roboto Mono', monospace;
+            color: #95a5a6;
+            font-size: 1rem;
+        }
+
+        /* --- ZONA DE SIMULACIÓN --- */
+        .simulation-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        /* NODOS */
+        .node {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transition: all 0.3s;
+        }
+
+        /* NODO USUARIO (TÚ) */
+        #user-node {
+            width: 80px;
+            height: 80px;
+            top: 50%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+            border: 3px solid white;
+            z-index: 2;
+        }
+
+        /* NODO SISTEMA (Gano Excel) */
+        #system-node {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            right: 10%;
+            transform: translate(50%, -50%);
+            background: rgba(0, 159, 223, 0.1);
+            border: 3px solid var(--system-color);
+            color: var(--system-color);
+            box-shadow: 0 0 40px rgba(0, 159, 223, 0.2);
+        }
+
+        /* PARTICULAS (PROSPECTOS) */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 5px white;
+            pointer-events: none;
+        }
+
+        /* INDICADORES DE ESTADO */
+        .status-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            text-align: left;
+        }
+        .metric { display: block; margin-bottom: 5px; }
+        .val { color: var(--system-color); font-weight: bold; }
+
+        /* --- CONTROLES --- */
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            background: transparent;
+            border: 2px solid #555;
+            color: #777;
+            padding: 15px 30px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .btn.active-bad {
+            border-color: var(--operator-color);
+            color: var(--operator-color);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn.active-good {
+            border-color: var(--router-color);
+            color: var(--router-color);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="hud-top">
+        <h1 class="hud-title">LEY 1: DESVIAR HABILIDADES</h1>
+        <div class="hud-subtitle">ARQUITECTURA DE FLUJO</div>
+    </div>
+
+    <div class="simulation-container" id="sim-canvas">
+
+        <div class="node" id="user-node" style="border-color: #fff; color: #fff;">
+            TÚ
+        </div>
+
+        <div class="node" id="system-node">
+            SISTEMA<br>INFRA.
+        </div>
+
+        <div class="status-panel">
+            <span class="metric">CARGA COGNITIVA: <span id="load-val" class="val">0%</span></span>
+            <span class="metric">FLUJO AL SISTEMA: <span id="flow-val" class="val">0/min</span></span>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button class="btn" id="btn-manual" onclick="setMode('manual')">MODO MANUAL (YO SÉ)</button>
+        <button class="btn" id="btn-router" onclick="setMode('router')">MODO ENRUTADOR (SISTEMA)</button>
+    </div>
+
+    <script>
+        let mode = 'idle'; // manual, router
+        let particles = [];
+        let load = 0;
+        let flow = 0;
+        const userNode = document.getElementById('user-node');
+        const systemNode = document.getElementById('system-node');
+        const loadDisplay = document.getElementById('load-val');
+        const flowDisplay = document.getElementById('flow-val');
+
+        function setMode(newMode) {
+            mode = newMode;
+
+            // Reset visuales
+            document.getElementById('btn-manual').className = 'btn';
+            document.getElementById('btn-router').className = 'btn';
+
+            if (mode === 'manual') {
+                document.getElementById('btn-manual').classList.add('active-bad');
+                userNode.style.borderColor = "var(--operator-color)";
+                userNode.style.color = "var(--operator-color)";
+                userNode.style.boxShadow = "0 0 30px var(--operator-color)";
+                systemNode.style.opacity = "0.3"; // Sistema apagado
+            } else {
+                document.getElementById('btn-router').classList.add('active-good');
+                userNode.style.borderColor = "var(--router-color)";
+                userNode.style.color = "var(--router-color)";
+                userNode.style.boxShadow = "0 0 30px var(--router-color)";
+                systemNode.style.opacity = "1";
+                load = 0; // Se libera la carga
+            }
+        }
+
+        function createParticle() {
+            if (mode === 'idle') return;
+
+            const p = document.createElement('div');
+            p.classList.add('particle');
+
+            // Iniciar a la izquierda
+            p.style.left = '0px';
+            p.style.top = (Math.random() * 80 + 10) + '%';
+
+            document.getElementById('sim-canvas').appendChild(p);
+
+            // Datos de movimiento
+            const particleData = {
+                el: p,
+                x: 0,
+                y: parseFloat(p.style.top),
+                state: 'incoming', // incoming, stuck, routed
+                speed: 4 + Math.random() * 2
+            };
+            particles.push(particleData);
+        }
+
+        function update() {
+            // Generar tráfico constante
+            if (Math.random() < 0.1) createParticle();
+
+            // Posiciones de los nodos (en %)
+            const userX = 30 * 8; // 30% de 800px aprox
+            const systemX = 90 * 8;
+
+            particles.forEach((p, index) => {
+                if (p.state === 'incoming') {
+                    p.x += p.speed;
+                    // Si llega al usuario
+                    if (p.x >= 210) { // Cerca del nodo User
+                        if (mode === 'manual') {
+                            p.state = 'stuck';
+                            load = Math.min(load + 5, 100);
+                        } else if (mode === 'router') {
+                            p.state = 'routed';
+                            // Calcular ángulo hacia el sistema
+                            p.targetY = 250; // Centro vertical (aprox)
+                        }
+                    }
+                } else if (p.state === 'stuck') {
+                    // Vibrar en el sitio (Estrés)
+                    p.x = 210 + (Math.random() * 10 - 5);
+                    p.el.style.backgroundColor = "var(--operator-color)";
+                } else if (p.state === 'routed') {
+                    // Mover hacia el sistema
+                    p.x += p.speed * 2; // Más rápido
+                    // Ir hacia el centro Y (simple lerp)
+                    const diffY = 50 - parseFloat(p.el.style.top);
+                    p.el.style.top = (parseFloat(p.el.style.top) + diffY * 0.05) + '%';
+
+                    p.el.style.backgroundColor = "var(--system-color)";
+
+                    if (p.x > 650) { // Llegó al sistema
+                        p.el.remove();
+                        particles.splice(index, 1);
+                        flow++;
+                    }
+                }
+
+                p.el.style.left = p.x + 'px';
+            });
+
+            // Actualizar HUD
+            loadDisplay.innerText = load + "%";
+            flowDisplay.innerText = flow;
+
+            // Efecto visual de sobrecarga
+            if (load > 80) {
+                userNode.style.boxShadow = `0 0 ${load}px var(--operator-color)`;
+                userNode.innerText = "¡ERROR!";
+            } else if (mode === 'manual') {
+                userNode.innerText = "YO (Full)";
+            } else if (mode === 'router') {
+                userNode.innerText = "ENRUTADOR";
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        update();
+
+    </script>
+</body>
+</html>
