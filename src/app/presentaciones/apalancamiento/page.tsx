@@ -278,7 +278,7 @@ function SlideOscilaciones({ onNext }: { onNext: () => void }) {
           className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight"
           style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
-          OSCILACIONES: <span style={{ color: C.gray }}>MITO VS REALIDAD</span>
+          <span style={{ color: C.gray }}>MITO VS REALIDAD</span>
         </h2>
 
         <p className="text-base lg:text-lg max-w-md" style={{ color: C.darkGray }}>
@@ -1254,149 +1254,14 @@ function SlideLey4() {
 /* ═══════════════════════════════════════════════════════════
    SLIDE 8: DEPLOY — CIERRE
    ═══════════════════════════════════════════════════════════ */
-const LAWS_SUMMARY = [
-  { num: 1, title: 'DESVIAR HABILIDADES' },
-  { num: 2, title: 'ENSEÑAR A ENSEÑAR' },
-  { num: 3, title: 'EDIFICACIÓN + VALORES' },
-  { num: 4, title: 'PROMOVER VS INVITAR' },
-];
-
-function LawIcon({ num, size = 24 }: { num: number; size?: number }) {
-  const props = { width: size, height: size, fill: 'none', stroke: C.white, strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
-  switch (num) {
-    case 1:
-      return (
-        <svg {...props} viewBox="0 0 24 24">
-          <path d="M13 5l7 7-7 7" /><path d="M6 5l7 7-7 7" />
-        </svg>
-      );
-    case 2:
-      return (
-        <svg {...props} viewBox="0 0 24 24">
-          <circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="19" r="2.5" /><circle cx="19" cy="19" r="2.5" />
-          <path d="M12 7.5v4M10.5 13l-4 4M13.5 13l4 4" />
-        </svg>
-      );
-    case 3:
-      return (
-        <svg {...props} viewBox="0 0 24 24">
-          <rect x="4" y="14" width="16" height="7" rx="1" /><rect x="6" y="8" width="12" height="6" rx="1" /><rect x="8" y="3" width="8" height="5" rx="1" />
-        </svg>
-      );
-    case 4:
-      return (
-        <svg {...props} viewBox="0 0 24 24">
-          <path d="M6 3v6a6 6 0 0 0 12 0V3" /><path d="M6 3h3v6" /><path d="M15 3h3v6" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
 
 function SlideDeploy() {
   const [entered, setEntered] = useState(false);
-  const [rayAnimation, setRayAnimation] = useState(0);
-  const [cubeRotation, setCubeRotation] = useState({ x: 0.3, y: 0, z: 0.2 });
 
   useEffect(() => {
     const timer = setTimeout(() => setEntered(true), 100);
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRayAnimation(prev => (prev + 0.02) % (Math.PI * 2));
-      setCubeRotation(prev => ({
-        x: prev.x + 0.008,
-        y: prev.y + 0.012,
-        z: prev.z + 0.005,
-      }));
-    }, 30);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Generar rayos de luz
-  const generateRays = () => {
-    const rays = [];
-    const numRays = 24;
-    const baseAngle = -Math.PI / 4;
-    const spread = Math.PI / 2;
-
-    for (let i = 0; i < numRays; i++) {
-      const angle = baseAngle + (i / numRays) * spread;
-      const length = 40 + (i % 3) * 10 + Math.sin(rayAnimation + i) * 5;
-      const opacity = 0.6 + Math.sin(rayAnimation + i * 0.5) * 0.3;
-      const width = 2 + (i % 4);
-
-      rays.push({ angle, length, opacity, width });
-    }
-
-    return rays;
-  };
-
-  // Cubo Rubik 3x3x3 wireframe
-  const generateRubiksCube = () => {
-    const cubeSize = 1.2;
-    const gap = 0.12;
-    const cellSize = (cubeSize - gap * 2) / 3;
-    const edges: Array<{x1: number; y1: number; z1: number; x2: number; y2: number; z2: number}> = [];
-
-    for (let x = 0; x < 3; x++) {
-      for (let y = 0; y < 3; y++) {
-        for (let z = 0; z < 3; z++) {
-          const x1 = -cubeSize/2 + x * (cellSize + gap);
-          const y1 = -cubeSize/2 + y * (cellSize + gap);
-          const z1 = -cubeSize/2 + z * (cellSize + gap);
-          const x2 = x1 + cellSize;
-          const y2 = y1 + cellSize;
-          const z2 = z1 + cellSize;
-
-          edges.push(
-            { x1, y1, z1, x2, y1, z1 },
-            { x1, y2, z1, x2, y2, z1 },
-            { x1, y1, z2, x2, y1, z2 },
-            { x1, y2, z2, x2, y2, z2 },
-            { x1, y1, z1, x1, y2, z1 },
-            { x2, y1, z1, x2, y2, z1 },
-            { x1, y1, z2, x1, y2, z2 },
-            { x2, y1, z2, x2, y2, z2 },
-            { x1, y1, z1, x1, y1, z2 },
-            { x2, y1, z1, x2, y1, z2 },
-            { x1, y2, z1, x1, y2, z2 },
-            { x2, y2, z1, x2, y2, z2 }
-          );
-        }
-      }
-    }
-
-    return edges;
-  };
-
-  const project3D = (x: number, y: number, z: number) => {
-    const { x: rx, y: ry, z: rz } = cubeRotation;
-
-    let y1 = y * Math.cos(rx) - z * Math.sin(rx);
-    let z1 = y * Math.sin(rx) + z * Math.cos(rx);
-
-    let x1 = x * Math.cos(ry) + z1 * Math.sin(ry);
-    let z2 = -x * Math.sin(ry) + z1 * Math.cos(ry);
-
-    let x2 = x1 * Math.cos(rz) - y1 * Math.sin(rz);
-    let y2 = x1 * Math.sin(rz) + y1 * Math.cos(rz);
-
-    const perspective = 3.5;
-    const scale = 140 / (z2 + perspective);
-
-    return {
-      x: x2 * scale,
-      y: y2 * scale,
-      opacity: Math.max(0.2, Math.min(1, (z2 + 2) / 4)),
-    };
-  };
-
-  const rays = generateRays();
-  const cubeEdges = generateRubiksCube();
 
   return (
     <SlideContainer>
@@ -1408,136 +1273,37 @@ function SlideDeploy() {
           ✓ SISTEMA COMPILADO CON ÉXITO
         </div>
 
-        {/* PROTAGONISTA GRANDE Y BRILLANTE */}
-        <div
-          className="rounded-full"
-          style={{
-            width: '80px',
-            height: '80px',
-            background: C.white,
-            boxShadow: `0 0 60px ${C.white}90, 0 0 120px ${C.white}60, 0 0 180px ${C.white}30`,
-            border: `3px solid ${C.white}90`,
-            transform: entered ? 'scale(1)' : 'scale(0)',
-            transition: 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          }}
-        />
-
         <h2
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tight"
-          style={{ fontFamily: 'var(--font-rajdhani)', color: C.gray }}
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight"
+          style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
-          LISTO PARA
+          SISTEMA LISTO PARA
           <br />
-          <span style={{ color: C.white }}>DESPLIEGUE</span>
+          <span style={{ color: C.gray }}>DESPLIEGUE</span>
         </h2>
 
-        {/* CONTENEDOR PARA RAYOS Y CUBO */}
+        {/* CONTENEDOR PARA CUBO */}
         <div
           className="relative"
           style={{
             width: '600px',
-            height: '500px',
+            height: '300px',
             maxWidth: '95vw',
-            maxHeight: '50vh',
+            maxHeight: '35vh',
           }}
         >
-          {/* RAYOS DE LUZ */}
-          <svg
-            className="absolute inset-0 w-full h-full"
+          {/* VIDEO DEL CUBO RUBIK */}
+          <video
+            src="/video/cubo-rubicon.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-contain"
             style={{
               opacity: entered ? 1 : 0,
-              transition: 'opacity 0.8s ease 0.3s',
-            }}
-          >
-            <defs>
-              <filter id="ray-glow">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <linearGradient id="ray-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor={C.white} stopOpacity="1"/>
-                <stop offset="100%" stopColor={C.white} stopOpacity="0"/>
-              </linearGradient>
-            </defs>
-
-            {rays.map((ray, i) => {
-              const startX = 15;
-              const startY = 20;
-              const endX = startX + Math.cos(ray.angle) * ray.length;
-              const endY = startY + Math.sin(ray.angle) * ray.length;
-
-              return (
-                <line
-                  key={i}
-                  x1={`${startX}%`}
-                  y1={`${startY}%`}
-                  x2={`${endX}%`}
-                  y2={`${endY}%`}
-                  stroke="url(#ray-gradient)"
-                  strokeWidth={ray.width}
-                  strokeOpacity={ray.opacity}
-                  filter="url(#ray-glow)"
-                  strokeLinecap="round"
-                />
-              );
-            })}
-          </svg>
-
-          {/* CUBO RUBIK 3D WIREFRAME */}
-          <svg
-            className="absolute inset-0 w-full h-full"
-            style={{
-              opacity: entered ? 1 : 0,
-              transform: entered ? 'scale(1)' : 'scale(0)',
+              transform: entered ? 'scale(1)' : 'scale(0.8)',
               transition: 'opacity 1s ease 0.6s, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s',
-            }}
-          >
-            <defs>
-              <filter id="cube-glow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
-
-            {cubeEdges.map((edge, i) => {
-              const p1 = project3D(edge.x1, edge.y1, edge.z1);
-              const p2 = project3D(edge.x2, edge.y2, edge.z2);
-              const avgOpacity = (p1.opacity + p2.opacity) / 2;
-
-              return (
-                <line
-                  key={i}
-                  x1={`${50 + p1.x}%`}
-                  y1={`${65 + p1.y}%`}
-                  x2={`${50 + p2.x}%`}
-                  y2={`${65 + p2.y}%`}
-                  stroke={C.white}
-                  strokeWidth="1.5"
-                  strokeOpacity={avgOpacity * 0.8}
-                  filter="url(#cube-glow)"
-                />
-              );
-            })}
-          </svg>
-
-          {/* Glow en origen de rayos */}
-          <div
-            className="absolute"
-            style={{
-              left: '15%',
-              top: '20%',
-              width: '100px',
-              height: '100px',
-              transform: 'translate(-50%, -50%)',
-              background: `radial-gradient(circle, ${C.white}20 0%, transparent 70%)`,
-              opacity: entered ? 0.6 : 0,
-              transition: 'opacity 1s ease 0.5s',
             }}
           />
         </div>
