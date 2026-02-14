@@ -3,20 +3,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 /* ═══════════════════════════════════════════════════════════
-   PALETA DE COLORES — INGENIERÍA INDUSTRIAL DARK MODE
+   PALETA DE COLORES — DAN KOE MONOCROMÁTICO
    ═══════════════════════════════════════════════════════════ */
 const C = {
-  bg: '#1a252f',
-  panel: '#243442',
-  cyan: '#009FDF',
-  orange: '#E57200',
-  gold: '#f1c40f',
-  white: '#ffffff',
-  gray: '#bdc3c7',
-  darkGray: '#7f8c8d',
-  red: '#e74c3c',
-  green: '#2ecc71',
-  purple: '#9b59b6',
+  bg: '#0a0a0a',           // Negro profundo
+  panel: '#1a1a1a',        // Negro panel
+  white: '#ffffff',        // Blanco puro
+  gray: '#b0b0b0',         // Gris claro
+  darkGray: '#505050',     // Gris oscuro
+  accent: '#ffffff',       // Acento blanco
+  border: '#2a2a2a',       // Borde sutil
 };
 
 const TOTAL_SLIDES = 8;
@@ -69,7 +65,6 @@ export default function ApalancamientoPage() {
 
   // Mobile touch navigation (tap)
   const handleScreenClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    // Ignore clicks on interactive elements
     const target = e.target as HTMLElement;
     if (target.closest('button') || target.closest('a') || target.closest('[data-interactive]')) {
       return;
@@ -78,8 +73,6 @@ export default function ApalancamientoPage() {
     const screenWidth = window.innerWidth;
     const clickX = e.clientX;
 
-    // Divide screen in thirds: left 1/3, center 1/3, right 1/3
-    // Only left and right thirds are clickable for navigation
     if (clickX < screenWidth / 3) {
       prev();
     } else if (clickX > (screenWidth * 2) / 3) {
@@ -104,14 +97,12 @@ export default function ApalancamientoPage() {
     touchEndX.current = e.changedTouches[0].clientX;
 
     const swipeDistance = touchStartX.current - touchEndX.current;
-    const minSwipeDistance = 50; // Minimum swipe distance in pixels
+    const minSwipeDistance = 50;
 
     if (Math.abs(swipeDistance) > minSwipeDistance) {
       if (swipeDistance > 0) {
-        // Swipe left → next slide
         next();
       } else {
-        // Swipe right → previous slide
         prev();
       }
     }
@@ -131,8 +122,8 @@ export default function ApalancamientoPage() {
           className="h-full transition-all duration-500 ease-out"
           style={{
             width: `${((currentSlide + 1) / TOTAL_SLIDES) * 100}%`,
-            background: `linear-gradient(90deg, ${C.cyan}, ${C.gold})`,
-            boxShadow: `0 0 12px ${C.cyan}80`,
+            background: C.white,
+            boxShadow: `0 0 12px ${C.white}80`,
           }}
         />
       </div>
@@ -155,8 +146,8 @@ export default function ApalancamientoPage() {
         className="absolute top-4 right-4 z-50 md:hidden px-3 py-2 rounded-lg transition-all"
         style={{
           background: `${C.panel}80`,
-          border: `1px solid ${C.cyan}40`,
-          color: C.cyan,
+          border: `1px solid ${C.border}`,
+          color: C.white,
           backdropFilter: 'blur(8px)',
         }}
         aria-label="Toggle fullscreen"
@@ -169,7 +160,7 @@ export default function ApalancamientoPage() {
       {/* ── Slide counter (bottom-right) ── */}
       <div
         className="absolute bottom-4 right-6 z-50 text-xs lg:text-sm font-mono"
-        style={{ color: `${C.darkGray}80` }}
+        style={{ color: C.darkGray }}
       >
         {currentSlide + 1} / {TOTAL_SLIDES}
       </div>
@@ -193,62 +184,57 @@ function SlideDiagnostico({ onNext }: { onNext: () => void }) {
   return (
     <SlideContainer>
       <div className="flex flex-col items-center justify-center h-full gap-8 text-center px-4">
-        {/* Top badge */}
         <div
           className="text-xs tracking-[0.3em] uppercase px-4 py-2 rounded"
-          style={{ color: C.darkGray, border: `1px solid ${C.darkGray}40` }}
+          style={{ color: C.darkGray, border: `1px solid ${C.border}` }}
         >
           // sistema_auditoria v1.0
         </div>
 
-        {/* Title */}
         <h1
           className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tight"
           style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
           SISTEMA OPERATIVO ACTUAL:
           <br />
-          <span style={{ color: C.cyan }}>DETECTADO</span>
+          <span style={{ color: C.gray }}>DETECTADO</span>
         </h1>
 
-        {/* Error blink */}
         <div
           className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider transition-opacity duration-200"
           style={{
             fontFamily: 'var(--font-rajdhani)',
-            color: C.orange,
+            color: C.white,
             opacity: showError ? 1 : 0.2,
-            textShadow: showError ? `0 0 30px ${C.orange}80` : 'none',
+            textShadow: showError ? `0 0 30px ${C.white}80` : 'none',
           }}
         >
           ERROR: MODO &quot;YO YA SÉ&quot;
         </div>
 
-        {/* Terminal output */}
         <div
           className="text-left text-sm sm:text-base lg:text-lg max-w-2xl w-full px-5 py-4 rounded"
           style={{
-            background: `${C.panel}cc`,
+            background: C.panel,
             color: C.gray,
-            border: `1px solid ${C.cyan}20`,
+            border: `1px solid ${C.border}`,
             fontFamily: 'var(--font-roboto-mono)',
           }}
         >
           <p>&gt; Detectando patrones de comportamiento...</p>
-          <p style={{ color: C.orange }}>&gt; WARNING: Sesgo cognitivo activo</p>
-          <p style={{ color: C.red }}>&gt; CRITICAL: Modo &quot;Ya lo sé&quot; bloqueando aprendizaje</p>
-          <p style={{ color: C.cyan }}>&gt; Recomendación: Ejecutar auditoría de sistema</p>
+          <p style={{ color: C.gray }}>&gt; WARNING: Sesgo cognitivo activo</p>
+          <p style={{ color: C.white }}>&gt; CRITICAL: Modo &quot;Ya lo sé&quot; bloqueando aprendizaje</p>
+          <p style={{ color: C.gray }}>&gt; Recomendación: Ejecutar auditoría de sistema</p>
         </div>
 
-        {/* CTA */}
         <button
           onClick={onNext}
           className="mt-4 px-8 py-4 text-lg font-bold uppercase tracking-widest rounded transition-all hover:scale-105"
           style={{
             fontFamily: 'var(--font-rajdhani)',
-            background: `linear-gradient(135deg, ${C.cyan}, ${C.cyan}cc)`,
+            background: C.white,
             color: C.bg,
-            boxShadow: `0 0 30px ${C.cyan}40`,
+            boxShadow: `0 0 30px ${C.white}40`,
             border: 'none',
             cursor: 'pointer',
           }}
@@ -292,7 +278,7 @@ function SlideOscilaciones({ onNext }: { onNext: () => void }) {
           className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight"
           style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
-          OSCILACIONES: <span style={{ color: C.cyan }}>MITO VS REALIDAD</span>
+          OSCILACIONES: <span style={{ color: C.gray }}>MITO VS REALIDAD</span>
         </h2>
 
         <p className="text-base lg:text-lg max-w-md" style={{ color: C.darkGray }}>
@@ -306,46 +292,43 @@ function SlideOscilaciones({ onNext }: { onNext: () => void }) {
               className="flex items-center justify-between gap-4 px-4 sm:px-6 py-4 rounded-lg cursor-pointer transition-all"
               style={{
                 background: C.panel,
-                border: `1px solid ${states[i] ? C.cyan : C.orange}30`,
-                boxShadow: states[i] ? `0 0 20px ${C.cyan}15` : 'none',
+                border: `1px solid ${states[i] ? C.white : C.border}40`,
+                boxShadow: states[i] ? `0 0 20px ${C.white}15` : 'none',
               }}
               onClick={() => toggle(i)}
             >
-              {/* Mito */}
               <span
                 className="text-sm sm:text-base lg:text-lg font-bold uppercase tracking-wider flex-1 text-left transition-all"
                 style={{
                   fontFamily: 'var(--font-rajdhani)',
-                  color: states[i] ? `${C.orange}40` : C.orange,
+                  color: states[i] ? `${C.darkGray}` : C.gray,
                   textDecoration: states[i] ? 'line-through' : 'none',
                 }}
               >
                 {t.mito}
               </span>
 
-              {/* Toggle switch */}
               <div
                 className="relative w-14 h-7 rounded-full transition-all flex-shrink-0"
                 style={{
-                  background: states[i] ? C.cyan : `${C.orange}60`,
+                  background: states[i] ? C.white : C.darkGray,
                 }}
               >
                 <div
                   className="absolute top-0.5 w-6 h-6 rounded-full transition-all duration-300"
                   style={{
                     left: states[i] ? '30px' : '2px',
-                    background: C.white,
-                    boxShadow: `0 0 8px ${states[i] ? C.cyan : C.orange}60`,
+                    background: states[i] ? C.bg : C.panel,
+                    boxShadow: `0 0 8px ${states[i] ? C.white : C.darkGray}60`,
                   }}
                 />
               </div>
 
-              {/* Realidad */}
               <span
                 className="text-sm sm:text-base lg:text-lg font-bold uppercase tracking-wider flex-1 text-right transition-all"
                 style={{
                   fontFamily: 'var(--font-rajdhani)',
-                  color: states[i] ? C.cyan : `${C.cyan}40`,
+                  color: states[i] ? C.white : C.darkGray,
                 }}
               >
                 {t.realidad}
@@ -360,11 +343,11 @@ function SlideOscilaciones({ onNext }: { onNext: () => void }) {
             className="mt-4 px-8 py-4 text-lg font-bold uppercase tracking-widest rounded transition-all hover:scale-105 animate-pulse"
             style={{
               fontFamily: 'var(--font-rajdhani)',
-              background: `linear-gradient(135deg, ${C.green}, ${C.cyan})`,
+              background: C.white,
               color: C.bg,
               border: 'none',
               cursor: 'pointer',
-              boxShadow: `0 0 30px ${C.green}40`,
+              boxShadow: `0 0 30px ${C.white}40`,
             }}
           >
             [ SISTEMA VERIFICADO — CONTINUAR ]
@@ -418,45 +401,41 @@ function SlideKernel({ onNext }: { onNext: () => void }) {
           className="text-3xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight"
           style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
-          INSTALANDO <span style={{ color: C.gold }}>KERNEL</span>
+          INSTALANDO <span style={{ color: C.gray }}>KERNEL</span>
         </h2>
 
-        {/* Terminal */}
         <div
           className="w-full max-w-2xl rounded-lg overflow-hidden"
-          style={{ border: `1px solid ${C.cyan}30`, background: '#0d1117' }}
+          style={{ border: `1px solid ${C.border}`, background: C.bg }}
         >
-          {/* Title bar */}
           <div
             className="flex items-center gap-2 px-4 py-2"
-            style={{ background: C.panel, borderBottom: `1px solid ${C.cyan}20` }}
+            style={{ background: C.panel, borderBottom: `1px solid ${C.border}` }}
           >
-            <div className="w-3 h-3 rounded-full" style={{ background: C.red }} />
-            <div className="w-3 h-3 rounded-full" style={{ background: C.gold }} />
-            <div className="w-3 h-3 rounded-full" style={{ background: C.green }} />
+            <div className="w-3 h-3 rounded-full" style={{ background: C.darkGray }} />
+            <div className="w-3 h-3 rounded-full" style={{ background: C.darkGray }} />
+            <div className="w-3 h-3 rounded-full" style={{ background: C.white }} />
             <span className="ml-3 text-xs" style={{ color: C.darkGray }}>
               system_install.sh
             </span>
           </div>
 
-          {/* Terminal body */}
           <div className="p-4 sm:p-6 text-sm sm:text-base lg:text-lg min-h-[280px]" style={{ fontFamily: 'var(--font-roboto-mono)' }}>
             {lines.map((line, i) => (
               <div
                 key={i}
                 className="mb-1.5"
                 style={{
-                  color: line.startsWith('✓') ? C.green : line.includes('Compilando') ? C.gold : C.gray,
+                  color: line.startsWith('✓') ? C.white : line.includes('Compilando') ? C.gray : C.gray,
                 }}
               >
                 {line}
               </div>
             ))}
-            {!done && <span className="animate-pulse" style={{ color: C.cyan }}>█</span>}
+            {!done && <span className="animate-pulse" style={{ color: C.white }}>█</span>}
           </div>
         </div>
 
-        {/* Progress bar */}
         <div className="w-full max-w-2xl">
           <div className="flex justify-between text-xs mb-1" style={{ color: C.darkGray }}>
             <span>Progreso de instalación</span>
@@ -467,10 +446,8 @@ function SlideKernel({ onNext }: { onNext: () => void }) {
               className="h-full rounded-full transition-all duration-500"
               style={{
                 width: `${progress}%`,
-                background: done
-                  ? `linear-gradient(90deg, ${C.green}, ${C.cyan})`
-                  : `linear-gradient(90deg, ${C.cyan}, ${C.gold})`,
-                boxShadow: `0 0 10px ${C.cyan}60`,
+                background: C.white,
+                boxShadow: `0 0 10px ${C.white}60`,
               }}
             />
           </div>
@@ -482,11 +459,11 @@ function SlideKernel({ onNext }: { onNext: () => void }) {
             className="mt-4 px-8 py-4 text-lg font-bold uppercase tracking-widest rounded transition-all hover:scale-105"
             style={{
               fontFamily: 'var(--font-rajdhani)',
-              background: `linear-gradient(135deg, ${C.green}, ${C.cyan})`,
+              background: C.white,
               color: C.bg,
               border: 'none',
               cursor: 'pointer',
-              boxShadow: `0 0 30px ${C.green}40`,
+              boxShadow: `0 0 30px ${C.white}40`,
             }}
           >
             [ EJECUTAR LEYES ]
@@ -512,20 +489,25 @@ function SlideLey1() {
   const [mode, setMode] = useState<'manual' | 'router'>('manual');
   const [load, setLoad] = useState(0);
   const [flow, setFlow] = useState(0);
+  const [entered, setEntered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const rafRef = useRef<number>(0);
   const idCounter = useRef(0);
   const flowCountRef = useRef(0);
 
-  // Position constants
-  const USER_X = 30; // % from left
-  const SYSTEM_X = 75; // % from left
+  const USER_X = 30;
+  const SYSTEM_X = 75;
+
+  // Animación de entrada
+  useEffect(() => {
+    const timer = setTimeout(() => setEntered(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     let lastSpawn = 0;
     const animate = (timestamp: number) => {
-      // Spawn particles
       if (timestamp - lastSpawn > 400) {
         lastSpawn = timestamp;
         const p: Particle = {
@@ -539,7 +521,6 @@ function SlideLey1() {
         if (particlesRef.current.length > 60) particlesRef.current.shift();
       }
 
-      // Update particles
       const modeNow = mode;
       particlesRef.current.forEach((p) => {
         if (p.state === 'incoming') {
@@ -555,7 +536,6 @@ function SlideLey1() {
           }
         } else if (p.state === 'stuck') {
           if (modeNow === 'router') {
-            // Release stuck particles toward the system
             p.state = 'routed';
             p.speed = 0.6 + Math.random() * 0.3;
             flowCountRef.current++;
@@ -570,25 +550,21 @@ function SlideLey1() {
         }
       });
 
-      // Remove off-screen
       particlesRef.current = particlesRef.current.filter((p) => p.x < 100);
 
-      // Calculate load — drops in router mode
       const stuck = particlesRef.current.filter((p) => p.state === 'stuck').length;
       setLoad(Math.min(stuck * 8, 100));
       setFlow(flowCountRef.current);
 
-      // Render
       if (containerRef.current) {
         const el = containerRef.current;
-        // Clear old dots
         el.querySelectorAll('.dot').forEach((d) => d.remove());
         particlesRef.current.forEach((p) => {
           const dot = document.createElement('div');
           dot.className = 'dot';
           dot.style.cssText = `position:absolute;width:6px;height:6px;border-radius:50%;left:${p.x}%;top:${p.y}%;transition:none;pointer-events:none;background:${
-            p.state === 'stuck' ? C.red : p.state === 'routed' ? C.cyan : C.white
-          };box-shadow:0 0 4px ${p.state === 'stuck' ? C.red : p.state === 'routed' ? C.cyan : C.white}60;`;
+            p.state === 'stuck' ? C.darkGray : p.state === 'routed' ? C.white : C.gray
+          };box-shadow:0 0 4px ${p.state === 'stuck' ? C.darkGray : p.state === 'routed' ? C.white : C.gray}60;`;
           el.appendChild(dot);
         });
       }
@@ -600,88 +576,104 @@ function SlideLey1() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [mode]);
 
+  // Color del protagonista: INICIA BLANCO, se oscurece con carga
+  const getHeroColor = () => {
+    if (mode === 'router') return C.white; // Blanco cuando delega
+    // En modo manual: BLANCO → GRIS según carga acumulada
+    if (load === 0) return C.white; // Empieza blanco
+    if (load < 40) return C.gray; // Gris claro con algo de carga
+    return C.darkGray; // Gris oscuro muy cargado
+  };
+
+  const getHeroGlow = () => {
+    if (mode === 'router') return `0 0 40px ${C.white}60, 0 0 80px ${C.white}30`;
+    if (load === 0) return `0 0 40px ${C.white}60, 0 0 80px ${C.white}30`;
+    if (load < 40) return `0 0 30px ${C.gray}40`;
+    return `0 0 20px ${C.darkGray}40`;
+  };
+
   return (
     <SlideContainer>
       <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
         <LawTitle number={1} title="DESVIAR HABILIDADES" subtitle="EL ENRUTADOR" />
 
-        {/* Mode buttons */}
         <div className="flex gap-3 mb-2">
           <ModeButton
             label="MODO MANUAL"
             active={mode === 'manual'}
-            color={C.orange}
             onClick={() => { setMode('manual'); flowCountRef.current = 0; }}
           />
           <ModeButton
             label="MODO ENRUTADOR"
             active={mode === 'router'}
-            color={C.cyan}
             onClick={() => setMode('router')}
           />
         </div>
 
-        {/* Simulation area */}
         <div
           ref={containerRef}
           className="relative w-full max-w-3xl rounded-lg overflow-hidden"
           data-interactive="true"
           style={{
             height: 'clamp(320px, 40vh, 500px)',
-            background: `${C.panel}`,
-            border: `1px solid ${mode === 'manual' ? C.orange : C.cyan}30`,
+            background: C.panel,
+            border: `1px solid ${C.border}`,
             backgroundImage: `
-              linear-gradient(${C.cyan}08 1px, transparent 1px),
-              linear-gradient(90deg, ${C.cyan}08 1px, transparent 1px)
+              linear-gradient(${C.border} 1px, transparent 1px),
+              linear-gradient(90deg, ${C.border} 1px, transparent 1px)
             `,
             backgroundSize: '40px 40px',
           }}
         >
-          {/* User node */}
+          {/* Círculo protagonista - ENTRADA RÁPIDA + COLOR DINÁMICO */}
           <div
-            className={`absolute flex items-center justify-center rounded-full text-xs font-bold uppercase transition-all duration-300${load > 80 && mode === 'manual' ? ' animate-pulse' : ''}`}
+            className="absolute rounded-full transition-all duration-300"
             style={{
-              width: '60px',
-              height: '60px',
-              left: `${USER_X}%`,
+              width: '50px',
+              height: '50px',
+              left: entered ? `${USER_X}%` : '-10%',
               top: '50%',
               transform: 'translate(-50%, -50%)',
-              background: mode === 'manual' ? (load > 80 ? C.red : load > 40 ? C.orange : C.green) : C.green,
-              boxShadow: `0 0 ${load > 80 ? 40 : 15}px ${mode === 'manual' ? (load > 80 ? C.red : load > 40 ? C.orange : C.green) : C.green}80`,
-              fontFamily: 'var(--font-rajdhani)',
-              color: C.bg,
+              background: getHeroColor(),
+              boxShadow: getHeroGlow(),
+              border: `2px solid ${mode === 'router' ? C.white : C.darkGray}40`,
+              transitionProperty: 'left, background, box-shadow, border',
+              transitionDuration: entered ? '0.6s, 0.3s, 0.3s, 0.3s' : '0s',
+              transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
             }}
-          >
-            {load > 80 && mode === 'manual' ? '¡ERROR!' : 'TÚ'}
-          </div>
+          />
 
-          {/* System node */}
+          {/* Sistema - ENTRADA RÁPIDA + VIBRACIÓN en modo router */}
           <div
-            className="absolute flex items-center justify-center rounded-full text-xs font-bold uppercase"
+            className={`absolute flex items-center justify-center rounded-full text-xs font-bold uppercase transition-all${mode === 'router' ? ' system-vibrate' : ''}`}
             style={{
               width: '80px',
               height: '80px',
-              left: `${SYSTEM_X}%`,
+              left: entered ? `${SYSTEM_X}%` : '110%',
               top: '50%',
               transform: 'translate(-50%, -50%)',
-              background: C.cyan,
-              boxShadow: `0 0 25px ${C.cyan}60`,
+              background: C.panel,
+              border: `2px solid ${C.white}`,
+              boxShadow: `0 0 25px ${C.white}30`,
               fontFamily: 'var(--font-rajdhani)',
-              color: C.bg,
+              color: C.white,
+              transitionProperty: 'left',
+              transitionDuration: entered ? '0.7s' : '0s',
+              transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+              transitionDelay: '0.1s',
             }}
           >
             SISTEMA
           </div>
         </div>
 
-        {/* Metrics */}
         <div className="flex gap-6 text-xs sm:text-sm lg:text-base" style={{ fontFamily: 'var(--font-roboto-mono)', color: C.gray }}>
           <span>
             CARGA COGNITIVA:{' '}
-            <span style={{ color: load > 60 ? C.red : C.green }}>{load}%</span>
+            <span style={{ color: load > 60 ? C.white : C.gray }}>{load}%</span>
           </span>
           <span>
-            FLUJO AL SISTEMA: <span style={{ color: C.cyan }}>{flow}</span>
+            FLUJO AL SISTEMA: <span style={{ color: C.white }}>{flow}</span>
           </span>
         </div>
 
@@ -708,20 +700,30 @@ function SlideLey2() {
   const [nodes, setNodes] = useState<FNode[]>([
     { id: 0, x: 50, y: 50, parentId: null, color: C.white },
   ]);
+  const [heroState, setHeroState] = useState<'teaching' | 'multiplying'>('multiplying');
+  const [entered, setEntered] = useState(false);
   const idRef = useRef(1);
 
+  // Animación de entrada
+  useEffect(() => {
+    const timer = setTimeout(() => setEntered(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   const addLinear = () => {
+    setHeroState('teaching'); // Gris cuando solo enseña
     const angle = Math.random() * Math.PI * 2;
     const dist = 8 + Math.random() * 12;
     const nx = Math.max(5, Math.min(95, 50 + Math.cos(angle) * dist));
     const ny = Math.max(5, Math.min(95, 50 + Math.sin(angle) * dist));
     setNodes((prev) => [
       ...prev,
-      { id: idRef.current++, x: nx, y: ny, parentId: 0, color: '#3498db' },
+      { id: idRef.current++, x: nx, y: ny, parentId: 0, color: C.gray },
     ]);
   };
 
   const multiply = () => {
+    setHeroState('multiplying'); // Blanco cuando enseña a enseñar
     setNodes((prev) => {
       if (prev.length > 200) return prev;
       const newNodes: FNode[] = [];
@@ -735,7 +737,7 @@ function SlideLey2() {
           x: nx,
           y: ny,
           parentId: node.id,
-          color: C.purple,
+          color: C.darkGray,
         });
       });
       return [...prev, ...newNodes];
@@ -744,32 +746,35 @@ function SlideLey2() {
 
   const reset = () => {
     idRef.current = 1;
+    setHeroState('multiplying');
     setNodes([{ id: 0, x: 50, y: 50, parentId: null, color: C.white }]);
   };
+
+  const getHeroColor = () => heroState === 'teaching' ? C.gray : C.white;
+  const getHeroGlow = () => heroState === 'teaching'
+    ? `0 0 20px ${C.gray}40`
+    : `0 0 40px ${C.white}60, 0 0 80px ${C.white}30`;
 
   return (
     <SlideContainer>
       <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
         <LawTitle number={2} title="ENSEÑAR A ENSEÑAR" subtitle="LA FRACTAL" />
 
-        {/* Buttons */}
         <div className="flex gap-3 mb-2">
-          <ModeButton label="REINICIAR" active={false} color={C.darkGray} onClick={reset} />
-          <ModeButton label="SUMAR (+1)" active={false} color="#3498db" onClick={addLinear} />
-          <ModeButton label="ENSEÑAR A ENSEÑAR (×2)" active={false} color={C.purple} onClick={multiply} />
+          <ModeButton label="REINICIAR" active={false} onClick={reset} />
+          <ModeButton label="SUMAR (+1)" active={false} onClick={addLinear} />
+          <ModeButton label="ENSEÑAR A ENSEÑAR (×2)" active={false} onClick={multiply} />
         </div>
 
-        {/* Network area */}
         <div
           className="relative w-full max-w-3xl rounded-lg overflow-hidden"
           data-interactive="true"
           style={{
             height: 'clamp(340px, 40vh, 500px)',
             background: C.panel,
-            border: `1px solid ${C.cyan}20`,
+            border: `1px solid ${C.border}`,
           }}
         >
-          {/* Lines */}
           <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
             {nodes.map((node) => {
               if (node.parentId === null) return null;
@@ -790,31 +795,37 @@ function SlideLey2() {
             })}
           </svg>
 
-          {/* Nodes */}
           {nodes.map((node) => (
             <div
               key={node.id}
               className="absolute rounded-full transition-all duration-300"
               style={{
-                width: node.id === 0 ? '14px' : '8px',
-                height: node.id === 0 ? '14px' : '8px',
+                width: node.id === 0 ? '50px' : '8px',
+                height: node.id === 0 ? '50px' : '8px',
                 left: `${node.x}%`,
                 top: `${node.y}%`,
-                transform: 'translate(-50%, -50%)',
-                background: node.color,
-                boxShadow: `0 0 6px ${node.color}80`,
+                transform: node.id === 0
+                  ? (entered ? 'translate(-50%, -50%) scale(1)' : 'translate(-50%, -50%) scale(0)')
+                  : 'translate(-50%, -50%)',
+                background: node.id === 0 ? getHeroColor() : node.color,
+                boxShadow: node.id === 0
+                  ? getHeroGlow()
+                  : `0 0 6px ${node.color}80`,
+                border: node.id === 0 ? `2px solid ${heroState === 'teaching' ? C.gray : C.white}40` : 'none',
+                transitionProperty: node.id === 0 ? 'transform, background, box-shadow, border' : 'all',
+                transitionDuration: node.id === 0 && !entered ? '0s' : '0.3s, 0.3s, 0.3s, 0.3s',
+                transitionTimingFunction: node.id === 0 ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' : 'ease',
               }}
             />
           ))}
         </div>
 
-        {/* Counter */}
         <div className="flex gap-6 text-xs sm:text-sm lg:text-base" style={{ fontFamily: 'var(--font-roboto-mono)', color: C.gray }}>
           <span>
-            NODOS: <span style={{ color: C.cyan }}>{nodes.length}</span>
+            NODOS: <span style={{ color: C.white }}>{nodes.length}</span>
           </span>
           <span>
-            FACTOR: <span style={{ color: C.purple }}>×{Math.ceil(Math.log2(nodes.length + 1))}</span>
+            FACTOR: <span style={{ color: C.white }}>×{Math.ceil(Math.log2(nodes.length + 1))}</span>
           </span>
         </div>
 
@@ -828,15 +839,16 @@ function SlideLey2() {
 
 /* ═══════════════════════════════════════════════════════════
    SLIDE 6: LEY 3 — EDIFICACIÓN + 7 VALORES
+   SIMPLIFICADO: Círculo permanece arriba
    ═══════════════════════════════════════════════════════════ */
 const BLOCKS = [
-  { name: 'INTEGRIDAD', label: 'CIMENTACIÓN CRÍTICA', color: `linear-gradient(135deg, #27ae60, #2ecc71)`, textDark: false },
-  { name: 'UNIDAD', label: 'COHESIÓN ESTRUCTURAL', color: C.panel, textDark: false },
-  { name: 'CALIDAD', label: 'ESTÁNDAR GLOBAL', color: C.panel, textDark: false },
-  { name: 'EXCELENCIA', label: 'TOLERANCIA CERO', color: C.panel, textDark: false },
-  { name: 'COMPROMISO', label: 'CARGA PERMANENTE', color: C.panel, textDark: false },
-  { name: 'INNOVACIÓN', label: 'ADAPTACIÓN CONTINUA', color: C.panel, textDark: false },
-  { name: 'LIDERAZGO', label: 'CORONACIÓN', color: `linear-gradient(135deg, #f39c12, #f1c40f)`, textDark: true },
+  { name: 'INTEGRIDAD', label: 'CIMENTACIÓN CRÍTICA' },
+  { name: 'UNIDAD', label: 'COHESIÓN ESTRUCTURAL' },
+  { name: 'CALIDAD', label: 'ESTÁNDAR GLOBAL' },
+  { name: 'EXCELENCIA', label: 'TOLERANCIA CERO' },
+  { name: 'COMPROMISO', label: 'CARGA PERMANENTE' },
+  { name: 'INNOVACIÓN', label: 'ADAPTACIÓN CONTINUA' },
+  { name: 'LIDERAZGO', label: 'CORONACIÓN' },
 ];
 
 function SlideLey3() {
@@ -846,6 +858,7 @@ function SlideLey3() {
   const startBuild = () => {
     if (building) return;
     setBuilding(true);
+
     BLOCKS.forEach((_, i) => {
       setTimeout(() => {
         setPlaced((prev) => {
@@ -857,87 +870,120 @@ function SlideLey3() {
     });
   };
 
+  // Color progresivo: gris → blanco según valores colocados
+  const placedCount = placed.filter(Boolean).length;
+
+  const getHeroColor = () => {
+    if (!building) return C.white; // Botón blanco inicial
+    if (placedCount === 0) return C.darkGray;
+    if (placedCount < 3) return C.gray;
+    if (placedCount < 7) return C.white;
+    return C.white;
+  };
+
+  const getHeroGlow = () => {
+    if (!building) return `0 0 30px ${C.white}40`;
+    if (placedCount === 0) return `0 0 15px ${C.darkGray}30`;
+    if (placedCount < 3) return `0 0 25px ${C.gray}40`;
+    if (placedCount < 5) return `0 0 40px ${C.white}50, 0 0 80px ${C.white}30`;
+    if (placedCount < 7) return `0 0 50px ${C.white}60, 0 0 100px ${C.white}40`;
+    return `0 0 60px ${C.white}90, 0 0 120px ${C.white}60, 0 0 180px ${C.white}30`;
+  };
+
+  const getHeroSize = () => {
+    if (placedCount === 7) return '55px';
+    return '50px';
+  };
+
+  const getBorderOpacity = () => {
+    if (!building) return '40';
+    if (placedCount === 7) return '90';
+    return '40';
+  };
+
   return (
     <SlideContainer>
       <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
         <LawTitle number={3} title="EDIFICACIÓN Y VALORES" subtitle="LA ESTRUCTURA" />
 
-        {/* Build button */}
-        <button
-          onClick={startBuild}
-          disabled={building}
-          className="px-8 py-4 font-bold uppercase tracking-widest text-sm lg:text-base transition-all rounded-lg select-none"
-          style={{
-            fontFamily: 'var(--font-rajdhani)',
-            background: building ? `${C.green}20` : C.panel,
-            color: building ? C.green : C.cyan,
-            border: `2px solid ${building ? C.green : C.cyan}60`,
-            cursor: building ? 'default' : 'pointer',
-            boxShadow: building ? 'none' : `0 0 20px ${C.cyan}15`,
-          }}
-        >
-          {building ? '✓ CONSTRUYENDO...' : 'INICIAR SECUENCIA DE CONSTRUCCIÓN'}
-        </button>
-
-        {/* Tower */}
-        <div
-          className="relative w-full max-w-md flex flex-col-reverse items-center gap-1"
-          data-interactive="true"
-          style={{ minHeight: 'clamp(340px, 40vh, 500px)', justifyContent: 'flex-start' }}
-        >
-          {/* Ground line */}
+        {/* Botón que se transforma en círculo */}
+        {!building ? (
+          <button
+            onClick={startBuild}
+            className="px-8 py-4 font-bold uppercase tracking-widest text-sm lg:text-base transition-all rounded-lg select-none hover:scale-105"
+            style={{
+              fontFamily: 'var(--font-rajdhani)',
+              background: C.panel,
+              color: C.gray,
+              border: `2px solid ${C.border}`,
+              cursor: 'pointer',
+              boxShadow: `0 0 20px ${C.white}15`,
+            }}
+          >
+            INICIAR SECUENCIA DE CONSTRUCCIÓN
+          </button>
+        ) : (
           <div
-            className="w-full h-0.5 rounded"
-            style={{ background: `${C.cyan}30`, marginBottom: '4px' }}
+            className="rounded-full transition-all duration-700"
+            style={{
+              width: getHeroSize(),
+              height: getHeroSize(),
+              background: getHeroColor(),
+              boxShadow: getHeroGlow(),
+              border: `2px solid ${C.white}${getBorderOpacity()}`,
+            }}
           />
+        )}
 
-          {BLOCKS.map((block, i) => (
+        {/* GAP */}
+        <div style={{ height: '20px' }} />
+
+        <div
+          className="relative w-full max-w-md"
+          data-interactive="true"
+          style={{ minHeight: 'clamp(300px, 35vh, 450px)' }}
+        >
+          {/* Torre de valores */}
+          <div className="flex flex-col-reverse items-center gap-1 h-full justify-end">
             <div
-              key={i}
-              className="relative flex items-center justify-center transition-all duration-700"
-              style={{
-                width: i === 0 ? '90%' : i === 6 ? '60%' : `${85 - i * 3}%`,
-                height: '42px',
-                background: typeof block.color === 'string' && block.color.startsWith('linear') ? block.color : block.color,
-                border: `1px solid ${i === 0 ? '#2ecc71' : i === 6 ? C.gold : C.cyan}40`,
-                borderRadius: '4px',
-                opacity: placed[i] ? 1 : 0,
-                transform: placed[i] ? 'translateY(0) scale(1)' : 'translateY(-60px) scale(0.9)',
-                transitionTimingFunction: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                boxShadow: i === 6 && placed[i] ? `0 0 30px ${C.gold}50` : 'none',
-              }}
-            >
-              <span
-                className="font-bold text-xs sm:text-sm lg:text-base tracking-wider uppercase"
+              className="w-full h-0.5 rounded"
+              style={{ background: C.border, marginBottom: '4px' }}
+            />
+
+            {BLOCKS.map((block, i) => (
+              <div
+                key={i}
+                className="relative flex items-center justify-center transition-all duration-700"
                 style={{
-                  fontFamily: 'var(--font-rajdhani)',
-                  color: block.textDark ? C.bg : C.white,
+                  width: i === 0 ? '90%' : i === 6 ? '60%' : `${85 - i * 3}%`,
+                  height: '42px',
+                  background: i === 0 || i === 6 ? C.white : C.panel,
+                  border: `1px solid ${i === 0 || i === 6 ? C.white : C.border}`,
+                  borderRadius: '4px',
+                  opacity: placed[i] ? 1 : 0,
+                  transform: placed[i] ? 'translateY(0) scale(1)' : 'translateY(-60px) scale(0.9)',
+                  transitionTimingFunction: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                  boxShadow: (i === 0 || i === 6) && placed[i] ? `0 0 30px ${C.white}30` : 'none',
                 }}
               >
-                {block.name}
-              </span>
-
-              {/* Tech label */}
-              {placed[i] && (
                 <span
-                  className="absolute -right-2 sm:right-[-120px] text-[10px] tracking-wider transition-opacity duration-500"
+                  className="font-bold text-xs sm:text-sm lg:text-base tracking-wider uppercase"
                   style={{
-                    color: C.darkGray,
-                    fontFamily: 'var(--font-roboto-mono)',
-                    opacity: placed[i] ? 0.7 : 0,
-                    display: 'none',
+                    fontFamily: 'var(--font-rajdhani)',
+                    color: i === 0 || i === 6 ? C.bg : C.white,
                   }}
-                  data-desktop="true"
                 >
-                  // {block.label}
+                  {block.name}
                 </span>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
 
         <p className="text-xs sm:text-sm lg:text-base text-center max-w-md" style={{ color: C.darkGray }}>
-          La Edificación no es &quot;halagar&quot;, es construir una estructura de confianza. Sin valores, la torre se cae.
+          {!building
+            ? 'Presiona el botón para iniciar la construcción'
+            : 'La Edificación no es "halagar", es construir una estructura de confianza. Sin valores, la torre se cae.'}
         </p>
       </div>
     </SlideContainer>
@@ -952,104 +998,148 @@ interface Prospect {
   y: number;
   vx: number;
   vy: number;
+  entered?: boolean;
 }
 
 function SlideLey4() {
   const [mode, setMode] = useState<'push' | 'pull'>('push');
-  const [isDragging, setIsDragging] = useState(false);
+  const [entered, setEntered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const prospectsRef = useRef<Prospect[]>([]);
   const heroRef = useRef({ x: 50, y: 50 });
-  const mouseRef = useRef({ x: 50, y: 50 });
   const rafRef = useRef<number>(0);
+  const lastSpawnRef = useRef<number>(0);
 
-  // Initialize prospects
+  // Animación de entrada
   useEffect(() => {
-    prospectsRef.current = Array.from({ length: 35 }, () => ({
+    const timer = setTimeout(() => setEntered(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    // Inicializar con MUCHOS prospectos esparcidos
+    prospectsRef.current = Array.from({ length: 50 }, (_, i) => ({
       x: 10 + Math.random() * 80,
       y: 10 + Math.random() * 80,
       vx: (Math.random() - 0.5) * 0.3,
       vy: (Math.random() - 0.5) * 0.3,
+      entered: true,
     }));
   }, []);
 
-  // Animation loop
   useEffect(() => {
-    const animate = () => {
+    const animate = (timestamp: number) => {
       const modeNow = mode;
       const hero = heroRef.current;
 
-      if (modeNow === 'push' && isDragging) {
-        // Move hero to follow mouse/touch position
-        hero.x += (mouseRef.current.x - hero.x) * 0.2;
-        hero.y += (mouseRef.current.y - hero.y) * 0.2;
-      } else if (modeNow === 'pull') {
-        // Return to center in pull mode
+      // En modo pull, generar MUCHÍSIMOS prospectos continuamente (como crispetas)
+      if (modeNow === 'pull') {
+        if (timestamp - lastSpawnRef.current > 800) { // Cada 0.8 segundos (muy frecuente)
+          lastSpawnRef.current = timestamp;
+          if (prospectsRef.current.length < 150) { // MÁXIMO 150 (abundancia masiva)
+            // Spawn múltiples prospectos a la vez
+            for (let i = 0; i < 3; i++) { // 3 a la vez
+              const side = Math.random();
+              prospectsRef.current.push({
+                x: side < 0.25 ? -5 : side < 0.5 ? 105 : side < 0.75 ? 10 + Math.random() * 80 : 10 + Math.random() * 80,
+                y: side < 0.5 ? 10 + Math.random() * 80 : side < 0.75 ? -5 : 105,
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: (Math.random() - 0.5) * 0.4,
+                entered: true,
+              });
+            }
+          }
+        }
+      }
+
+      // Volver al centro en modo pull
+      if (modeNow === 'pull') {
         hero.x += (50 - hero.x) * 0.05;
         hero.y += (50 - hero.y) * 0.05;
       }
 
-      prospectsRef.current.forEach((p) => {
+      prospectsRef.current.forEach((p, index) => {
+        p.entered = true;
+
         const dx = p.x - hero.x;
         const dy = p.y - hero.y;
         const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
         if (modeNow === 'push') {
-          // Repulsion
-          if (dist < 25) {
-            const force = ((25 - dist) / 25) * 0.8;
+          // REPULSIÓN - huyen pero NO desaparecen (rebotan en bordes)
+          if (dist < 35) { // Mayor radio
+            const force = ((35 - dist) / 35) * 0.7;
             p.vx += (dx / dist) * force;
             p.vy += (dy / dist) * force;
           }
         } else {
-          // Attraction
-          const force = 30 / (dist * dist + 80);
+          // ATRACCIÓN fuerte
+          const force = 50 / (dist * dist + 120);
           p.vx -= (dx / dist) * force;
           p.vy -= (dy / dist) * force;
         }
 
-        p.vx *= 0.96;
-        p.vy *= 0.96;
+        p.vx *= 0.98; // Menos fricción
+        p.vy *= 0.98;
         p.x += p.vx;
         p.y += p.vy;
 
-        // Boundaries
-        if (p.x < 2) { p.x = 2; p.vx *= -0.5; }
-        if (p.x > 98) { p.x = 98; p.vx *= -0.5; }
-        if (p.y < 2) { p.y = 2; p.vy *= -0.5; }
-        if (p.y > 98) { p.y = 98; p.vy *= -0.5; }
+        // IMPORTANTE: En modo Push, los prospectos REBOTAN en los bordes (NO desaparecen)
+        // Solo desaparecen si están MUY lejos (para que dure mucho tiempo)
+        if (p.x < 2) { p.x = 2; p.vx *= -0.6; }
+        if (p.x > 98) { p.x = 98; p.vx *= -0.6; }
+        if (p.y < 2) { p.y = 2; p.vy *= -0.6; }
+        if (p.y > 98) { p.y = 98; p.vy *= -0.6; }
       });
 
-      // Render
+      // Solo eliminar si están EXTREMADAMENTE lejos (permite ejercicio largo)
+      prospectsRef.current = prospectsRef.current.filter(
+        p => p.x > -50 && p.x < 150 && p.y > -50 && p.y < 150
+      );
+
       if (containerRef.current) {
         const el = containerRef.current;
-        // Hero
+
         const heroEl = el.querySelector('.hero-node') as HTMLElement;
         if (heroEl) {
           heroEl.style.left = `${hero.x}%`;
           heroEl.style.top = `${hero.y}%`;
-          heroEl.style.background = modeNow === 'push' ? C.red : C.gold;
-          heroEl.style.boxShadow = `0 0 ${modeNow === 'pull' ? 40 : 15}px ${modeNow === 'push' ? C.red : C.gold}80`;
+          heroEl.style.width = modeNow === 'pull' ? '50px' : '40px';
+          heroEl.style.height = modeNow === 'pull' ? '50px' : '40px';
+          heroEl.style.background = modeNow === 'push' ? C.darkGray : C.white;
+          heroEl.style.boxShadow = modeNow === 'push'
+            ? `0 0 20px ${C.darkGray}60`
+            : `0 0 40px ${C.white}60, 0 0 80px ${C.white}40`;
+          heroEl.style.border = modeNow === 'pull' ? `2px solid ${C.white}40` : 'none';
         }
 
-        // Prospects
         const dots = el.querySelectorAll('.prospect-dot') as NodeListOf<HTMLElement>;
-        prospectsRef.current.forEach((p, i) => {
+        const visibleProspects = prospectsRef.current.slice(0, 150); // Mostrar hasta 150
+
+        visibleProspects.forEach((p, i) => {
           if (dots[i]) {
             dots[i].style.left = `${p.x}%`;
             dots[i].style.top = `${p.y}%`;
+            dots[i].style.opacity = p.entered ? '1' : '0';
             const dx = p.x - hero.x;
             const dy = p.y - hero.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (modeNow === 'push' && dist < 25) {
-              dots[i].style.background = C.red;
-            } else if (modeNow === 'pull' && dist < 20) {
-              dots[i].style.background = C.gold;
+            if (modeNow === 'push' && dist < 35) {
+              dots[i].style.background = C.darkGray;
+            } else if (modeNow === 'pull' && dist < 25) {
+              dots[i].style.background = C.white;
             } else {
               dots[i].style.background = C.gray;
             }
           }
         });
+
+        // Ocultar dots sobrantes
+        for (let i = visibleProspects.length; i < dots.length; i++) {
+          if (dots[i]) {
+            dots[i].style.opacity = '0';
+          }
+        }
       }
 
       rafRef.current = requestAnimationFrame(animate);
@@ -1057,73 +1147,49 @@ function SlideLey4() {
 
     rafRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [mode, isDragging]);
+  }, [mode]);
 
-  // Update position on mouse/touch move
-  const updatePosition = useCallback((clientX: number, clientY: number) => {
-    if (!containerRef.current || mode !== 'push') return;
+  const updateHeroPosition = useCallback((clientX: number, clientY: number) => {
+    if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    mouseRef.current = {
-      x: ((clientX - rect.left) / rect.width) * 100,
-      y: ((clientY - rect.top) / rect.height) * 100,
-    };
-  }, [mode]);
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    const y = ((clientY - rect.top) / rect.height) * 100;
 
-  // Mouse handlers
-  const handleMouseDown = useCallback(() => {
-    if (mode === 'push') setIsDragging(true);
-  }, [mode]);
+    heroRef.current.x = Math.max(5, Math.min(95, x));
+    heroRef.current.y = Math.max(5, Math.min(95, y));
+  }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (isDragging) {
-      updatePosition(e.clientX, e.clientY);
-    }
-  }, [isDragging, updatePosition]);
-
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
-
-  // Touch handlers
-  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     if (mode === 'push') {
-      setIsDragging(true);
-      updatePosition(e.touches[0].clientX, e.touches[0].clientY);
+      updateHeroPosition(e.clientX, e.clientY);
     }
-  }, [mode, updatePosition]);
+  }, [mode, updateHeroPosition]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
-    if (isDragging) {
-      updatePosition(e.touches[0].clientX, e.touches[0].clientY);
+    if (mode === 'push' && e.touches.length > 0) {
+      e.preventDefault();
+      updateHeroPosition(e.touches[0].clientX, e.touches[0].clientY);
     }
-  }, [isDragging, updatePosition]);
-
-  const handleTouchEnd = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+  }, [mode, updateHeroPosition]);
 
   return (
     <SlideContainer>
       <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
         <LawTitle number={4} title="PROMOVER VS INVITAR" subtitle="EL MAGNETISMO" />
 
-        {/* Mode buttons */}
         <div className="flex gap-3 mb-2">
           <ModeButton
             label="MODO INVITAR (PERSEGUIR)"
             active={mode === 'push'}
-            color={C.orange}
             onClick={() => setMode('push')}
           />
           <ModeButton
             label="MODO PROMOVER (ATRAER)"
             active={mode === 'pull'}
-            color={C.gold}
             onClick={() => setMode('pull')}
           />
         </div>
 
-        {/* Simulation */}
         <div
           ref={containerRef}
           className="relative w-full max-w-3xl rounded-lg overflow-hidden select-none"
@@ -1131,12 +1197,13 @@ function SlideLey4() {
           style={{
             height: 'clamp(340px, 40vh, 500px)',
             background: C.panel,
-            border: `1px solid ${mode === 'push' ? C.orange : C.gold}30`,
-            cursor: mode === 'push' ? (isDragging ? 'grabbing' : 'grab') : 'default',
+            border: `1px solid ${C.border}`,
+            cursor: mode === 'push' ? 'none' : 'default',
             touchAction: 'none',
           }}
+          onMouseMove={handleMouseMove}
+          onTouchMove={handleTouchMove}
         >
-          {/* Pulse waves (pull mode) */}
           {mode === 'pull' && (
             <>
               <div className="pulse-wave" style={{ animationDelay: '0s' }} />
@@ -1144,32 +1211,21 @@ function SlideLey4() {
             </>
           )}
 
-          {/* Hero node */}
           <div
-            className="hero-node absolute rounded-full flex items-center justify-center text-xs font-bold uppercase transition-colors duration-300"
+            className="hero-node absolute rounded-full transition-colors duration-300"
             style={{
-              width: '40px',
-              height: '40px',
-              transform: 'translate(-50%, -50%)',
-              fontFamily: 'var(--font-rajdhani)',
-              color: C.bg,
+              transform: entered
+                ? 'translate(-50%, -50%) scale(1)'
+                : 'translate(-50%, -50%) scale(0)',
               zIndex: 10,
-              cursor: mode === 'push' ? (isDragging ? 'grabbing' : 'grab') : 'default',
-              touchAction: 'none',
+              pointerEvents: 'none',
+              transitionProperty: 'transform, width, height, background, box-shadow, border',
+              transitionDuration: '0.6s, 0.3s, 0.3s, 0.3s, 0.3s, 0.3s',
+              transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1), ease, ease, ease, ease, ease',
             }}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            {mode === 'push' ? 'TÚ' : '★'}
-          </div>
+          />
 
-          {/* Prospect dots */}
-          {Array.from({ length: 35 }).map((_, i) => (
+          {Array.from({ length: 150 }).map((_, i) => (
             <div
               key={i}
               className="prospect-dot absolute rounded-full"
@@ -1177,8 +1233,9 @@ function SlideLey4() {
                 width: '7px',
                 height: '7px',
                 transform: 'translate(-50%, -50%)',
-                transition: 'background 0.3s',
+                transition: 'background 0.3s, opacity 0.3s',
                 pointerEvents: 'none',
+                opacity: 0,
               }}
             />
           ))}
@@ -1186,7 +1243,7 @@ function SlideLey4() {
 
         <p className="text-xs sm:text-sm lg:text-base text-center max-w-md" style={{ color: C.darkGray }}>
           {mode === 'push'
-            ? 'Mueve el cursor para perseguir. Observa cómo huyen.'
+            ? '🖱️ Mueve el cursor para perseguir. Observa cómo huyen.'
             : 'No persigas. Crea un campo de atracción (Community-Led Growth).'}
         </p>
       </div>
@@ -1198,35 +1255,35 @@ function SlideLey4() {
    SLIDE 8: DEPLOY — CIERRE
    ═══════════════════════════════════════════════════════════ */
 const LAWS_SUMMARY = [
-  { num: 1, title: 'DESVIAR HABILIDADES', color: C.cyan },
-  { num: 2, title: 'ENSEÑAR A ENSEÑAR', color: C.purple },
-  { num: 3, title: 'EDIFICACIÓN + VALORES', color: C.green },
-  { num: 4, title: 'PROMOVER VS INVITAR', color: C.gold },
+  { num: 1, title: 'DESVIAR HABILIDADES' },
+  { num: 2, title: 'ENSEÑAR A ENSEÑAR' },
+  { num: 3, title: 'EDIFICACIÓN + VALORES' },
+  { num: 4, title: 'PROMOVER VS INVITAR' },
 ];
 
-function LawIcon({ num, color, size = 24 }: { num: number; color: string; size?: number }) {
-  const props = { width: size, height: size, fill: 'none', stroke: color, strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
+function LawIcon({ num, size = 24 }: { num: number; size?: number }) {
+  const props = { width: size, height: size, fill: 'none', stroke: C.white, strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
   switch (num) {
-    case 1: // Router / redirect arrows
+    case 1:
       return (
         <svg {...props} viewBox="0 0 24 24">
           <path d="M13 5l7 7-7 7" /><path d="M6 5l7 7-7 7" />
         </svg>
       );
-    case 2: // Network / fractal nodes
+    case 2:
       return (
         <svg {...props} viewBox="0 0 24 24">
           <circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="19" r="2.5" /><circle cx="19" cy="19" r="2.5" />
           <path d="M12 7.5v4M10.5 13l-4 4M13.5 13l4 4" />
         </svg>
       );
-    case 3: // Building / structure
+    case 3:
       return (
         <svg {...props} viewBox="0 0 24 24">
           <rect x="4" y="14" width="16" height="7" rx="1" /><rect x="6" y="8" width="12" height="6" rx="1" /><rect x="8" y="3" width="8" height="5" rx="1" />
         </svg>
       );
-    case 4: // Magnet / attraction
+    case 4:
       return (
         <svg {...props} viewBox="0 0 24 24">
           <path d="M6 3v6a6 6 0 0 0 12 0V3" /><path d="M6 3h3v6" /><path d="M15 3h3v6" />
@@ -1238,71 +1295,282 @@ function LawIcon({ num, color, size = 24 }: { num: number; color: string; size?:
 }
 
 function SlideDeploy() {
+  const [entered, setEntered] = useState(false);
+  const [rayAnimation, setRayAnimation] = useState(0);
+  const [cubeRotation, setCubeRotation] = useState({ x: 0.3, y: 0, z: 0.2 });
+
+  useEffect(() => {
+    const timer = setTimeout(() => setEntered(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRayAnimation(prev => (prev + 0.02) % (Math.PI * 2));
+      setCubeRotation(prev => ({
+        x: prev.x + 0.008,
+        y: prev.y + 0.012,
+        z: prev.z + 0.005,
+      }));
+    }, 30);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Generar rayos de luz
+  const generateRays = () => {
+    const rays = [];
+    const numRays = 24;
+    const baseAngle = -Math.PI / 4;
+    const spread = Math.PI / 2;
+
+    for (let i = 0; i < numRays; i++) {
+      const angle = baseAngle + (i / numRays) * spread;
+      const length = 40 + (i % 3) * 10 + Math.sin(rayAnimation + i) * 5;
+      const opacity = 0.6 + Math.sin(rayAnimation + i * 0.5) * 0.3;
+      const width = 2 + (i % 4);
+
+      rays.push({ angle, length, opacity, width });
+    }
+
+    return rays;
+  };
+
+  // Cubo Rubik 3x3x3 wireframe
+  const generateRubiksCube = () => {
+    const cubeSize = 1.2;
+    const gap = 0.12;
+    const cellSize = (cubeSize - gap * 2) / 3;
+    const edges: Array<{x1: number; y1: number; z1: number; x2: number; y2: number; z2: number}> = [];
+
+    for (let x = 0; x < 3; x++) {
+      for (let y = 0; y < 3; y++) {
+        for (let z = 0; z < 3; z++) {
+          const x1 = -cubeSize/2 + x * (cellSize + gap);
+          const y1 = -cubeSize/2 + y * (cellSize + gap);
+          const z1 = -cubeSize/2 + z * (cellSize + gap);
+          const x2 = x1 + cellSize;
+          const y2 = y1 + cellSize;
+          const z2 = z1 + cellSize;
+
+          edges.push(
+            { x1, y1, z1, x2, y1, z1 },
+            { x1, y2, z1, x2, y2, z1 },
+            { x1, y1, z2, x2, y1, z2 },
+            { x1, y2, z2, x2, y2, z2 },
+            { x1, y1, z1, x1, y2, z1 },
+            { x2, y1, z1, x2, y2, z1 },
+            { x1, y1, z2, x1, y2, z2 },
+            { x2, y1, z2, x2, y2, z2 },
+            { x1, y1, z1, x1, y1, z2 },
+            { x2, y1, z1, x2, y1, z2 },
+            { x1, y2, z1, x1, y2, z2 },
+            { x2, y2, z1, x2, y2, z2 }
+          );
+        }
+      }
+    }
+
+    return edges;
+  };
+
+  const project3D = (x: number, y: number, z: number) => {
+    const { x: rx, y: ry, z: rz } = cubeRotation;
+
+    let y1 = y * Math.cos(rx) - z * Math.sin(rx);
+    let z1 = y * Math.sin(rx) + z * Math.cos(rx);
+
+    let x1 = x * Math.cos(ry) + z1 * Math.sin(ry);
+    let z2 = -x * Math.sin(ry) + z1 * Math.cos(ry);
+
+    let x2 = x1 * Math.cos(rz) - y1 * Math.sin(rz);
+    let y2 = x1 * Math.sin(rz) + y1 * Math.cos(rz);
+
+    const perspective = 3.5;
+    const scale = 140 / (z2 + perspective);
+
+    return {
+      x: x2 * scale,
+      y: y2 * scale,
+      opacity: Math.max(0.2, Math.min(1, (z2 + 2) / 4)),
+    };
+  };
+
+  const rays = generateRays();
+  const cubeEdges = generateRubiksCube();
+
   return (
     <SlideContainer>
       <div className="flex flex-col items-center justify-center h-full gap-6 text-center px-4">
         <div
           className="text-xs tracking-[0.3em] uppercase px-4 py-2 rounded"
-          style={{ color: C.green, border: `1px solid ${C.green}40` }}
+          style={{ color: C.white, border: `1px solid ${C.white}40` }}
         >
           ✓ SISTEMA COMPILADO CON ÉXITO
         </div>
 
+        {/* PROTAGONISTA GRANDE Y BRILLANTE */}
+        <div
+          className="rounded-full"
+          style={{
+            width: '80px',
+            height: '80px',
+            background: C.white,
+            boxShadow: `0 0 60px ${C.white}90, 0 0 120px ${C.white}60, 0 0 180px ${C.white}30`,
+            border: `3px solid ${C.white}90`,
+            transform: entered ? 'scale(1)' : 'scale(0)',
+            transition: 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          }}
+        />
+
         <h2
-          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight"
-          style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tight"
+          style={{ fontFamily: 'var(--font-rajdhani)', color: C.gray }}
         >
-          SISTEMA LISTO PARA
+          LISTO PARA
           <br />
-          <span style={{ color: C.gold }}>DESPLIEGUE</span>
+          <span style={{ color: C.white }}>DESPLIEGUE</span>
         </h2>
 
-        {/* Laws grid */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-xl">
-          {LAWS_SUMMARY.map((law) => (
-            <div
-              key={law.num}
-              className="flex items-center gap-3 px-4 py-3 lg:px-5 lg:py-4 rounded-lg"
-              style={{
-                background: `${C.panel}`,
-                border: `1px solid ${law.color}30`,
-              }}
-            >
-              <LawIcon num={law.num} color={law.color} size={28} />
-              <div className="text-left">
-                <div className="text-[10px] lg:text-xs tracking-wider" style={{ color: law.color, fontFamily: 'var(--font-roboto-mono)' }}>
-                  LEY {law.num}
-                </div>
-                <div
-                  className="text-xs sm:text-sm lg:text-base font-bold uppercase"
-                  style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
-                >
-                  {law.title}
-                </div>
-              </div>
-            </div>
-          ))}
+        {/* CONTENEDOR PARA RAYOS Y CUBO */}
+        <div
+          className="relative"
+          style={{
+            width: '600px',
+            height: '500px',
+            maxWidth: '95vw',
+            maxHeight: '50vh',
+          }}
+        >
+          {/* RAYOS DE LUZ */}
+          <svg
+            className="absolute inset-0 w-full h-full"
+            style={{
+              opacity: entered ? 1 : 0,
+              transition: 'opacity 0.8s ease 0.3s',
+            }}
+          >
+            <defs>
+              <filter id="ray-glow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <linearGradient id="ray-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor={C.white} stopOpacity="1"/>
+                <stop offset="100%" stopColor={C.white} stopOpacity="0"/>
+              </linearGradient>
+            </defs>
+
+            {rays.map((ray, i) => {
+              const startX = 15;
+              const startY = 20;
+              const endX = startX + Math.cos(ray.angle) * ray.length;
+              const endY = startY + Math.sin(ray.angle) * ray.length;
+
+              return (
+                <line
+                  key={i}
+                  x1={`${startX}%`}
+                  y1={`${startY}%`}
+                  x2={`${endX}%`}
+                  y2={`${endY}%`}
+                  stroke="url(#ray-gradient)"
+                  strokeWidth={ray.width}
+                  strokeOpacity={ray.opacity}
+                  filter="url(#ray-glow)"
+                  strokeLinecap="round"
+                />
+              );
+            })}
+          </svg>
+
+          {/* CUBO RUBIK 3D WIREFRAME */}
+          <svg
+            className="absolute inset-0 w-full h-full"
+            style={{
+              opacity: entered ? 1 : 0,
+              transform: entered ? 'scale(1)' : 'scale(0)',
+              transition: 'opacity 1s ease 0.6s, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s',
+            }}
+          >
+            <defs>
+              <filter id="cube-glow">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            {cubeEdges.map((edge, i) => {
+              const p1 = project3D(edge.x1, edge.y1, edge.z1);
+              const p2 = project3D(edge.x2, edge.y2, edge.z2);
+              const avgOpacity = (p1.opacity + p2.opacity) / 2;
+
+              return (
+                <line
+                  key={i}
+                  x1={`${50 + p1.x}%`}
+                  y1={`${65 + p1.y}%`}
+                  x2={`${50 + p2.x}%`}
+                  y2={`${65 + p2.y}%`}
+                  stroke={C.white}
+                  strokeWidth="1.5"
+                  strokeOpacity={avgOpacity * 0.8}
+                  filter="url(#cube-glow)"
+                />
+              );
+            })}
+          </svg>
+
+          {/* Glow en origen de rayos */}
+          <div
+            className="absolute"
+            style={{
+              left: '15%',
+              top: '20%',
+              width: '100px',
+              height: '100px',
+              transform: 'translate(-50%, -50%)',
+              background: `radial-gradient(circle, ${C.white}20 0%, transparent 70%)`,
+              opacity: entered ? 0.6 : 0,
+              transition: 'opacity 1s ease 0.5s',
+            }}
+          />
         </div>
 
-        {/* CTA */}
         <button
           className="mt-4 px-8 sm:px-12 py-4 sm:py-5 text-base sm:text-xl font-bold uppercase tracking-widest rounded transition-all hover:scale-105"
           style={{
             fontFamily: 'var(--font-rajdhani)',
-            background: `linear-gradient(135deg, ${C.gold}, ${C.orange})`,
+            background: C.white,
             color: C.bg,
             border: 'none',
             cursor: 'pointer',
-            boxShadow: `0 0 40px ${C.gold}40`,
+            boxShadow: `0 0 40px ${C.white}40`,
+            opacity: entered ? 1 : 0,
+            transform: entered ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.6s ease, transform 0.6s ease',
+            transitionDelay: '1s',
           }}
         >
           INICIAR MIGRACIÓN A MODO EMPRESARIO
         </button>
 
-        {/* Footer */}
-        <div className="mt-6 text-xs lg:text-sm tracking-widest" style={{ color: C.darkGray }}>
+        <div
+          className="mt-6 text-xs lg:text-sm tracking-widest"
+          style={{
+            color: C.darkGray,
+            opacity: entered ? 1 : 0,
+            transition: 'opacity 0.6s ease',
+            transitionDelay: '1.2s',
+          }}
+        >
           ARQUITECTURA POR{' '}
-          <span style={{ color: C.gold }}>LUIS CABREJO</span>
+          <span style={{ color: C.white }}>LUIS CABREJO</span>
           {' '}// DIAMANTE 11 AÑOS
         </div>
       </div>
@@ -1324,14 +1592,14 @@ function SlideContainer({ children }: { children: React.ReactNode }) {
 function LawTitle({ number, title, subtitle }: { number: number; title: string; subtitle: string }) {
   return (
     <div className="text-center">
-      <div className="text-sm lg:text-base tracking-[0.3em] uppercase mb-2" style={{ color: C.cyan, fontFamily: 'var(--font-roboto-mono)' }}>
+      <div className="text-sm lg:text-base tracking-[0.3em] uppercase mb-2" style={{ color: C.gray, fontFamily: 'var(--font-roboto-mono)' }}>
         // LEY_{number}.exe — {subtitle}
       </div>
       <h2
         className="text-3xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight"
         style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
       >
-        LEY {number}: <span style={{ color: C.gold }}>{title}</span>
+        LEY {number}: <span style={{ color: C.gray }}>{title}</span>
       </h2>
     </div>
   );
@@ -1340,12 +1608,10 @@ function LawTitle({ number, title, subtitle }: { number: number; title: string; 
 function ModeButton({
   label,
   active,
-  color,
   onClick,
 }: {
   label: string;
   active: boolean;
-  color: string;
   onClick: () => void;
 }) {
   return (
@@ -1354,11 +1620,11 @@ function ModeButton({
       className="px-4 sm:px-6 py-2.5 text-xs sm:text-sm lg:text-base font-bold uppercase tracking-wider transition-all"
       style={{
         fontFamily: 'var(--font-rajdhani)',
-        background: active ? `${color}20` : 'transparent',
-        color: active ? color : C.darkGray,
-        border: `1px solid ${active ? color : C.darkGray}40`,
+        background: active ? `${C.white}20` : 'transparent',
+        color: active ? C.white : C.darkGray,
+        border: `1px solid ${active ? C.white : C.border}`,
         cursor: 'pointer',
-        boxShadow: active ? `0 0 15px ${color}20` : 'none',
+        boxShadow: active ? `0 0 15px ${C.white}20` : 'none',
       }}
     >
       {label}
@@ -1370,20 +1636,13 @@ function ModeButton({
    GLOBAL CSS
    ═══════════════════════════════════════════════════════════ */
 const globalCSS = `
-  .nav-btn:hover {
-    background: rgba(0, 159, 223, 0.15) !important;
-    border-color: rgba(0, 159, 223, 0.6) !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(0, 159, 223, 0.2);
-  }
-
   .pulse-wave {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    border: 3px solid ${C.gold};
+    border: 3px solid ${C.white};
     opacity: 0;
     animation: ripple 2s infinite ease-out;
     pointer-events: none;
@@ -1391,8 +1650,8 @@ const globalCSS = `
 
   @keyframes ripple {
     0% {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       opacity: 0.7;
       border-width: 3px;
     }
@@ -1401,6 +1660,26 @@ const globalCSS = `
       height: 400px;
       opacity: 0;
       border-width: 0px;
+    }
+  }
+
+  /* Vibración del sistema cuando trabaja */
+  .system-vibrate {
+    animation: system-shake 0.15s infinite;
+  }
+
+  @keyframes system-shake {
+    0%, 100% {
+      transform: translate(-50%, -50%) translate(0, 0);
+    }
+    25% {
+      transform: translate(-50%, -50%) translate(1px, -1px);
+    }
+    50% {
+      transform: translate(-50%, -50%) translate(-1px, 1px);
+    }
+    75% {
+      transform: translate(-50%, -50%) translate(1px, 1px);
     }
   }
 `;
