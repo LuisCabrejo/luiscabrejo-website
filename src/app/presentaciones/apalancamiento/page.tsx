@@ -1257,15 +1257,36 @@ function SlideLey4() {
 
 function SlideDeploy() {
   const [entered, setEntered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setEntered(true), 100);
-    return () => clearTimeout(timer);
+
+    // Play video with sound — user has already interacted by navigating slides
+    const playTimer = setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.muted = false;
+        videoRef.current.play().catch(() => {
+          // If unmuted play blocked, start muted then unmute
+          if (videoRef.current) {
+            videoRef.current.muted = true;
+            videoRef.current.play().then(() => {
+              if (videoRef.current) videoRef.current.muted = false;
+            }).catch(() => {});
+          }
+        });
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(playTimer);
+    };
   }, []);
 
   return (
     <SlideContainer>
-      <div className="flex flex-col items-center justify-center h-full gap-6 text-center px-4">
+      <div className="flex flex-col items-center justify-center h-full gap-3 text-center px-4">
         <div
           className="text-xs tracking-[0.3em] uppercase px-4 py-2 rounded"
           style={{ color: C.white, border: `1px solid ${C.white}40` }}
@@ -1274,7 +1295,7 @@ function SlideDeploy() {
         </div>
 
         <h2
-          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight"
+          className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight"
           style={{ fontFamily: 'var(--font-rajdhani)', color: C.white }}
         >
           SISTEMA LISTO PARA
@@ -1282,28 +1303,32 @@ function SlideDeploy() {
           <span style={{ color: C.gray }}>DESPLIEGUE</span>
         </h2>
 
-        {/* CONTENEDOR PARA CUBO */}
+        {/* CONTENEDOR PARA VIDEO */}
         <div
-          className="relative"
+          className="relative overflow-hidden"
           style={{
-            width: '600px',
-            height: '300px',
-            maxWidth: '95vw',
-            maxHeight: '35vh',
+            width: '90vw',
+            height: '55vh',
+            maxWidth: '900px',
+            maxHeight: '60vh',
+            background: '#000000',
           }}
         >
-          {/* VIDEO DEL CUBO RUBIK */}
           <video
-            src="/video/cubo-rubicon.mp4"
+            ref={videoRef}
+            src="/video/mejor-video.mp4"
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
             className="absolute inset-0 w-full h-full object-contain"
             style={{
               opacity: entered ? 1 : 0,
-              transform: entered ? 'scale(1)' : 'scale(0.8)',
+              transform: entered ? 'scale(1.08)' : 'scale(0.8)',
+              transformOrigin: 'center 38%',
               transition: 'opacity 1s ease 0.6s, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s',
+              clipPath: 'inset(0 0 20% 0)',
             }}
           />
         </div>
