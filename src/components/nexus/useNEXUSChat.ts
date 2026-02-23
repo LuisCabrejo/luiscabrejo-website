@@ -21,7 +21,7 @@ export const useNEXUSChat = () => {
 
 La mayoría de personas son rehenes del "Plan por Defecto": trabajar, pagar cuentas, repetir.
 
-Aquí diseñamos la salida: tu propia **Infraestructura de Soberanía**.
+Aquí diseñamos tu salida.
 
 ¿Cuál es tu situación actual?
 
