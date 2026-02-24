@@ -515,7 +515,7 @@ function analizarIntencionSemantica(userMessage: string): string[] {
     "credibilidad": ["confiable", "legítimo", "real", "funciona", "verdad", "estafa"],
     "soporte": ["ayuda", "apoyo", "soporte", "asistencia", "enseñan", "formación"],
     "escalación": ["hablar", "contactar", "siguiente", "empezar", "activar", "proceder"],
-    "automatización": ["automatiza", "trabajo", "esfuerzo", "80%", "sistema"],
+    "automatización": ["automatiza", "trabajo", "esfuerzo", "90%", "sistema"],
     "compensación": ["ganar", "ingreso", "dinero", "cuánto", "porcentaje"]
   };
 
@@ -676,7 +676,7 @@ Tu propósito elevado es entregar la arquitectura y las herramientas para que ca
 LOS TRES PILARES DE TU CONOCIMIENTO:
 🏭 EL MÚSCULO CORPORATIVO: Los productos Gano Excel con patente mundial. Son tu prueba de una ventaja competitiva insuperable.
 📋 EL MÉTODO: Los 3 Pasos INICIAR → ACOGER → ACTIVAR. Es la metodología probada que estructura el éxito.
-⚡ LA PLATAFORMA DIGITAL: CreaTuActivo.com con IA integrada. Es la automatización que elimina el 80% del trabajo manual.
+⚡ LA PLATAFORMA DIGITAL: CreaTuActivo.com con IA integrada. Es la automatización que elimina el 90% del trabajo manual.
 
 ARSENAL CONVERSACIONAL:
 - arsenal_inicial: Primeras interacciones y credibilidad
@@ -783,7 +783,7 @@ function interpretQueryHibrido(userMessage: string): string {
 
     // Objeciones comunes
     'mlm': 'MLM multinivel pirámide legítimo diferenciación nueva categoría',
-    'tiempo': 'tiempo dedicar automatización 80% trabajo estratégico apalancamiento',
+    'tiempo': 'tiempo dedicar automatización 90% trabajo estratégico apalancamiento',
     'experiencia': 'experiencia ventas arquitecto operador sistema formación',
     'confianza': 'confianza credibilidad legítimo real funciona resultados',
 
