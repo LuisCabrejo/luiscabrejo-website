@@ -168,9 +168,18 @@ function clasificarDocumentoHibrido(userMessage: string): string | null {
     return 'arsenal_avanzado';
   }
 
-  // 🎯 Patrones para arsenal_reto (Reto de 5 Días - Lead Magnet)
-  // 🆕 SYNC 2026-01-19: Challenge Funnel
+  // 🎯 Patrones para arsenal_reto (El Mapa de Salida v3.0 — antes Reto de 5 Días)
+  // 🆕 SYNC 2026-02-25: Pivote semántico → "El Mapa de Salida"
   const retoPatterns = [
+    // ===== EL MAPA DE SALIDA (nomenclatura v3.0) =====
+    /mapa\s*de\s*salida/i,                      // "mapa de salida"
+    /qu[eé]\s*es\s*el\s*mapa/i,                 // "qué es el mapa"
+    /de\s*qu[eé]\s*trata\s*el\s*mapa/i,         // "de qué trata el mapa"
+    /fases\s*(de\s*(auditor[ií]a|salida))?/i,   // "fases de auditoría"
+    /auditor[ií]a\s*(de\s*5\s*fases)?/i,        // "auditoría de 5 fases"
+    /ruta\s*de\s*salida/i,                      // "ruta de salida"
+    /coordenadas/i,                             // "coordenadas"
+    // ===== RETO DE 5 DÍAS (legacy — mantener para usuarios que usan el término viejo) =====
     /reto\s*(de\s*)?(5|cinco)\s*d[ií]as?/i,    // "reto de 5 días"
     /reto\s*5/i,                                // "reto 5"
     /cinco\s*d[ií]as/i,                         // "cinco días"
