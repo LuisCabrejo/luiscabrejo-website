@@ -35,9 +35,9 @@ export default function FundadoresPage() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-  // Lógica del Contador - Cierre: 04 de enero 2026
+  // Lógica del Contador - Cierre: 15 de marzo 2026 (Ventana Fundadores EAM)
   useEffect(() => {
-    const targetDate = new Date('2026-01-04T23:59:59-05:00').getTime();
+    const targetDate = new Date('2026-03-15T23:59:59-05:00').getTime();
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = targetDate - now;

@@ -675,7 +675,7 @@ Tu propósito elevado es entregar la arquitectura y las herramientas para que ca
 
 LOS TRES PILARES DE TU CONOCIMIENTO:
 🏭 EL MÚSCULO CORPORATIVO: Los productos Gano Excel con patente mundial. Son tu prueba de una ventaja competitiva insuperable.
-📋 EL MÉTODO: Los 3 Pasos INICIAR → ACOGER → ACTIVAR. Es la metodología probada que estructura el éxito.
+📋 EL MÉTODO: El Tridente EAM (Expansión → Activación → Maestría). Es la metodología probada que estructura el éxito.
 ⚡ LA PLATAFORMA DIGITAL: CreaTuActivo.com con IA integrada. Es la automatización que elimina el 90% del trabajo manual.
 
 ARSENAL CONVERSACIONAL:
@@ -693,7 +693,7 @@ PROCESO:
 LENGUAJE (USAR SIEMPRE):
 - "El ecosistema CreaTuActivo.com..."
 - "La plataforma digital que hemos construido..."
-- "Nuestra metodología INICIAR, ACOGER, ACTIVAR..."
+- "Nuestra metodología El Tridente EAM (Expansión, Activación, Maestría)..."
 - "La máquina híbrida: Gano Excel aporta el músculo corporativo, CreaTuActivo la plataforma digital..."
 
 PERSONALIDAD: Copiloto cálido, preciso y consultivo. Habla como un asesor humano, no como un manual técnico.`;
@@ -776,8 +776,8 @@ function interpretQueryHibrido(userMessage: string): string {
     'esp 3': 'inversión para empezar construir Constructor Visionario',
 
     // Conceptos fundamentales
-    'arquitectura': 'Framework IAA NEXUS plataforma digital músculo corporativo arquitectura sistema',
-    'funcionamiento': 'cómo funciona Framework IAA INICIAR ACOGER ACTIVAR proceso sistema',
+    'arquitectura': 'Tridente EAM NEXUS plataforma digital músculo corporativo arquitectura sistema',
+    'funcionamiento': 'cómo funciona Tridente EAM Expansión Activación Maestría proceso sistema',
     'productos': 'productos Gano Excel patente mundial ventaja competitiva único',
     'contacto': 'Liliana Moreno contacto WhatsApp escalación constructor mentor',
 
@@ -810,7 +810,7 @@ function extraerKeywordsHibrido(message: string): string {
 
   // Keywords generales del ecosistema (actualizables)
   const keywords_ecosistema = [
-    'CreaTuActivo', 'ecosistema', 'Framework IAA', 'INICIAR', 'ACOGER', 'ACTIVAR',
+    'CreaTuActivo', 'ecosistema', 'Tridente EAM', 'Expansión', 'Activación', 'Maestría',
     'Gano Excel', 'NEXUS', 'Constructor', 'activo', 'Liliana',
     'inversión', 'automatización', 'paquete', 'precio', 'costo', 'Motor',
     'Plano', 'Maquinaria', 'arquitectura', 'apalancamiento', 'híbrido'
@@ -926,7 +926,7 @@ ${doc.content}
 
     // Agregar contexto del prospecto
     if (Object.keys(prospectData).length > 0) {
-      context += `INFORMACIÓN DEL PROSPECTO CAPTURADA (Framework IAA):
+      context += `INFORMACIÓN DEL PROSPECTO CAPTURADA (Tridente EAM):
 - Nivel de interés: ${prospectData.nivel_interes || 'No determinado'}/10
 - Momento óptimo: ${prospectData.momento_optimo || 'Por determinar'}
 - Arquetipo: ${prospectData.arquetipo || 'No identificado'}

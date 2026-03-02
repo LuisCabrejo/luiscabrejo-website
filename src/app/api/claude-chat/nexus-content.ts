@@ -189,7 +189,7 @@ Soy la prueba viviente de que Luis y Liliana construyeron algo diferente para di
 
 **3️⃣ ACOMPAÑAR:** Apoyas a quienes deciden empezar, conectándolos con el sistema de entrenamiento.
 
-**⚡ La diferencia clave:** La tecnología elimina 80% de la fricción del network marketing tradicional. No explicas planes complejos - las herramientas hacen la presentación.
+**⚡ La diferencia clave:** La tecnología elimina 90% de la fricción del network marketing tradicional. No explicas planes complejos - las herramientas hacen la presentación.
 
 ¿Te parece más manejable este enfoque tecnológico vs métodos tradicionales?`,
     profileAdaptation: {

@@ -213,7 +213,7 @@ Horario: 8:00 AM - 8:00 PM (GMT-5)
 
 **Opciones mientras optimizamos:**
 1. **El Motor de Valor** - Los productos únicos con patente mundial
-2. **El Plano Estratégico** - Framework IAA y metodología
+2. **El Plano Estratégico** - El Tridente EAM y metodología
 3. **La Maquinaria Tecnológica** - NodeX y automatización
 4. **Consultoría Estratégica** - Liliana Moreno +573203415438
 
