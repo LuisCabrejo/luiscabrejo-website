@@ -92,6 +92,64 @@ export interface VectorSearchResult {
   metadata?: Record<string, unknown>;
 }
 
+// ============================================================================
+// BÚSQUEDA VECTORIAL VÍA SUPABASE RPC (match_documents)
+// Más eficiente que in-memory — pgvector hace la similitud coseno en DB
+// Requiere: columna embedding_512 vector(512) en nexus_documents
+// ============================================================================
+
+export interface MatchDocumentsOptions {
+  matchThreshold?: number;
+  matchCount?: number;
+  filterCategory?: string;
+}
+
+/**
+ * Búsqueda vectorial nativa en Supabase usando pgvector + match_documents RPC.
+ * Más eficiente que traer todos los documentos y comparar en memoria.
+ */
+export async function matchDocumentsRPC(
+  queryEmbedding: number[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  supabaseClient: any,
+  options: MatchDocumentsOptions = {}
+): Promise<VectorSearchResult[]> {
+  const { matchThreshold = 0.3, matchCount = 5, filterCategory = null } = options;
+
+  const { data, error } = await supabaseClient.rpc('match_documents', {
+    query_embedding: queryEmbedding,
+    match_threshold: matchThreshold,
+    match_count: matchCount,
+    filter_category: filterCategory,
+  });
+
+  if (error) {
+    throw new Error(`match_documents RPC error: ${error.message}`);
+  }
+
+  return (data ?? []).map((row: { category: string; title: string; content: string; similarity: number; metadata?: Record<string, unknown> }) => ({
+    category: row.category,
+    title: row.title,
+    content: row.content,
+    similarity: row.similarity,
+    metadata: row.metadata,
+  }));
+}
+
+/**
+ * Pipeline completo: Voyage AI embedding → pgvector match_documents RPC
+ */
+export async function voyageMatchDocuments(
+  query: string,
+  voyageApiKey: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  supabaseClient: any,
+  options: MatchDocumentsOptions = {}
+): Promise<VectorSearchResult[]> {
+  const embedding = await generateVoyageEmbedding(query, voyageApiKey, 'query');
+  return matchDocumentsRPC(embedding, supabaseClient, options);
+}
+
 export interface DocumentWithEmbedding {
   category: string;
   title: string;

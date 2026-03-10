@@ -49,20 +49,21 @@ async function getDocumentsWithEmbeddings(): Promise<DocumentWithEmbedding[]> {
   try {
     const { data, error } = await getSupabaseClient()
       .from('nexus_documents')
-      .select('category, title, content, embedding, metadata')
+      .select('category, title, content, embedding_512, metadata')
       .in('category', ['arsenal_inicial', 'arsenal_avanzado', 'arsenal_compensacion', 'catalogo_productos', 'arsenal_reto'])
-      .not('embedding', 'is', null);
+      .not('embedding_512', 'is', null);
 
     if (error) {
       console.error('[VectorSearch] Error loading documents:', error);
       return [];
     }
 
-    const docs = (data || []).map(doc => ({
+    const rawDocs = (data as unknown) as Array<{ category: string; title: string; content: string; embedding_512: string; metadata: Record<string, unknown> }> | null;
+    const docs: DocumentWithEmbedding[] = (rawDocs || []).map(doc => ({
       category: doc.category,
       title: doc.title,
       content: doc.content,
-      embedding: doc.embedding,
+      embedding: String(doc.embedding_512),
       metadata: doc.metadata
     }));
 
