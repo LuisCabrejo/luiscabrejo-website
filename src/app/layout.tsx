@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import NexusProvider from "@/components/NexusProvider";
@@ -107,6 +107,13 @@ export const metadata: Metadata = {
   verification: {
     google: 'DQHUrBjPBwHbzbzvOREAeL_M8Z38CkS2UbTM2jkqoM4', // Tu código actual
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  interactiveWidget: 'resizes-content',
 };
 
 export default function RootLayout({

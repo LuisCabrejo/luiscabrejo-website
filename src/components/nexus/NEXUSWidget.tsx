@@ -108,12 +108,14 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  const isInitialState = messages.length === 1 && messages[0].id === 'initial-greeting';
+
   const containerClasses = isExpanded
     ? "w-full max-w-4xl h-[95vh]"
-    : "w-full max-w-lg md:max-w-xl lg:max-w-2xl h-[98vh] md:h-[85vh] lg:h-[80vh]";
+    : "w-full max-w-lg md:max-w-xl lg:max-w-2xl h-full md:h-[85vh] lg:h-[80vh]";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 bg-black/20 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-start justify-center md:items-center md:p-4 md:bg-black/20 md:backdrop-blur-sm">
       <div
         className={`${containerClasses} z-50 transition-all duration-500 ease-out relative`}
         style={{
@@ -285,12 +287,32 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* 🎨 Quiet Luxury CONTENEDOR BALANCEADO: SLIDE + SCROLL ACCESIBLE */}
+          {/* 🎨 Estado inicial: saludo centrado estilo Claude — desaparece al chatear */}
+          {isInitialState && (
+            <div
+              className="flex-1 flex flex-col items-center text-center px-8 pt-16 md:pt-24"
+              style={{ animation: 'msgIn 400ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
+            >
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  p: ({children}) => <p className="text-2xl font-semibold leading-snug mb-4" style={{ color: QUIET_LUXURY.textPrimary }}>{children}</p>,
+                  strong: ({children}) => <strong style={{ color: QUIET_LUXURY.gold }}>{children}</strong>,
+                  li: ({children}) => <li className="text-lg text-left mb-2" style={{ color: QUIET_LUXURY.textSecondary }}>{children}</li>,
+                  ul: ({children}) => <ul className="list-none mt-2 space-y-1 w-full text-left">{children}</ul>,
+                }}
+              >
+                {messages[0].content}
+              </ReactMarkdown>
+            </div>
+          )}
+
+          {/* 🎨 Contenedor scroll — solo con conversación activa */}
+          {!isInitialState && (
           <div
             ref={scrollContainerRef}
             className="flex-grow overflow-y-auto relative"
             style={{
-              // Scrollbar personalizado - dorado sutil
               scrollbarWidth: 'thin',
               scrollbarColor: `rgba(212, 175, 55, 0.4) rgba(26, 26, 36, 0.5)`
             }}
@@ -303,72 +325,15 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
                   : 'p-2 md:p-4'
               }`}
               style={{
-                // 🎯 TRANSFORM: Empuja conversaciones anteriores hacia arriba (efecto slide)
                 transform: `translateY(-${offset}px)`,
-
-                // 🎯 SIN TRANSICIÓN: Ascenso instantáneo como rayo de luz (como Claude.ai)
                 transition: 'none',
-
-                // 🔑 HARDWARE ACCELERATION: Fuerza GPU rendering para eliminar parpadeos
                 willChange: 'transform',
-
-                // 🔑 PADDING COMPENSATORIO: Hace que el contenido transformado sea accesible por scroll
                 paddingTop: `${offset + 20}px`
               }}
             >
 
-              {/* 🎨 Quiet Luxury MENSAJE DE BIENVENIDA */}
-              {messages.length === 0 && (
-                <div className="flex message-item">
-                  <div
-                    className="backdrop-blur-sm flex-1 p-4 rounded-xl"
-                    style={{
-                      background: QUIET_LUXURY.bgCard,
-                      border: `1px solid rgba(212, 175, 55, 0.1)`,
-                      color: QUIET_LUXURY.textSecondary
-                    }}
-                  >
-                    <div className="flex items-center gap-3 mb-4">
-                      <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center"
-                        style={{
-                          background: QUIET_LUXURY.gold,
-                          boxShadow: `0 4px 12px rgba(212, 175, 55, 0.25)`
-                        }}
-                      >
-                        <svg className="w-5 h-5" style={{ color: QUIET_LUXURY.bgDeep }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="font-semibold" style={{ color: QUIET_LUXURY.textPrimary }}>Queswa 🪢</p>
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-1.5 h-1.5 rounded-full" style={{ background: QUIET_LUXURY.gold }}></div>
-                          <p className="text-xs" style={{ color: QUIET_LUXURY.gold }}>En línea</p>
-                        </div>
-                      </div>
-                    </div>
-                    <p className="mb-3 leading-relaxed" style={{ color: QUIET_LUXURY.textSecondary }}>
-                      La mayoría de personas son rehenes del "Plan por Defecto": trabajar, pagar cuentas, repetir.
-                    </p>
-                    <p className="mb-3 leading-relaxed" style={{ color: QUIET_LUXURY.textPrimary }}>
-                      Aquí diseñamos tu salida.
-                    </p>
-                    <p className="mb-3 leading-relaxed" style={{ color: QUIET_LUXURY.textSecondary }}>
-                      ¿Cuál es tu situación actual?
-                    </p>
-                    <ul className="list-none mb-4 space-y-2 text-sm" style={{ color: QUIET_LUXURY.textPrimary }}>
-                      <li><strong style={{ color: QUIET_LUXURY.gold }}>A)</strong> 🏗️ Quiero construir algo propio</li>
-                      <li><strong style={{ color: QUIET_LUXURY.gold }}>B)</strong> 💭 Me siento estancado y busco un cambio</li>
-                      <li><strong style={{ color: QUIET_LUXURY.gold }}>C)</strong> 🔍 Solo estoy explorando, sin compromiso</li>
-                      <li><strong style={{ color: QUIET_LUXURY.gold }}>D)</strong> 🧠 Quiero entender el Modelo de Negocio</li>
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {/* MESSAGES CON REGISTRO PARA CÁLCULOS */}
-              {messages.map((message, index) => {
+              {/* MESSAGES CON REGISTRO PARA CÁLCULOS (saludo inicial excluido) */}
+              {messages.filter(m => m.id !== 'initial-greeting').map((message, index) => {
                 // Detectar si es el último mensaje user para aplicar animación especial Claude.ai
                 const isLastUserMessage = message.role === 'user' && message.id === lastMessageId;
 
@@ -515,18 +480,24 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
 
             </div>
           </div>
+          )} {/* fin !isInitialState */}
 
           {/* 🎨 Quiet Luxury INPUT */}
           <div
             className={`${isExpanded ? 'p-4 pt-3' : 'p-2 md:p-3'}`}
             style={{ borderTop: `1px solid rgba(212, 175, 55, 0.1)` }}
           >
-            <form className="flex items-center gap-2" onSubmit={handleSubmit}>
+            <form className="flex items-center gap-2" onSubmit={handleSubmit} autoComplete="off">
               <input
-                type="text"
+                type="search"
+                enterKeyHint="send"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="¿Qué te gustaría saber?"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck={false}
                 className={`flex-1 backdrop-blur-sm px-4 py-3 rounded-xl transition-all duration-200 ${
                   isExpanded ? 'text-base' : 'text-sm'
                 }`}
@@ -609,6 +580,17 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
 
       {/* CSS ANIMATIONS */}
       <style jsx>{`
+        @keyframes msgIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-decoration {
+          display: none;
+          -webkit-appearance: none;
+        }
+
         @keyframes fadeInUp {
           from {
             opacity: 0;
