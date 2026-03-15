@@ -12,26 +12,13 @@ interface Message {
 }
 
 export const useNEXUSChat = () => {
-  // Mensaje inicial - Ataque al Villano "Plan por Defecto" + Calidez v17.5.0
   const getInitialGreeting = (): Message => {
+    const savedName = typeof window !== 'undefined' ? localStorage.getItem('nexus_prospect_name') : null;
+    const greeting = savedName ? `Hola, ${savedName}` : 'Hola';
     return {
       id: 'initial-greeting',
       role: 'assistant',
-      content: `Hola, soy Queswa 🪢
-
-La mayoría de personas son rehenes del "Plan por Defecto": trabajar, pagar cuentas, repetir.
-
-Aquí diseñamos tu salida.
-
-¿Cuál es tu situación actual?
-
-**A)** 🏗️ Quiero construir algo propio
-
-**B)** 💭 Me siento estancado y busco un cambio
-
-**C)** 🔍 Solo estoy explorando, sin compromiso
-
-**D)** 🧠 Quiero entender el Modelo de Negocio`,
+      content: `${greeting} 🪢\n\n¿En qué puedo ayudarte?`,
       timestamp: new Date(),
       isStreaming: false
     };
@@ -180,6 +167,14 @@ Aquí diseñamos tu salida.
         );
 
         setStreamingComplete(true);
+
+        // Persistir nombre si el usuario lo mencionó
+        if (!localStorage.getItem('nexus_prospect_name')) {
+          const nameMatch = content.match(
+            /(?:me llamo|mi nombre es|soy)\s+([A-ZÀ-ÿ][a-zà-ÿ]+(?:\s+[A-ZÀ-ÿ][a-zà-ÿ]+)*)/i
+          );
+          if (nameMatch) localStorage.setItem('nexus_prospect_name', nameMatch[1]);
+        }
 
       } else {
         // Respuesta JSON
