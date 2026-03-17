@@ -82,6 +82,42 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
   // Track del último mensaje para aplicar fade-in animation
   const [lastMessageId, setLastMessageId] = useState<string | null>(null);
 
+  // 🔊 TTS — voz ElevenLabs en burbujas del asistente
+  const [playingId,      setPlayingId]      = useState<string | null>(null);
+  const [loadingAudioId, setLoadingAudioId] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const speakMessage = useCallback(async (text: string, messageId: string) => {
+    if (playingId === messageId) {
+      audioRef.current?.pause();
+      setPlayingId(null);
+      return;
+    }
+    audioRef.current?.pause();
+    setPlayingId(null);
+    setLoadingAudioId(messageId);
+    try {
+      const res = await fetch('/api/nexus/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+      if (!res.ok) throw new Error(`TTS ${res.status}`);
+      const url   = URL.createObjectURL(await res.blob());
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      setPlayingId(messageId);
+      audio.onended = () => { setPlayingId(null); URL.revokeObjectURL(url); };
+      audio.onerror = () => { setPlayingId(null); };
+      await audio.play();
+    } catch (err) {
+      console.error('[TTS]', err);
+      setPlayingId(null);
+    } finally {
+      setLoadingAudioId(null);
+    }
+  }, [playingId]);
+
   useEffect(() => {
     if (messages.length > 0) {
       const latestMessage = messages[messages.length - 1];
@@ -366,6 +402,39 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
                         border: `1px solid rgba(212, 175, 55, 0.08)`
                       }}
                     >
+                      {/* 🔊 Botón TTS — iconografía pura */}
+                      {message.role === 'assistant' && (
+                        <button
+                          onClick={() => speakMessage(message.content, message.id)}
+                          title={playingId === message.id ? 'Detener' : 'Escuchar respuesta'}
+                          disabled={loadingAudioId !== null && loadingAudioId !== message.id}
+                          className="group flex items-center gap-1.5 mb-3 transition-all duration-200 hover:scale-105"
+                          style={{ background: 'transparent', border: 'none', padding: '2px 0',
+                            cursor: loadingAudioId === message.id ? 'wait' : 'pointer',
+                            opacity: loadingAudioId !== null && loadingAudioId !== message.id ? 0.25 : 1 }}
+                        >
+                          {loadingAudioId === message.id ? (
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={QUIET_LUXURY.gold} strokeWidth="2.5" strokeLinecap="round">
+                              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"><animateTransform attributeName="transform" type="rotate" dur="1s" from="0 12 12" to="360 12 12" repeatCount="indefinite"/></path>
+                            </svg>
+                          ) : playingId === message.id ? (
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" strokeLinecap="round">
+                              <rect x="6" y="4" width="4" height="16" fill={QUIET_LUXURY.gold}/><rect x="14" y="4" width="4" height="16" fill={QUIET_LUXURY.gold}/>
+                            </svg>
+                          ) : (
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={QUIET_LUXURY.textMuted} strokeWidth="2" strokeLinecap="round"
+                              className="group-hover:stroke-yellow-400 transition-colors duration-200">
+                              <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                          )}
+                          <span style={{ fontSize: '9px', letterSpacing: '0.12em', textTransform: 'uppercase',
+                            color: playingId === message.id ? QUIET_LUXURY.gold : QUIET_LUXURY.textMuted,
+                            fontFamily: 'monospace', transition: 'color 200ms' }}
+                            className={playingId === message.id ? '' : 'group-hover:text-yellow-400'}>
+                            {loadingAudioId === message.id ? '···' : playingId === message.id ? 'Detener' : 'Escuchar'}
+                          </span>
+                        </button>
+                      )}
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
