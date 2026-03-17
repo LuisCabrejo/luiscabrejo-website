@@ -58,7 +58,6 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
     messages,
     isLoading,
     sendMessage,
-    resetChat,
   } = useNEXUSChat();
 
   const [inputMessage, setInputMessage] = useState('');
@@ -511,44 +510,6 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
             </form>
           </div>
 
-          {/* FOOTER */}
-          <div className={`${isExpanded ? 'px-6 pb-4' : 'px-4 pb-3'}`}>
-            <div className="flex justify-center gap-6">
-              <button
-                className="text-xs px-3 py-2 transition-all duration-200"
-                style={{ color: QUIET_LUXURY.textMuted }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = QUIET_LUXURY.cyan;
-                  e.currentTarget.style.background = 'rgba(56, 189, 248, 0.08)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = QUIET_LUXURY.textMuted;
-                  e.currentTarget.style.background = 'transparent';
-                }}
-                onClick={() => {
-                  resetChat();
-                  if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0;
-                }}
-              >
-                Nueva Conversación
-              </button>
-              <button
-                className="text-xs px-3 py-2 transition-all duration-200"
-                style={{ color: QUIET_LUXURY.textMuted }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = QUIET_LUXURY.cyan;
-                  e.currentTarget.style.background = 'rgba(56, 189, 248, 0.08)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = QUIET_LUXURY.textMuted;
-                  e.currentTarget.style.background = 'transparent';
-                }}
-                onClick={() => handleSendMessage('Quiero hablar con Luis Cabrejo')}
-              >
-                Hablar con un Estratega
-              </button>
-            </div>
-          </div>
         </div>
       </div>
 
