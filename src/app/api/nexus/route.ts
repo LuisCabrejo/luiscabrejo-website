@@ -368,7 +368,7 @@ async function getSystemPrompt(): Promise<string> {
     const { data, error } = await getSupabaseClient()
       .from('system_prompts')
       .select('prompt, version')
-      .eq('name', 'nexus_main')
+      .eq('tenant_id', 'marca_personal')
       .single();
 
     if (error || !data?.prompt) {
