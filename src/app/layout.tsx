@@ -137,7 +137,9 @@ export default function RootLayout({
       'https://linkedin.com/in/luiscabrejo',
       'https://instagram.com/luiscabrejo',
       'https://facebook.com/luiscabrejo',
-      'https://creatuactivo.com'
+      'https://creatuactivo.com',
+      'https://queswa.app',
+      'https://queswa.com'
     ],
     knowsAbout: [
       'Plan de Compensación Gano Excel',
@@ -155,6 +157,56 @@ export default function RootLayout({
       '@type': 'Brand',
       name: 'CreaTuActivo'
     }
+  };
+
+  // SCHEMA.ORG: @graph — Triángulo semántico Luis Cabrejo ↔ CreaTuActivo ↔ Queswa.app
+  // Fuerza a Google/AI a asociar los tres en el Knowledge Graph
+  const graphSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': `${baseUrl}/#luis-cabrejo`,
+        name: 'Luis Cabrejo',
+        jobTitle: 'Arquitecto de Activos & Fundador de CreaTuActivo',
+        url: baseUrl,
+        sameAs: [
+          baseUrl,
+          'https://creatuactivo.com',
+          'https://queswa.app',
+          'https://queswa.com',
+          'https://linkedin.com/in/luiscabrejo',
+        ],
+        founder: { '@id': 'https://creatuactivo.com/#creatuactivo' },
+        creator: { '@id': 'https://queswa.app/#app' },
+      },
+      {
+        '@type': 'Organization',
+        '@id': 'https://creatuactivo.com/#creatuactivo',
+        name: 'CreaTuActivo',
+        url: 'https://creatuactivo.com',
+        description: 'Ecosistema de distribución Gano Excel con tecnología e IA creado por Luis Cabrejo.',
+        founder: { '@id': `${baseUrl}/#luis-cabrejo` },
+        owns: { '@id': 'https://queswa.app/#app' },
+        sameAs: [
+          'https://creatuactivo.com',
+          'https://queswa.app',
+          'https://queswa.com',
+        ],
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': 'https://queswa.app/#app',
+        name: 'Queswa.app',
+        alternateName: 'Queswa',
+        url: 'https://queswa.app',
+        applicationCategory: 'BusinessApplication',
+        description: 'Motor Cognitivo y Dashboard Operativo de CreaTuActivo. Asistente IA diseñado por Luis Cabrejo para Arquitectos de Activos en la red de distribución Gano Excel.',
+        creator: { '@id': `${baseUrl}/#luis-cabrejo` },
+        provider: { '@id': 'https://creatuactivo.com/#creatuactivo' },
+        sameAs: ['https://queswa.app', 'https://queswa.com'],
+      },
+    ],
   };
 
   // SCHEMA.ORG: MENTORÍA (PRODUCTO/SERVICIO)
@@ -209,6 +261,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(graphSchema) }}
         />
 
         {/* Service Worker Registration */}
