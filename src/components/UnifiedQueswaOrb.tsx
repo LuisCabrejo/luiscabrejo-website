@@ -52,7 +52,6 @@ function getSupportedMimeType(): string {
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 type VoiceState = 'idle' | 'recording' | 'processing' | 'speaking' | 'error'
 
-const LONG_PRESS_MS = 700
 
 // ─── Componente principal ─────────────────────────────────────────────────────
 export default function UnifiedQueswaOrb() {
@@ -79,11 +78,6 @@ export default function UnifiedQueswaOrb() {
     else if (delta < -12) setOrbVisible(true)
     prevScrollY.current = latest
   })
-
-  // Long press detection
-  const longPressTimer  = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const isLongPress     = useRef(false)
-  const pointerIsDown   = useRef(false)
 
   // Audio/media refs
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
@@ -340,37 +334,12 @@ export default function UnifiedQueswaOrb() {
   // Ref estable para el RAF loop (VAD)
   useEffect(() => { stopAndSendRef.current = stopAndSend }, [stopAndSend])
 
-  // ─── Mecánica dual: pointer events ───────────────────────────────────────────
-  const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    e.preventDefault()
-    if (voiceState !== 'idle') return
-    pointerIsDown.current  = true
-    isLongPress.current    = false
-
-    longPressTimer.current = setTimeout(() => {
-      if (!pointerIsDown.current) return
-      isLongPress.current = true
-      navigator.vibrate?.(50)
-      startRecording()
-    }, LONG_PRESS_MS)
-  }, [voiceState, startRecording])
-
-  const handlePointerUp = useCallback((e: React.PointerEvent) => {
-    e.preventDefault()
-    pointerIsDown.current = false
-    clearTimeout(longPressTimer.current!)
-
-    if (isLongPress.current) {
-      if (voiceState === 'recording') {
-        navigator.vibrate?.(30)
-        stopAndSend()
-      }
-    } else if (voiceState === 'idle') {
-      setHasInteracted(true)
-      setShowTooltip(false)
-      setIsOpen(prev => !prev)
-    }
-  }, [voiceState, stopAndSend])
+  // ─── Tap simple: abrir/cerrar chat ───────────────────────────────────────────
+  const handleOrbClick = useCallback(() => {
+    setHasInteracted(true)
+    setShowTooltip(false)
+    setIsOpen(prev => !prev)
+  }, [])
 
   // ─── Oculto en /servilleta salvo demo ────────────────────────────────────────
   if (pathname === '/servilleta' && !demoActivated) return null
@@ -524,10 +493,7 @@ export default function UnifiedQueswaOrb() {
       <motion.button
         data-nexus-button
         aria-label="Abrir asistente Queswa"
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={isRecording ? handlePointerUp : undefined}
-        disabled={isProcessing || isSpeaking}
+        onClick={handleOrbClick}
         animate={(orbVisible && !isOpen) ? { y: 0, opacity: 1 } : { y: 80, opacity: 0 }}
         transition={
           orbVisible
