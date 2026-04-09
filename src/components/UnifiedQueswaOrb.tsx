@@ -104,27 +104,6 @@ export default function UnifiedQueswaOrb() {
   // ─── Tracking (preservado de NEXUSFloatingButton) ───────────────────────────
   const [trackingReady, setTrackingReady] = useState(true)
 
-  // ─── Cookie banner visible — eleva el orbe SOLO en mobile ──────────────────
-  const [cookieBannerVisible, setCookieBannerVisible] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return !localStorage.getItem('cookie_consent')
-  })
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== 'undefined' ? window.innerWidth < 768 : true
-  )
-  useEffect(() => {
-    const handler = () => setCookieBannerVisible(!localStorage.getItem('cookie_consent'))
-    window.addEventListener('storage', handler)
-    const interval = setInterval(handler, 500)
-    setTimeout(() => clearInterval(interval), 30_000)
-    const onResize = () => setIsMobile(window.innerWidth < 768)
-    window.addEventListener('resize', onResize)
-    return () => {
-      window.removeEventListener('storage', handler)
-      window.removeEventListener('resize', onResize)
-      clearInterval(interval)
-    }
-  }, [])
 
 
   useEffect(() => {
@@ -559,9 +538,7 @@ export default function UnifiedQueswaOrb() {
           position: 'fixed',
           bottom: isOpen
             ? 'calc(5rem + env(safe-area-inset-bottom, 24px))'
-            : (cookieBannerVisible && isMobile)
-              ? 'calc(1.5rem + env(safe-area-inset-bottom, 16px) + 72px)'
-              : 'calc(1.5rem + env(safe-area-inset-bottom, 16px))',
+            : 'calc(1.5rem + env(safe-area-inset-bottom, 16px))',
           right: '1rem',
           zIndex: 200,
           width: 56,

@@ -40,7 +40,6 @@ export default function CookieBanner() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
           <div className="flex-1 text-xs sm:text-sm" style={{ color: '#A3A3A3' }}>
             <p className="leading-tight">
-              Usamos cookies para mejorar tu experiencia.{' '}
               <Link
                 href="/privacidad"
                 className="underline"
@@ -49,6 +48,7 @@ export default function CookieBanner() {
               >
                 Política de Privacidad
               </Link>
+              {' — '}Usamos cookies para mejorar tu experiencia.
             </p>
           </div>
           <div className="flex gap-2 shrink-0 w-full sm:w-auto">
