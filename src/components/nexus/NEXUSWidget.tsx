@@ -242,8 +242,6 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose, voiceState =
     handleSendMessage(inputMessage);
   };
 
-  if (!isOpen) return null;
-
   const isInitialState = messages.length === 1 && messages[0].id === 'initial-greeting';
 
   const containerClasses = isExpanded
@@ -251,7 +249,11 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose, voiceState =
     : "w-full max-w-lg md:max-w-xl lg:max-w-2xl h-full md:h-[85vh] lg:h-[80vh]";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center md:items-center md:p-4 md:bg-black/20 md:backdrop-blur-sm">
+    // display:none oculta sin desmontar — preserva historial y estado de voz
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center md:items-center md:p-4 md:bg-black/20 md:backdrop-blur-sm"
+      style={{ display: isOpen ? undefined : 'none' }}
+    >
       <div
         className={`${containerClasses} z-50 transition-all duration-500 ease-out relative`}
         style={{
@@ -688,7 +690,7 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose, voiceState =
                   ) : (
                     <button
                       type="button"
-                      onClick={() => window.dispatchEvent(new CustomEvent('queswa-start-voice'))}
+                      onClick={() => onStartVoice?.()}
                       className="w-10 h-10 flex items-center justify-center transition-all duration-150 active:scale-90"
                       style={{ background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: '50%' }}
                       onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}

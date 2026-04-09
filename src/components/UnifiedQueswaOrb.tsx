@@ -91,6 +91,16 @@ export default function UnifiedQueswaOrb() {
   const audioRef         = useRef<HTMLAudioElement | null>(null)
   const streamRef        = useRef<MediaStream | null>(null)
 
+  // VAD + barras reactivas
+  const audioContextRef  = useRef<AudioContext | null>(null)
+  const analyserRef      = useRef<AnalyserNode | null>(null)
+  const animFrameRef     = useRef<number | null>(null)
+  const vadTimerRef      = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hadSoundRef      = useRef(false)
+  const stopAndSendRef   = useRef<() => void>(() => {})
+  const [barHeights, setBarHeights] = useState<number[]>([0.45, 0.45, 0.45, 0.45, 0.45, 0.45])
+  const [liveTranscript, setLiveTranscript] = useState('')
+
   // ─── Tracking (preservado de NEXUSFloatingButton) ───────────────────────────
   const [trackingReady, setTrackingReady] = useState(true)
 
@@ -172,6 +182,36 @@ export default function UnifiedQueswaOrb() {
     return () => document.removeEventListener('fullscreenchange', onFs)
   }, [pathname])
 
+  // Auto-cerrar el chat al navegar + resetear voz completo
+  useEffect(() => {
+    setIsOpen(false)
+    setVoiceState('idle')
+    setLiveTranscript('')
+    if (animFrameRef.current) { cancelAnimationFrame(animFrameRef.current); animFrameRef.current = null }
+    if (vadTimerRef.current)  { clearTimeout(vadTimerRef.current);          vadTimerRef.current  = null }
+    audioContextRef.current?.close().catch(() => {})
+    audioContextRef.current = null
+    analyserRef.current     = null
+    mediaRecorderRef.current?.state !== 'inactive' && mediaRecorderRef.current?.stop()
+    streamRef.current?.getTracks().forEach(t => t.stop())
+    audioRef.current?.pause()
+  }, [pathname])
+
+  // Botón atrás del navegador cierra el chat sin salir del sitio
+  useEffect(() => {
+    if (!isOpen) return
+    history.pushState({ queswaOpen: true }, '')
+    const onPopState = () => {
+      setIsOpen(false)
+      setVoiceState('idle')
+      mediaRecorderRef.current?.state !== 'inactive' && mediaRecorderRef.current?.stop()
+      streamRef.current?.getTracks().forEach(t => t.stop())
+      audioRef.current?.pause()
+    }
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [isOpen])
+
   // Cleanup audio/stream al desmontar
   useEffect(() => () => {
     streamRef.current?.getTracks().forEach(t => t.stop())
@@ -179,35 +219,109 @@ export default function UnifiedQueswaOrb() {
   }, [])
 
   // ─── Motor de voz ────────────────────────────────────────────────────────────
+
+  const startAudioAnalysis = useCallback((stream: MediaStream) => {
+    try {
+      const ctx      = new AudioContext()
+      const analyser = ctx.createAnalyser()
+      analyser.fftSize               = 256
+      analyser.smoothingTimeConstant = 0.7
+      const source = ctx.createMediaStreamSource(stream)
+      source.connect(analyser)
+      audioContextRef.current = ctx
+      analyserRef.current     = analyser
+
+      const bins      = analyser.frequencyBinCount
+      const dataArray = new Uint8Array(bins)
+
+      const SILENCE_THRESHOLD = 12
+      const SILENCE_HOLD_MS   = 900
+      const MIN_RECORD_MS     = 800
+      hadSoundRef.current     = false
+      const recordStart       = Date.now()
+
+      const loop = () => {
+        if (!analyserRef.current) return
+        analyser.getByteFrequencyData(dataArray)
+
+        // Barras reactivas (6 bandas)
+        const step    = Math.floor(bins / 6)
+        const heights = Array.from({ length: 6 }, (_, i) => {
+          const slice = dataArray.slice(i * step, (i + 1) * step)
+          const avg   = Array.from(slice).reduce((a, b) => a + b, 0) / slice.length
+          return Math.max(0.25, Math.min(1.0, 0.25 + (avg / 200) * 0.75))
+        })
+        setBarHeights(heights)
+
+        // VAD silencio
+        const overall = Array.from(dataArray).reduce((a, b) => a + b, 0) / dataArray.length
+        if (overall > 25) hadSoundRef.current = true
+
+        const elapsed = Date.now() - recordStart
+        if (hadSoundRef.current && elapsed > MIN_RECORD_MS) {
+          if (overall < SILENCE_THRESHOLD) {
+            if (!vadTimerRef.current) {
+              vadTimerRef.current = setTimeout(() => {
+                if (mediaRecorderRef.current?.state === 'recording') {
+                  navigator.vibrate?.([30, 50, 30])
+                  stopAndSendRef.current()
+                }
+              }, SILENCE_HOLD_MS)
+            }
+          } else {
+            if (vadTimerRef.current) { clearTimeout(vadTimerRef.current); vadTimerRef.current = null }
+          }
+        }
+        animFrameRef.current = requestAnimationFrame(loop)
+      }
+      animFrameRef.current = requestAnimationFrame(loop)
+    } catch {
+      // AudioContext no soportado — flujo normal sin VAD
+    }
+  }, [])
+
+  const stopAudioAnalysis = useCallback(() => {
+    if (animFrameRef.current) { cancelAnimationFrame(animFrameRef.current); animFrameRef.current = null }
+    if (vadTimerRef.current)  { clearTimeout(vadTimerRef.current);          vadTimerRef.current  = null }
+    audioContextRef.current?.close().catch(() => {})
+    audioContextRef.current = null
+    analyserRef.current     = null
+    hadSoundRef.current     = false
+    setBarHeights([0.45, 0.45, 0.45, 0.45, 0.45, 0.45])
+  }, [])
+
   const startRecording = useCallback(async () => {
     setShowTooltip(false)
     setHasInteracted(true)
     setErrorMsg(null)
+    setLiveTranscript('')
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      streamRef.current  = stream
+      streamRef.current      = stream
       audioChunksRef.current = []
       const mr = new MediaRecorder(stream, { mimeType: getSupportedMimeType() })
       mr.ondataavailable = e => { if (e.data.size > 0) audioChunksRef.current.push(e.data) }
       mr.start(250)
       mediaRecorderRef.current = mr
       setVoiceState('recording')
+      startAudioAnalysis(stream)
     } catch {
       setErrorMsg('Sin acceso al micrófono')
       setVoiceState('error')
       setTimeout(() => setVoiceState('idle'), 3000)
     }
-  }, [])
+  }, [startAudioAnalysis])
 
   const stopAndSend = useCallback(async () => {
     const mr = mediaRecorderRef.current
     if (!mr || mr.state === 'inactive') return
+    stopAudioAnalysis()
     setVoiceState('processing')
     await new Promise<void>(resolve => { mr.onstop = () => resolve(); mr.stop() })
     streamRef.current?.getTracks().forEach(t => t.stop())
 
     const mimeType = getSupportedMimeType()
-    const blob = new Blob(audioChunksRef.current, { type: mimeType })
+    const blob     = new Blob(audioChunksRef.current, { type: mimeType })
     if (blob.size < 1000) { setVoiceState('idle'); return }
 
     try {
@@ -216,21 +330,36 @@ export default function UnifiedQueswaOrb() {
       const res = await fetch('/api/voice-command', { method: 'POST', body: fd })
       if (!res.ok) throw new Error('Error del servidor')
 
+      const rawTranscript = res.headers.get('x-transcript')
+      const rawReply      = res.headers.get('x-reply')
+      const transcript    = rawTranscript ? decodeURIComponent(rawTranscript) : ''
+      const reply         = rawReply      ? decodeURIComponent(rawReply)      : ''
+      if (transcript) setLiveTranscript(transcript)
+
+      if (transcript || reply) {
+        window.dispatchEvent(new CustomEvent('queswa-voice-exchange', { detail: { transcript, reply } }))
+      }
+
       const audioBlob = await res.blob()
       setVoiceState('speaking')
+      navigator.vibrate?.([20, 30, 20, 30, 40])
       const url   = URL.createObjectURL(audioBlob)
       const audio = new Audio(url)
       audioRef.current = audio
-      audio.onended = () => { setVoiceState('idle'); URL.revokeObjectURL(url) }
-      audio.onerror = () => { setVoiceState('idle'); URL.revokeObjectURL(url) }
+      audio.onended = () => { setVoiceState('idle'); setLiveTranscript(''); URL.revokeObjectURL(url) }
+      audio.onerror = () => { setVoiceState('idle'); setLiveTranscript(''); URL.revokeObjectURL(url) }
       audio.play().catch(() => setVoiceState('idle'))
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Error de conexión'
       setErrorMsg(msg)
+      setLiveTranscript('')
       setVoiceState('error')
       setTimeout(() => setVoiceState('idle'), 3000)
     }
-  }, [])
+  }, [stopAudioAnalysis])
+
+  // Ref estable para el RAF loop (VAD)
+  useEffect(() => { stopAndSendRef.current = stopAndSend }, [stopAndSend])
 
   // ─── Mecánica dual: pointer events ───────────────────────────────────────────
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
@@ -247,26 +376,17 @@ export default function UnifiedQueswaOrb() {
     }, LONG_PRESS_MS)
   }, [voiceState, startRecording])
 
-  // ─── Evento mic desde widget — evita que el dialog de permisos cierre el chat ─
-  useEffect(() => {
-    const handler = () => { if (voiceState === 'idle') startRecording() }
-    window.addEventListener('queswa-start-voice', handler)
-    return () => window.removeEventListener('queswa-start-voice', handler)
-  }, [voiceState, startRecording])
-
   const handlePointerUp = useCallback((e: React.PointerEvent) => {
     e.preventDefault()
     pointerIsDown.current = false
     clearTimeout(longPressTimer.current!)
 
     if (isLongPress.current) {
-      // Long press → detener grabación
       if (voiceState === 'recording') {
         navigator.vibrate?.(30)
         stopAndSend()
       }
-    } else {
-      // Toque corto → abrir/cerrar chat
+    } else if (voiceState === 'idle') {
       setHasInteracted(true)
       setShowTooltip(false)
       setIsOpen(prev => !prev)
@@ -319,14 +439,16 @@ export default function UnifiedQueswaOrb() {
         <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
       </svg>
     )
-    if (isRecording) return (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={C.gold} strokeWidth="2" strokeLinecap="round">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" y1="19" x2="12" y2="23"/>
-        <line x1="8"  y1="23" x2="16" y2="23"/>
-      </svg>
-    )
+    if (isRecording) {
+      const maxH = 18
+      const bars = barHeights.map((h, i) => {
+        const px = Math.round(h * maxH)
+        const y  = Math.round((maxH - px) / 2) + 3
+        const x  = 1 + i * 4
+        return <rect key={i} x={x} y={y} width="2" height={px} rx="1" />
+      })
+      return <svg width="22" height="22" viewBox="0 0 24 24" fill="#0F1115">{bars}</svg>
+    }
     if (isError) return (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={C.error} strokeWidth="2" strokeLinecap="round">
         <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
@@ -468,19 +590,23 @@ export default function UnifiedQueswaOrb() {
         <OrbIcon />
       </motion.button>
 
-      {/* ── Panel de chat de texto ───────────────────────────────────────────── */}
-      {isOpen && (
-        <NEXUSWidget
-          isOpen={isOpen}
-          onClose={() => {
-            setIsOpen(false)
-            window.dispatchEvent(new CustomEvent('close-queswa'))
-          }}
-          voiceState={voiceState}
-          onStartVoice={startRecording}
-          onStopVoice={stopAndSend}
-        />
-      )}
+      {/* ── Panel de chat — siempre montado, show/hide por prop isOpen ─────── */}
+      <NEXUSWidget
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false)
+          setVoiceState('idle')
+          setLiveTranscript('')
+          stopAudioAnalysis()
+          if (mediaRecorderRef.current?.state !== 'inactive') mediaRecorderRef.current?.stop()
+          streamRef.current?.getTracks().forEach(t => t.stop())
+          audioRef.current?.pause()
+          window.dispatchEvent(new CustomEvent('close-queswa'))
+        }}
+        voiceState={voiceState}
+        onStartVoice={startRecording}
+        onStopVoice={stopAndSend}
+      />
 
       {/* ── CSS keyframes ────────────────────────────────────────────────────── */}
       <style>{`
