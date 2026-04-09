@@ -20,10 +20,95 @@ const QUIET_LUXURY = {
   amber: '#F59E0B',
 };
 
+interface Message {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
+
 interface NEXUSWidgetProps {
   isOpen: boolean;
   onClose: () => void;
+  voiceState?: 'idle' | 'recording' | 'processing' | 'speaking' | 'error';
+  onStartVoice?: () => void;
+  onStopVoice?: () => void;
 }
+
+// ── Panel de voz — reemplaza el textarea cuando voiceState !== idle ──────────
+const VoicePanel: React.FC<{
+  voiceState: 'recording' | 'processing' | 'speaking' | 'error';
+  onStopVoice?: () => void;
+  onStartVoice?: () => void;
+}> = ({ voiceState, onStopVoice, onStartVoice }) => {
+  const [elapsed, setElapsed] = React.useState(0);
+  const timerRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+
+  React.useEffect(() => {
+    if (voiceState === 'recording') {
+      setElapsed(0);
+      timerRef.current = setInterval(() => setElapsed(s => s + 1), 1000);
+    } else {
+      if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+    }
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [voiceState]);
+
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
+  const ss = String(elapsed % 60).padStart(2, '0');
+
+  if (voiceState === 'recording') {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)', borderRadius: 8, minHeight: 80 }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3, height: 40 }}>
+          {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(i => (
+            <div key={i} className="qw-vbar" style={{ animationDelay: `${(i * 0.07).toFixed(2)}s` }} />
+          ))}
+        </div>
+        <span style={{ fontSize: 13, fontFamily: 'monospace', fontWeight: 700, color: '#D4AF37', letterSpacing: '0.05em', flexShrink: 0 }}>{mm}:{ss}</span>
+        <button type="button" onClick={() => onStopVoice?.()} style={{ width: 40, height: 40, borderRadius: '50%', background: '#D4AF37', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="#0F1115"><rect x="2" y="2" width="10" height="10" rx="2"/></svg>
+        </button>
+      </div>
+    );
+  }
+  if (voiceState === 'processing') {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, padding: '10px 12px', background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)', borderRadius: 8, minHeight: 80 }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"><animateTransform attributeName="transform" type="rotate" dur="1s" from="0 12 12" to="360 12 12" repeatCount="indefinite"/></path>
+        </svg>
+        <span style={{ fontSize: 12, fontFamily: 'monospace', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#D4AF37' }}>Procesando tu mensaje...</span>
+      </div>
+    );
+  }
+  if (voiceState === 'speaking') {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)', borderRadius: 8, minHeight: 80 }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round">
+          <path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 12, fontFamily: 'monospace', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#D4AF37' }}>Respondiendo en audio</div>
+          <div style={{ fontSize: 10, color: 'rgba(212,175,55,0.5)', fontFamily: 'monospace', marginTop: 3 }}>La respuesta aparecerá en el chat</div>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 8, minHeight: 80 }}>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: 12, fontFamily: 'monospace', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#ef4444' }}>No te escuché</div>
+        <button type="button" onClick={() => onStartVoice?.()} style={{ marginTop: 6, fontSize: 11, fontFamily: 'monospace', color: '#D4AF37', background: 'none', border: 'none', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>
+          Intentar de nuevo →
+        </button>
+      </div>
+    </div>
+  );
+};
 
 // Resaltar preguntas de captura en negrilla
 const highlightCaptureQuestions = (text: string) => {
@@ -53,7 +138,7 @@ const highlightCaptureQuestions = (text: string) => {
   return highlighted;
 };
 
-const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
+const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose, voiceState = 'idle', onStartVoice, onStopVoice }) => {
   const {
     messages,
     isLoading,
@@ -64,6 +149,22 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [messageAppearing, setMessageAppearing] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // ── Mensajes de voz inyectados en el historial ───────────────────────────────
+  const [voiceMessages, setVoiceMessages] = useState<Message[]>([]);
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { transcript, reply } = (e as CustomEvent).detail ?? {};
+      if (!transcript && !reply) return;
+      const ts = new Date();
+      const newMsgs: Message[] = [];
+      if (transcript) newMsgs.push({ id: `voice-user-${Date.now()}`, role: 'user', content: transcript, timestamp: ts });
+      if (reply) newMsgs.push({ id: `voice-ai-${Date.now() + 1}`, role: 'assistant', content: reply, timestamp: new Date(ts.getTime() + 1) });
+      setVoiceMessages(prev => [...prev, ...newMsgs]);
+    };
+    window.addEventListener('queswa-voice-exchange', handler);
+    return () => window.removeEventListener('queswa-voice-exchange', handler);
+  }, []);
 
   const QUICK_CHIPS = [
     { label: '📦 Los productos',    query: '¿Qué productos manejan?' },
@@ -510,76 +611,98 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
           </div>
           )} {/* fin !isInitialState */}
 
-          {/* INPUT — textarea unificado con botón flotante */}
+          {/* INPUT / VOZ */}
           <div
             className={`${isExpanded ? 'p-4 pt-3' : 'p-3'}`}
             style={{ borderTop: `1px solid rgba(255, 255, 255, 0.06)` }}
           >
-            <form onSubmit={handleSubmit} autoComplete="off" style={{ position: 'relative' }}>
-              <textarea
-                ref={textareaRef}
-                enterKeyHint="send"
-                rows={1}
-                value={inputMessage}
-                onChange={(e) => {
-                  setInputMessage(e.target.value);
-                  e.target.style.height = 'auto';
-                  e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`;
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSendMessage(inputMessage);
-                  }
-                }}
-                placeholder="_ Escribe tu consulta..."
-                autoComplete="off"
-                autoCorrect="on"
-                autoCapitalize="sentences"
-                spellCheck={true}
-                className={`w-full transition-all duration-200 resize-none ${isExpanded ? 'text-base' : 'text-sm'}`}
-                style={{
-                  background: QUIET_LUXURY.bgSurface,
-                  color: QUIET_LUXURY.textPrimary,
-                  border: `1px solid rgba(229, 194, 121, 0.15)`,
-                  borderRadius: 10,
-                  fontFamily: 'var(--font-roboto-mono, monospace)',
-                  boxShadow: 'inset 0 1px 4px rgba(0, 0, 0, 0.2)',
-                  outline: 'none',
-                  lineHeight: '1.6',
-                  minHeight: '80px',
-                  maxHeight: '160px',
-                  overflowY: 'auto',
-                  paddingTop: '14px',
-                  paddingBottom: '48px',
-                  paddingLeft: '16px',
-                  paddingRight: '56px',
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = QUIET_LUXURY.cyan;
-                  e.currentTarget.style.boxShadow = `inset 0 1px 4px rgba(0,0,0,0.2), 0 0 0 2px rgba(56,189,248,0.12)`;
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(229, 194, 121, 0.15)';
-                  e.currentTarget.style.boxShadow = 'inset 0 1px 4px rgba(0, 0, 0, 0.2)';
-                }}
-              />
-              {/* Botón send — flotante dentro del textarea */}
-              <div style={{ position: 'absolute', bottom: 8, right: 6 }}>
-                <button
-                  type="submit"
-                  disabled={isLoading || !inputMessage.trim()}
-                  className="w-10 h-10 flex items-center justify-center transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed active:scale-90"
-                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: '50%' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(229,194,121,0.10)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                >
-                  <svg className="w-5 h-5" fill="none" stroke={QUIET_LUXURY.gold} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                  </svg>
-                </button>
-              </div>
-            </form>
+            {voiceState !== 'idle' ? (
+              <VoicePanel voiceState={voiceState} onStopVoice={onStopVoice} onStartVoice={onStartVoice} />
+            ) : (
+              <form onSubmit={handleSubmit} autoComplete="off" style={{ position: 'relative' }}>
+                <textarea
+                  ref={textareaRef}
+                  enterKeyHint="send"
+                  rows={1}
+                  value={inputMessage}
+                  onChange={(e) => {
+                    setInputMessage(e.target.value);
+                    e.target.style.height = 'auto';
+                    e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`;
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage(inputMessage);
+                    }
+                  }}
+                  placeholder="_ Escribe tu consulta..."
+                  autoComplete="off"
+                  autoCorrect="on"
+                  autoCapitalize="sentences"
+                  spellCheck={true}
+                  className={`w-full transition-all duration-200 resize-none ${isExpanded ? 'text-base' : 'text-sm'}`}
+                  style={{
+                    background: QUIET_LUXURY.bgSurface,
+                    color: QUIET_LUXURY.textPrimary,
+                    border: `1px solid rgba(229, 194, 121, 0.15)`,
+                    borderRadius: 10,
+                    fontFamily: 'var(--font-roboto-mono, monospace)',
+                    boxShadow: 'inset 0 1px 4px rgba(0, 0, 0, 0.2)',
+                    outline: 'none',
+                    lineHeight: '1.6',
+                    minHeight: '80px',
+                    maxHeight: '160px',
+                    overflowY: 'auto',
+                    paddingTop: '14px',
+                    paddingBottom: '48px',
+                    paddingLeft: '16px',
+                    paddingRight: '56px',
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = QUIET_LUXURY.cyan;
+                    e.currentTarget.style.boxShadow = `inset 0 1px 4px rgba(0,0,0,0.2), 0 0 0 2px rgba(56,189,248,0.12)`;
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(229, 194, 121, 0.15)';
+                    e.currentTarget.style.boxShadow = 'inset 0 1px 4px rgba(0, 0, 0, 0.2)';
+                  }}
+                />
+                {/* Botón mic/send flotante */}
+                <div style={{ position: 'absolute', bottom: 8, right: 6 }}>
+                  {inputMessage.trim() ? (
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-10 h-10 flex items-center justify-center transition-all duration-150 disabled:opacity-40 active:scale-90"
+                      style={{ background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: '50%' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(229,194,121,0.10)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke={QUIET_LUXURY.gold} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                      </svg>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => onStartVoice?.()}
+                      className="w-10 h-10 flex items-center justify-center transition-all duration-150 active:scale-90"
+                      style={{ background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: '50%' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke={QUIET_LUXURY.textMuted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </form>
+            )}
           </div>
 
         </div>
@@ -587,6 +710,16 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
 
       {/* CSS ANIMATIONS */}
       <style jsx>{`
+        @keyframes qwVBar {
+          0%, 100% { height: 6px; }
+          50%       { height: 32px; }
+        }
+        .qw-vbar {
+          width: 3px;
+          background: #D4AF37;
+          border-radius: 2px;
+          animation: qwVBar 0.8s ease-in-out infinite;
+        }
         @keyframes msgIn {
           from { opacity: 0; transform: translateY(10px); }
           to   { opacity: 1; transform: translateY(0); }

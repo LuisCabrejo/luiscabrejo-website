@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import NexusProvider from "@/components/NexusProvider";
+import CookieBanner from "@/components/CookieBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -292,6 +293,7 @@ export default function RootLayout({
         {children}
         {/* Queswa: Aquí actúa como "Asistente del Mentor" */}
         <NexusProvider />
+        <CookieBanner />
       </body>
     </html>
   );

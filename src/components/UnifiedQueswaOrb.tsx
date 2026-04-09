@@ -459,6 +459,9 @@ export default function UnifiedQueswaOrb() {
             setIsOpen(false)
             window.dispatchEvent(new CustomEvent('close-queswa'))
           }}
+          voiceState={voiceState}
+          onStartVoice={startRecording}
+          onStopVoice={stopAndSend}
         />
       )}
 
