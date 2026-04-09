@@ -298,25 +298,70 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* 🎨 Estado inicial: saludo centrado estilo Claude — desaparece al chatear */}
-          {isInitialState && (
-            <div
-              className="flex-1 flex flex-col items-center text-center px-8 pt-16 md:pt-24"
-              style={{ animation: 'msgIn 400ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
-            >
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  p: ({children}) => <p className="text-2xl font-semibold leading-snug mb-4" style={{ color: QUIET_LUXURY.textPrimary }}>{children}</p>,
-                  strong: ({children}) => <strong style={{ color: QUIET_LUXURY.gold }}>{children}</strong>,
-                  li: ({children}) => <li className="text-lg text-left mb-2" style={{ color: QUIET_LUXURY.textSecondary }}>{children}</li>,
-                  ul: ({children}) => <ul className="list-none mt-2 space-y-1 w-full text-left">{children}</ul>,
-                }}
+          {/* 🎨 Estado inicial — patrón idéntico a creatuactivo.com */}
+          {isInitialState && (() => {
+            const parts = messages[0].content.split('\n\n');
+            const firstPara = parts[0];
+            // Excluir la última línea "Selecciona abajo..." que ya muestran los chips
+            const bodyParts = parts.slice(1).filter(p => !p.startsWith('Selecciona abajo'));
+            const restContent = bodyParts.join('\n\n');
+            return (
+              <div
+                className="flex-1 flex flex-col px-5 pt-6 overflow-y-auto"
+                style={{ animation: 'msgIn 400ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
               >
-                {messages[0].content}
-              </ReactMarkdown>
-            </div>
-          )}
+                {/* Primera línea — grande */}
+                <p className="text-base md:text-lg font-semibold leading-snug mb-4" style={{ color: QUIET_LUXURY.textPrimary }}>
+                  {firstPara}
+                </p>
+                {/* Cuerpo — tamaño normal, color secundario */}
+                {restContent && (
+                  <div className="text-sm leading-relaxed mb-2" style={{ color: QUIET_LUXURY.textSecondary }}>
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        strong: ({children}) => <strong style={{ color: QUIET_LUXURY.gold, fontWeight: 600 }}>{children}</strong>,
+                        p: ({children}) => <p className="mb-3">{children}</p>,
+                      }}
+                    >
+                      {restContent}
+                    </ReactMarkdown>
+                  </div>
+                )}
+                {/* Chips — columna única, touch targets grandes */}
+                <div className="w-full mt-2 mb-4 flex flex-col gap-2">
+                  {QUICK_CHIPS.map(({ label, query }) => (
+                    <button
+                      key={label}
+                      onClick={() => handleSendMessage(query)}
+                      disabled={isLoading}
+                      className="w-full flex items-center gap-3 px-4 py-4 text-left text-sm transition-all duration-200 disabled:opacity-40"
+                      style={{
+                        background: QUIET_LUXURY.bgSurface,
+                        border: `1px solid rgba(229, 194, 121, 0.2)`,
+                        color: QUIET_LUXURY.textSecondary,
+                        fontFamily: 'var(--font-roboto-mono, monospace)',
+                        borderRadius: 0,
+                        cursor: 'pointer',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(229,194,121,0.5)';
+                        e.currentTarget.style.color = QUIET_LUXURY.gold;
+                        e.currentTarget.style.background = 'rgba(229,194,121,0.05)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(229,194,121,0.2)';
+                        e.currentTarget.style.color = QUIET_LUXURY.textSecondary;
+                        e.currentTarget.style.background = QUIET_LUXURY.bgSurface;
+                      }}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Contenedor scroll — solo con conversación activa */}
           {!isInitialState && (
@@ -464,38 +509,6 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
             </div>
           </div>
           )} {/* fin !isInitialState */}
-
-          {/* QUICK CHIPS — solo en estado inicial antes de escribir */}
-          {isInitialState && !inputMessage.trim() && (
-            <div className="px-3 pb-3 flex flex-col gap-2">
-              {QUICK_CHIPS.map((chip) => (
-                <button
-                  key={chip.label}
-                  type="button"
-                  onClick={() => handleSendMessage(chip.query)}
-                  className="w-full text-left px-4 py-3 text-sm transition-all duration-150 active:scale-[0.98]"
-                  style={{
-                    background: QUIET_LUXURY.bgSurface,
-                    color: QUIET_LUXURY.textSecondary,
-                    border: `1px solid rgba(255,255,255,0.08)`,
-                    borderRadius: 6,
-                    fontFamily: 'var(--font-roboto-mono, monospace)',
-                    cursor: 'pointer',
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.borderColor = 'rgba(229,194,121,0.3)';
-                    e.currentTarget.style.color = QUIET_LUXURY.gold;
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                    e.currentTarget.style.color = QUIET_LUXURY.textSecondary;
-                  }}
-                >
-                  {chip.label}
-                </button>
-              ))}
-            </div>
-          )}
 
           {/* INPUT — textarea unificado con botón flotante */}
           <div
