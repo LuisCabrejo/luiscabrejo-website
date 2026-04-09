@@ -489,7 +489,9 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose, voiceState =
               }}
             >
 
-              {messages.filter(m => m.id !== 'initial-greeting').map((message) => {
+              {[...messages.filter(m => m.id !== 'initial-greeting'), ...voiceMessages]
+                .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+                .map((message) => {
                 const isLastUserMessage = message.role === 'user' && message.id === lastMessageId;
 
                 return (
@@ -686,7 +688,7 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose, voiceState =
                   ) : (
                     <button
                       type="button"
-                      onClick={() => onStartVoice?.()}
+                      onClick={() => window.dispatchEvent(new CustomEvent('queswa-start-voice'))}
                       className="w-10 h-10 flex items-center justify-center transition-all duration-150 active:scale-90"
                       style={{ background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: '50%' }}
                       onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
