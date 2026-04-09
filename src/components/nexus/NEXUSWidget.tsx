@@ -63,6 +63,14 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
   const [messageAppearing, setMessageAppearing] = useState<string | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const QUICK_CHIPS = [
+    { label: '📦 Los productos',    query: '¿Qué productos manejan?' },
+    { label: '💼 El negocio',       query: '¿Cómo funciona el modelo de negocio?' },
+    { label: '🤔 ¿Es para mí?',     query: '¿Esto es para mí?' },
+    { label: '⚡ Quiero empezar',   query: 'Quiero empezar, ¿qué necesito hacer?' },
+  ];
 
   // Referencias para la solución balanceada
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -457,31 +465,82 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
           </div>
           )} {/* fin !isInitialState */}
 
-          {/* INPUT */}
+          {/* QUICK CHIPS — solo en estado inicial antes de escribir */}
+          {isInitialState && !inputMessage.trim() && (
+            <div className="px-3 pb-3 flex flex-col gap-2">
+              {QUICK_CHIPS.map((chip) => (
+                <button
+                  key={chip.label}
+                  type="button"
+                  onClick={() => handleSendMessage(chip.query)}
+                  className="w-full text-left px-4 py-3 text-sm transition-all duration-150 active:scale-[0.98]"
+                  style={{
+                    background: QUIET_LUXURY.bgSurface,
+                    color: QUIET_LUXURY.textSecondary,
+                    border: `1px solid rgba(255,255,255,0.08)`,
+                    borderRadius: 6,
+                    fontFamily: 'var(--font-roboto-mono, monospace)',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.borderColor = 'rgba(229,194,121,0.3)';
+                    e.currentTarget.style.color = QUIET_LUXURY.gold;
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                    e.currentTarget.style.color = QUIET_LUXURY.textSecondary;
+                  }}
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* INPUT — textarea unificado con botón flotante */}
           <div
             className={`${isExpanded ? 'p-4 pt-3' : 'p-3'}`}
             style={{ borderTop: `1px solid rgba(255, 255, 255, 0.06)` }}
           >
-            <form className="flex items-center gap-2" onSubmit={handleSubmit} autoComplete="off">
-              <input
-                type="search"
+            <form onSubmit={handleSubmit} autoComplete="off" style={{ position: 'relative' }}>
+              <textarea
+                ref={textareaRef}
                 enterKeyHint="send"
+                rows={1}
                 value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
+                onChange={(e) => {
+                  setInputMessage(e.target.value);
+                  e.target.style.height = 'auto';
+                  e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`;
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage(inputMessage);
+                  }
+                }}
                 placeholder="_ Escribe tu consulta..."
                 autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                spellCheck={false}
-                className={`flex-1 px-4 py-3 transition-all duration-200 ${isExpanded ? 'text-base' : 'text-sm'}`}
+                autoCorrect="on"
+                autoCapitalize="sentences"
+                spellCheck={true}
+                className={`w-full transition-all duration-200 resize-none ${isExpanded ? 'text-base' : 'text-sm'}`}
                 style={{
                   background: QUIET_LUXURY.bgSurface,
                   color: QUIET_LUXURY.textPrimary,
                   border: `1px solid rgba(229, 194, 121, 0.15)`,
+                  borderRadius: 10,
                   fontFamily: 'var(--font-roboto-mono, monospace)',
                   boxShadow: 'inset 0 1px 4px rgba(0, 0, 0, 0.2)',
                   outline: 'none',
-                  borderRadius: 0,
+                  lineHeight: '1.6',
+                  minHeight: '80px',
+                  maxHeight: '160px',
+                  overflowY: 'auto',
+                  paddingTop: '14px',
+                  paddingBottom: '48px',
+                  paddingLeft: '16px',
+                  paddingRight: '56px',
                 }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = QUIET_LUXURY.cyan;
@@ -492,21 +551,21 @@ const NEXUSWidget: React.FC<NEXUSWidgetProps> = ({ isOpen, onClose }) => {
                   e.currentTarget.style.boxShadow = 'inset 0 1px 4px rgba(0, 0, 0, 0.2)';
                 }}
               />
-              <button
-                type="submit"
-                disabled={isLoading || !inputMessage.trim()}
-                className="p-3 hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                style={{
-                  background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-                  color: '#0B0C0C',
-                  boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)',
-                  borderRadius: 0,
-                }}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                </svg>
-              </button>
+              {/* Botón send — flotante dentro del textarea */}
+              <div style={{ position: 'absolute', bottom: 8, right: 6 }}>
+                <button
+                  type="submit"
+                  disabled={isLoading || !inputMessage.trim()}
+                  className="w-10 h-10 flex items-center justify-center transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed active:scale-90"
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', borderRadius: '50%' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(229,194,121,0.10)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke={QUIET_LUXURY.gold} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                  </svg>
+                </button>
+              </div>
             </form>
           </div>
 

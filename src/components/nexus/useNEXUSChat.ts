@@ -14,11 +14,13 @@ interface Message {
 export const useNEXUSChat = () => {
   const getInitialGreeting = (): Message => {
     const savedName = typeof window !== 'undefined' ? localStorage.getItem('nexus_prospect_name') : null;
-    const greeting = savedName ? `Hola, ${savedName}` : 'Hola';
+    const greeting = savedName ? `Hola, ${savedName}` : 'Hola. Soy Queswa 🪢, el asistente de luiscabrejo.com';
     return {
       id: 'initial-greeting',
       role: 'assistant',
-      content: `${greeting} 🪢\n\n¿En qué puedo ayudarte?`,
+      content: savedName
+        ? `Hola, ${savedName} 🪢\n\n¿En qué puedo ayudarte hoy?`
+        : `${greeting}.\n\nEntendemos que tu tiempo es escaso y valioso. Nuestro propósito es explicarte cómo profesionales y comerciantes estructuran un **Patrimonio Paralelo** — una fuente de ingresos adicional diseñada para no interferir con tu empleo o negocio actual.\n\nSelecciona abajo qué aspecto te gustaría evaluar primero:`,
       timestamp: new Date(),
       isStreaming: false
     };

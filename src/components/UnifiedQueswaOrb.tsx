@@ -94,6 +94,19 @@ export default function UnifiedQueswaOrb() {
   // ─── Tracking (preservado de NEXUSFloatingButton) ───────────────────────────
   const [trackingReady, setTrackingReady] = useState(true)
 
+  // ─── Cookie banner visible — eleva el orbe para evitar solapamiento ──────────
+  const [cookieBannerVisible, setCookieBannerVisible] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return !localStorage.getItem('cookie_consent')
+  })
+  useEffect(() => {
+    const handler = () => setCookieBannerVisible(!localStorage.getItem('cookie_consent'))
+    window.addEventListener('storage', handler)
+    const interval = setInterval(handler, 500)
+    setTimeout(() => clearInterval(interval), 30_000)
+    return () => { window.removeEventListener('storage', handler); clearInterval(interval) }
+  }, [])
+
   useEffect(() => {
     const checkReady = () =>
       !!(window.FrameworkIAA?.fingerprint && window.updateProspectData)
@@ -407,7 +420,9 @@ export default function UnifiedQueswaOrb() {
           position: 'fixed',
           bottom: isOpen
             ? 'calc(5rem + env(safe-area-inset-bottom, 24px))'
-            : 'calc(1.5rem + env(safe-area-inset-bottom, 16px))',
+            : cookieBannerVisible
+              ? 'calc(1.5rem + env(safe-area-inset-bottom, 16px) + 72px)'
+              : 'calc(1.5rem + env(safe-area-inset-bottom, 16px))',
           right: '1rem',
           zIndex: 200,
           width: 56,
