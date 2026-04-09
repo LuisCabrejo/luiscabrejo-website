@@ -580,6 +580,7 @@ export default function UnifiedQueswaOrb() {
           WebkitTapHighlightColor: 'transparent',
           userSelect: 'none',
           touchAction: 'none',
+          pointerEvents: !isOpen ? 'auto' : 'none',
           animation: isRecording
           ? 'orbPulse 1.2s ease-in-out infinite'
           : (!isVoiceActive && !isOpen)
