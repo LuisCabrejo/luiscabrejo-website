@@ -1007,7 +1007,7 @@ ${context}INSTRUCCIONES ARQUITECTURA HÍBRIDA:
 
     // Generar respuesta con Claude
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       system: augmentedSystemPrompt,
       stream: true,
       max_tokens: 1000,
